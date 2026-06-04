@@ -41,6 +41,30 @@ def _infer_categories(opp: Opportunity) -> list[str]:
     return found or ["보조금"]
 
 
+RESULT_KEYWORDS: tuple[str, ...] = (
+    "선정결과",
+    "선정 결과",
+    "최종 선정",
+    "최종선정",
+    "결과 발표",
+    "결과발표",
+    "심사 결과",
+    "심사결과",
+    "선정 안내",
+    "선정안내",
+    "선정자",
+    "당선",
+    "최종 합격",
+    "합격자",
+    "수상자",
+)
+
+
+def _is_result_announcement(opp: Opportunity) -> bool:
+    title = opp.title or ""
+    return any(kw in title for kw in RESULT_KEYWORDS)
+
+
 def _funding_type(opp: Opportunity) -> str:
     text = (opp.title + " " + opp.summary).lower()
     if "보증" in text:
@@ -91,6 +115,7 @@ def to_program_row(opp: Opportunity) -> dict:
         "is_rolling": False,
         "priority": opp.priority or "normal",
         "raw_text": opp.summary,
+        "is_result_announcement": _is_result_announcement(opp),
     }
 
 
