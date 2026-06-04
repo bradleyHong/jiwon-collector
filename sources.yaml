@@ -6,44 +6,9 @@ settings:
   minimum_amount_krw: 20000000
   detail_fetch_limit_per_source: 30
 
-  # 활성 source 화이트리스트: prefix 매칭
-  # 6대 광역시(서울/부산/대구/인천/광주/대전) + 중앙 + 농업만 수집해서 비용 0원 유지
-  # 다른 지역까지 다시 켜려면 이 리스트를 주석 처리하거나 prefix 추가
-  enabled_source_id_prefixes:
-    # 중앙 정부·통합 포털
-    - kstartup
-    - modoo_startup
-    - bizinfo
-    - mss_rss
-    - kosmes
-    - kodit
-    - kibo
-    - semas
-    - enaradoum
-    # 6대 광역시 + 산하 + 시군구
-    - seoul_
-    - busan_
-    - daegu_
-    - incheon_
-    - gwangju_
-    - daejeon_
-    - dash_daegu
-    - dip
-    - dcoe
-    - social_economy_daegu
-    # 농업·축산·임어업·식품
-    - rda
-    - mafra
-    - ekr
-    - at_corp
-    - fact_korea
-    - apfs
-    - maf_smartfarm
-    - forest
-    - fisheries
-    - fipa
-    - livestock
-    - youth_farmer
+  # 전국 308개 모두 활성. 하루 1회 수집(09:00 KST)이라 시간·비용 충분.
+  # 일부 지역만 운영하려면 enabled_source_id_prefixes 리스트 추가.
+  # enabled_source_id_prefixes: []
 
 sources:
   - id: daegu_women_startup
