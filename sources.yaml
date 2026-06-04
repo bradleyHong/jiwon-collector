@@ -1,0 +1,266 @@
+settings:
+  timezone: Asia/Seoul
+  request_delay_seconds: 1.5
+  timeout_seconds: 10
+  user_agent: "daegu-grants-monitor/1.0 (+https://github.com/OWNER/REPO)"
+  minimum_amount_krw: 20000000
+  detail_fetch_limit_per_source: 2
+
+sources:
+  - id: daegu_women_startup
+    name: 달구벌여성창업플랫폼
+    org: 달구벌여성인력개발센터
+    adapter: html_list
+    url: "https://w-startup.daegu.go.kr/business?sca=%EB%AA%A8%EC%A7%91%EC%A4%91&sort=edate"
+    search_url: "https://w-startup.daegu.go.kr/business"
+    rss_or_api: none_found
+    notes: "대구 여성 예비창업자/창업기업 사업공고 목록. 2026-06-02 확인."
+
+  - id: dash_daegu
+    name: DASH 대구창업허브
+    org: 대구창조경제혁신센터
+    adapter: html_list
+    url: "https://startup.daegu.go.kr/index.do?menu_id=00002552"
+    search_url: "https://startup.daegu.go.kr/index.do?menu_id=00002552"
+    rss_or_api: none_found
+    notes: "지원프로그램 > 지원사업공고 목록. 2026-06-02 확인."
+
+  - id: kstartup
+    name: K-Startup 창업지원포털
+    org: 창업진흥원
+    adapter: html_list
+    url: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do"
+    search_url: "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do"
+    rss_or_api: "rss_available_on_page"
+    notes: "모집중 페이지에 RSS 피드 버튼이 노출됨. 직접 RSS endpoint는 사이트 JS에서 변경될 수 있어 HTML 목록을 기본 사용."
+
+  - id: modoo_startup
+    name: 모두의창업
+    org: 중소벤처기업부/창업진흥원
+    adapter: html_list
+    url: "https://www.modoo.or.kr/"
+    search_url: "https://www.modoo.or.kr/"
+    rss_or_api: none_found
+    notes: "모두의창업 공식 플랫폼. 2026-06-02 공식 사이트와 검색 결과 확인. 동적 페이지라 접근 가능한 텍스트만 수집하고 K-Startup 공고와 중복 가능."
+
+  - id: bizinfo_daegu
+    name: 기업마당 지원사업정보
+    org: 중소벤처기업부/중소벤처기업연구원
+    adapter: bizinfo_api
+    url: "https://www.bizinfo.go.kr/uss/rss/bizinfoApi.do"
+    search_url: "https://www.bizinfo.go.kr/sii/siia/selectSIIA200View.do"
+    rss_or_api: "official_json_xml_api_requires_key"
+    api_key_env: BIZINFO_API_KEY
+    params:
+      dataType: json
+      searchCnt: "100"
+      hashtags: "대구,창업,기술,내수,경영"
+    fallback_url: "https://www.bizinfo.go.kr/sii/siia/selectSIIA200View.do"
+    notes: "공식 API 문서 확인: 지원사업정보 API, endpoint /uss/rss/bizinfoApi.do, crtfcKey 필요."
+
+  - id: daegu_techno_park
+    name: 대구테크노파크
+    org: 대구테크노파크
+    adapter: html_list
+    url: "https://www.dgtp.or.kr/bbs/BoardControll.do?bbsId=BBSMSTR_000000000003"
+    search_url: "https://www.dgtp.or.kr/bbs/BoardControll.do?bbsId=BBSMSTR_000000000003"
+    rss_or_api: none_found
+    notes: "알림마당 > 사업공고 목록. 검색 결과 및 공식 페이지 확인."
+
+  - id: dip
+    name: 대구디지털혁신진흥원
+    org: 대구디지털혁신진흥원
+    adapter: html_list
+    url: "https://www.dip.or.kr/home/notice/businessbbs/boardList.ubs?fboardcd=business"
+    search_url: "https://www.dip.or.kr/home/notice/businessbbs/boardList.ubs?fboardcd=business"
+    rss_or_api: none_found
+    notes: "알림마당 > 사업공고. 콘텐츠, ABB, XR/AI 관련 공고 다수."
+
+  - id: daegu_design
+    name: 대구경북디자인진흥원
+    org: 대구경북디자인진흥원
+    adapter: html_list
+    url: "https://www.dgdp.or.kr/"
+    search_url: "https://www.dgdp.or.kr/"
+    rss_or_api: none_found
+    notes: "구 dgdc.or.kr에서 dgdp.or.kr로 개편된 공식 홈페이지. 메인에 고시 공고/사업 목록 노출."
+
+  - id: dcoe
+    name: 대구콘텐츠밸리
+    org: 대구콘텐츠밸리/DIP 계열
+    adapter: html_list
+    url: "https://www.dcoe.or.kr/"
+    search_url: "https://www.dcoe.or.kr/"
+    rss_or_api: none_found
+    notes: "DIP 콘텐츠센터 계열 사업공고 보완 소스."
+
+  - id: daegu_ccei
+    name: 대구창조경제혁신센터
+    org: 대구창조경제혁신센터
+    adapter: html_list
+    url: "https://ccei.creativekorea.or.kr/daegu/custom/notice_list.do"
+    search_url: "https://ccei.creativekorea.or.kr/daegu/custom/notice_list.do"
+    rss_or_api: none_found
+    notes: "대구센터 공지/사업공고. DASH와 중복될 수 있어 deduplicate."
+
+  - id: daegu_city_notice
+    name: 대구광역시 고시공고
+    org: 대구광역시
+    adapter: html_list
+    url: "https://www.daegu.go.kr/index.do?menu_id=00940170"
+    search_url: "https://www.daegu.go.kr/index.do?menu_id=00940170"
+    rss_or_api: none_found
+    notes: "고시공고 목록. 사업/공모/지원 키워드 중심으로 필터링."
+
+  - id: daegu_bukgu
+    name: 대구 북구청
+    org: 대구 북구청
+    adapter: html_list
+    url: "https://www.buk.daegu.kr/"
+    search_url: "https://www.buk.daegu.kr/"
+    rss_or_api: none_found
+    notes: "대구 북구청 공식 홈페이지. 구청 공고/지원사업은 메뉴 구조가 변경될 수 있어 접근 가능한 텍스트 중심 수집."
+
+  - id: daegu_donggu
+    name: 대구 동구청
+    org: 대구 동구청
+    adapter: html_list
+    url: "https://www.dong.daegu.kr/"
+    search_url: "https://www.dong.daegu.kr/"
+    rss_or_api: none_found
+    notes: "대구 동구청 공식 홈페이지. 지원사업/특례보증/소상공인 공고 보완 소스."
+
+  - id: daegu_dalseogu
+    name: 대구 달서구청
+    org: 대구 달서구청
+    adapter: html_list
+    url: "https://www.dalseo.daegu.kr/"
+    search_url: "https://www.dalseo.daegu.kr/"
+    rss_or_api: none_found
+    notes: "달서구청 공식 홈페이지. 고시/공고, 공지사항, 일자리/생활, 구민참여 메뉴를 접근 가능한 범위에서 수집."
+
+  - id: daegu_dalseonggun
+    name: 대구 달성군청
+    org: 대구 달성군청
+    adapter: html_list
+    url: "https://www.dalseong.daegu.kr/"
+    search_url: "https://www.dalseong.daegu.kr/"
+    rss_or_api: none_found
+    notes: "달성군청 공식 홈페이지. 군 단위 지원사업, 소상공인/기업 공고 보완 소스."
+
+  - id: daegu_suseonggu
+    name: 대구 수성구청
+    org: 대구 수성구청
+    adapter: html_list
+    url: "https://www.suseong.kr/"
+    search_url: "https://www.suseong.kr/"
+    rss_or_api: none_found
+    notes: "수성구청 공식 홈페이지. 소상공인 특례보증, 청년/창업, 문화예술 공고 보완 소스."
+
+  - id: daegu_junggu
+    name: 대구 중구청
+    org: 대구 중구청
+    adapter: html_list
+    url: "https://www.jung.daegu.kr/"
+    search_url: "https://www.jung.daegu.kr/"
+    rss_or_api: none_found
+    notes: "중구청 공식 홈페이지. 구청 공고/소상공인/상권 지원사업 보완 소스."
+
+  - id: daegu_namgu
+    name: 대구 남구청
+    org: 대구 남구청
+    adapter: html_list
+    url: "https://www.nam.daegu.kr/"
+    search_url: "https://www.nam.daegu.kr/"
+    rss_or_api: none_found
+    notes: "남구청 공식 홈페이지. 로컬 창업, 소상공인, 문화예술 지원사업 보완 소스."
+
+  - id: daegu_seogu
+    name: 대구 서구청
+    org: 대구 서구청
+    adapter: html_list
+    url: "https://www.dgs.go.kr/"
+    search_url: "https://www.dgs.go.kr/"
+    rss_or_api: none_found
+    notes: "서구청 공식 홈페이지. 성장 창업사업화, 소상공인, 일자리 지원사업 보완 소스."
+
+  - id: mss_rss
+    name: 중소벤처기업부 사업공고 RSS
+    org: 중소벤처기업부
+    adapter: rss
+    url: "https://mss.go.kr/rss/smba/board/310.do"
+    search_url: "https://www.mss.go.kr/site/smba/ex/bbs/List.do?cbIdx=310"
+    rss_or_api: official_rss
+    notes: "중기부 RSS서비스 페이지에서 사업공고 RSS로 공개."
+
+  - id: kosmes
+    name: 중소벤처기업진흥공단
+    org: 중소벤처기업진흥공단
+    adapter: html_list
+    url: "https://www.kosmes.or.kr/nsh/SH/SBI/SHSBI001M0.do"
+    search_url: "https://www.kosmes.or.kr/nsh/SH/SBI/SHSBI001M0.do"
+    rss_or_api: none_found
+    notes: "중진공 공지/지원사업성 안내. 페이지 구조 변경 가능."
+
+  - id: daegu_credit_guarantee
+    name: 대구신용보증재단
+    org: 대구신용보증재단
+    adapter: html_list
+    url: "https://ttg.co.kr/"
+    search_url: "https://ttg.co.kr/"
+    rss_or_api: none_found
+    notes: "대구신용보증재단 대표 홈페이지. 특례보증, 소상공인 보증, 정책자금 안내 모니터링."
+
+  - id: kodit
+    name: 신용보증기금
+    org: 신용보증기금
+    adapter: html_list
+    url: "https://www.kodit.or.kr/kodit/main.do"
+    search_url: "https://www.kodit.or.kr/kodit/main.do"
+    rss_or_api: none_found
+    notes: "신용보증기금 공식 홈페이지. 보증/대출 연계 지원, 공지사항, 정책금융 안내."
+
+  - id: kibo
+    name: 기술보증기금
+    org: 기술보증기금
+    adapter: html_list
+    url: "https://www.kibo.or.kr/index.do"
+    search_url: "https://www.kibo.or.kr/index.do"
+    rss_or_api: none_found
+    notes: "기술보증기금 공식 홈페이지. 기술보증, 창업기업 보증, 지식재산/기술금융 안내."
+
+  - id: semas_policy_loan
+    name: 소상공인 정책자금
+    org: 소상공인시장진흥공단
+    adapter: html_list
+    url: "https://ols.semas.or.kr/"
+    search_url: "https://ols.semas.or.kr/"
+    rss_or_api: none_found
+    notes: "소상공인 정책자금 공식 접수/안내 사이트. 직접대출/대리대출, 보증서 연계 대출 모니터링."
+
+  - id: semas
+    name: 소상공인시장진흥공단
+    org: 소상공인시장진흥공단
+    adapter: html_list
+    url: "https://www.semas.or.kr/web/board/webBoardList.kmdc?bCd=notice"
+    search_url: "https://www.semas.or.kr/web/board/webBoardList.kmdc?bCd=notice"
+    rss_or_api: none_found
+    notes: "소진공 공지사항. 소상공인 바우처/창업 지원 키워드 중심 필터."
+
+  - id: enaradoum
+    name: e나라도움/보조금통합포털
+    org: 한국재정정보원
+    adapter: html_list
+    url: "https://www.bojo.go.kr/"
+    search_url: "https://www.gosims.go.kr/"
+    rss_or_api: none_found
+    notes: "공모사업은 e나라도움/보조금통합포털에서 제공. 보안/동적 페이지는 무리한 크롤링 금지, 접근 가능 텍스트만 수집."
+
+  - id: social_economy_daegu
+    name: 대구시사회적경제지원센터
+    org: 대구시사회적경제지원센터
+    adapter: html_list
+    url: "https://dgse.kr/"
+    search_url: "https://dgse.kr/"
+    rss_or_api: none_found
+    notes: "대구 소재 기업 지원사업 보완 소스."
