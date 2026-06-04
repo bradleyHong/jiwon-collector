@@ -2,7 +2,10 @@ name: Daegu Grant Watch
 
 on:
   schedule:
-    - cron: "7 11 * * *"
+    # 매일 09:00, 14:00 KST 두 번 수집
+    - cron: "0 9 * * *"
+      timezone: "Asia/Seoul"
+    - cron: "0 14 * * *"
       timezone: "Asia/Seoul"
   workflow_dispatch:
 
