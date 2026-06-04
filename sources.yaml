@@ -264,3 +264,297 @@ sources:
     search_url: "https://dgse.kr/"
     rss_or_api: none_found
     notes: "대구 소재 기업 지원사업 보완 소스."
+
+  # ============================================================
+  # 광역시·도 확장 (2026-06-04 추가)
+  # 신용보증재단 + 테크노파크 패턴. URL은 시작 도메인 위주.
+  # 실제 공고 게시판 경로는 다음 수집 결과 보고 다듬을 예정.
+  # ============================================================
+
+  # ── 서울 ──
+  - id: seoul_sba
+    name: 서울산업진흥원(SBA) 사업공고
+    org: 서울산업진흥원
+    adapter: html_list
+    url: "https://www.sba.seoul.kr/kr/sbcu01s1"
+    search_url: "https://www.sba.seoul.kr/kr/sbcu01s1"
+    rss_or_api: none_found
+    notes: "서울 중기·창업 지원사업 공고. 게시판 경로 확인 필요."
+  - id: seoul_credit
+    name: 서울신용보증재단
+    org: 서울신용보증재단
+    adapter: html_list
+    url: "https://www.seoulshinbo.co.kr/"
+    search_url: "https://www.seoulshinbo.co.kr/"
+    rss_or_api: none_found
+    notes: "서울 소상공인 보증/정책자금. 공고 페이지 확인 필요."
+
+  # ── 경기 ──
+  - id: gyeonggi_gbsa
+    name: 경기도경제과학진흥원(GBSA)
+    org: 경기도경제과학진흥원
+    adapter: html_list
+    url: "https://www.gbsa.or.kr/pages/board.do"
+    search_url: "https://www.gbsa.or.kr/"
+    rss_or_api: none_found
+    notes: "경기도 중기·창업 공고. URL 확인 필요."
+  - id: gyeonggi_credit
+    name: 경기신용보증재단
+    org: 경기신용보증재단
+    adapter: html_list
+    url: "https://www.gcgf.or.kr/"
+    search_url: "https://www.gcgf.or.kr/"
+    rss_or_api: none_found
+    notes: "경기 보증/정책자금. 게시판 경로 확인 필요."
+
+  # ── 인천 ──
+  - id: incheon_tp
+    name: 인천테크노파크
+    org: 인천테크노파크
+    adapter: html_list
+    url: "https://www.itp.or.kr/"
+    search_url: "https://www.itp.or.kr/"
+    rss_or_api: none_found
+    notes: "인천 R&D·창업 공고. URL 확인 필요."
+  - id: incheon_credit
+    name: 인천신용보증재단
+    org: 인천신용보증재단
+    adapter: html_list
+    url: "https://www.icsinbo.or.kr/"
+    search_url: "https://www.icsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "인천 보증/정책자금. URL 확인 필요."
+
+  # ── 부산 ──
+  - id: busan_tp
+    name: 부산테크노파크
+    org: 부산테크노파크
+    adapter: html_list
+    url: "https://www.btp.or.kr/"
+    search_url: "https://www.btp.or.kr/"
+    rss_or_api: none_found
+    notes: "부산 R&D·창업 공고. URL 확인 필요."
+  - id: busan_credit
+    name: 부산신용보증재단
+    org: 부산신용보증재단
+    adapter: html_list
+    url: "https://www.busanshinbo.or.kr/"
+    search_url: "https://www.busanshinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "부산 보증/정책자금. URL 확인 필요."
+
+  # ── 광주 ──
+  - id: gwangju_tp
+    name: 광주테크노파크
+    org: 광주테크노파크
+    adapter: html_list
+    url: "https://www.gjtp.or.kr/"
+    search_url: "https://www.gjtp.or.kr/"
+    rss_or_api: none_found
+    notes: "광주 R&D·창업 공고. URL 확인 필요."
+  - id: gwangju_credit
+    name: 광주신용보증재단
+    org: 광주신용보증재단
+    adapter: html_list
+    url: "https://www.gjcredit.or.kr/"
+    search_url: "https://www.gjcredit.or.kr/"
+    rss_or_api: none_found
+    notes: "광주 보증/정책자금. URL 확인 필요."
+
+  # ── 대전 ──
+  - id: daejeon_tp
+    name: 대전테크노파크
+    org: 대전테크노파크
+    adapter: html_list
+    url: "https://www.djtp.or.kr/"
+    search_url: "https://www.djtp.or.kr/"
+    rss_or_api: none_found
+    notes: "대전 R&D·창업 공고. URL 확인 필요."
+  - id: daejeon_credit
+    name: 대전신용보증재단
+    org: 대전신용보증재단
+    adapter: html_list
+    url: "https://www.sinbo.or.kr/"
+    search_url: "https://www.sinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "대전 보증/정책자금. URL 확인 필요."
+
+  # ── 울산 ──
+  - id: ulsan_tp
+    name: 울산테크노파크
+    org: 울산테크노파크
+    adapter: html_list
+    url: "https://www.utp.or.kr/"
+    search_url: "https://www.utp.or.kr/"
+    rss_or_api: none_found
+    notes: "울산 R&D·창업 공고. URL 확인 필요."
+  - id: ulsan_credit
+    name: 울산신용보증재단
+    org: 울산신용보증재단
+    adapter: html_list
+    url: "https://www.usbo.or.kr/"
+    search_url: "https://www.usbo.or.kr/"
+    rss_or_api: none_found
+    notes: "울산 보증/정책자금. URL 확인 필요."
+
+  # ── 세종 ──
+  - id: sejong_tp
+    name: 세종테크노파크
+    org: 세종테크노파크
+    adapter: html_list
+    url: "https://www.sjtp.or.kr/"
+    search_url: "https://www.sjtp.or.kr/"
+    rss_or_api: none_found
+    notes: "세종 R&D·창업 공고. URL 확인 필요."
+  - id: sejong_credit
+    name: 세종신용보증재단
+    org: 세종신용보증재단
+    adapter: html_list
+    url: "https://www.sjsinbo.or.kr/"
+    search_url: "https://www.sjsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "세종 보증/정책자금. URL 확인 필요."
+
+  # ── 강원 ──
+  - id: gangwon_tp
+    name: 강원테크노파크
+    org: 강원테크노파크
+    adapter: html_list
+    url: "https://www.gwtp.or.kr/"
+    search_url: "https://www.gwtp.or.kr/"
+    rss_or_api: none_found
+    notes: "강원 R&D·창업 공고. URL 확인 필요."
+  - id: gangwon_credit
+    name: 강원신용보증재단
+    org: 강원신용보증재단
+    adapter: html_list
+    url: "https://www.gwsinbo.or.kr/"
+    search_url: "https://www.gwsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "강원 보증/정책자금. URL 확인 필요."
+
+  # ── 충북 ──
+  - id: chungbuk_tp
+    name: 충북테크노파크
+    org: 충북테크노파크
+    adapter: html_list
+    url: "https://www.cbtp.or.kr/"
+    search_url: "https://www.cbtp.or.kr/"
+    rss_or_api: none_found
+    notes: "충북 R&D·창업 공고. URL 확인 필요."
+  - id: chungbuk_credit
+    name: 충북신용보증재단
+    org: 충북신용보증재단
+    adapter: html_list
+    url: "https://www.cbsinbo.or.kr/"
+    search_url: "https://www.cbsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "충북 보증/정책자금. URL 확인 필요."
+
+  # ── 충남 ──
+  - id: chungnam_tp
+    name: 충남테크노파크
+    org: 충남테크노파크
+    adapter: html_list
+    url: "https://www.ctp.or.kr/"
+    search_url: "https://www.ctp.or.kr/"
+    rss_or_api: none_found
+    notes: "충남 R&D·창업 공고. URL 확인 필요."
+  - id: chungnam_credit
+    name: 충남신용보증재단
+    org: 충남신용보증재단
+    adapter: html_list
+    url: "https://www.cnsinbo.or.kr/"
+    search_url: "https://www.cnsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "충남 보증/정책자금. URL 확인 필요."
+
+  # ── 전북 ──
+  - id: jeonbuk_tp
+    name: 전북테크노파크
+    org: 전북테크노파크
+    adapter: html_list
+    url: "https://www.jbtp.or.kr/"
+    search_url: "https://www.jbtp.or.kr/"
+    rss_or_api: none_found
+    notes: "전북 R&D·창업 공고. URL 확인 필요."
+  - id: jeonbuk_credit
+    name: 전북신용보증재단
+    org: 전북신용보증재단
+    adapter: html_list
+    url: "https://www.jbsinbo.or.kr/"
+    search_url: "https://www.jbsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "전북 보증/정책자금. URL 확인 필요."
+
+  # ── 전남 ──
+  - id: jeonnam_tp
+    name: 전남테크노파크
+    org: 전남테크노파크
+    adapter: html_list
+    url: "https://www.jntp.or.kr/"
+    search_url: "https://www.jntp.or.kr/"
+    rss_or_api: none_found
+    notes: "전남 R&D·창업 공고. URL 확인 필요."
+  - id: jeonnam_credit
+    name: 전남신용보증재단
+    org: 전남신용보증재단
+    adapter: html_list
+    url: "https://www.jnsinbo.or.kr/"
+    search_url: "https://www.jnsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "전남 보증/정책자금. URL 확인 필요."
+
+  # ── 경북 ──
+  - id: gyeongbuk_tp
+    name: 경북테크노파크
+    org: 경북테크노파크
+    adapter: html_list
+    url: "https://www.gbtp.or.kr/"
+    search_url: "https://www.gbtp.or.kr/"
+    rss_or_api: none_found
+    notes: "경북 R&D·창업 공고. URL 확인 필요."
+  - id: gyeongbuk_credit
+    name: 경북신용보증재단
+    org: 경북신용보증재단
+    adapter: html_list
+    url: "https://www.gbsinbo.or.kr/"
+    search_url: "https://www.gbsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "경북 보증/정책자금. URL 확인 필요."
+
+  # ── 경남 ──
+  - id: gyeongnam_tp
+    name: 경남테크노파크
+    org: 경남테크노파크
+    adapter: html_list
+    url: "https://www.gntp.or.kr/"
+    search_url: "https://www.gntp.or.kr/"
+    rss_or_api: none_found
+    notes: "경남 R&D·창업 공고. URL 확인 필요."
+  - id: gyeongnam_credit
+    name: 경남신용보증재단
+    org: 경남신용보증재단
+    adapter: html_list
+    url: "https://www.gnsinbo.or.kr/"
+    search_url: "https://www.gnsinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "경남 보증/정책자금. URL 확인 필요."
+
+  # ── 제주 ──
+  - id: jeju_tp
+    name: 제주테크노파크
+    org: 제주테크노파크
+    adapter: html_list
+    url: "https://www.jejutp.or.kr/"
+    search_url: "https://www.jejutp.or.kr/"
+    rss_or_api: none_found
+    notes: "제주 R&D·창업 공고. URL 확인 필요."
+  - id: jeju_credit
+    name: 제주신용보증재단
+    org: 제주신용보증재단
+    adapter: html_list
+    url: "https://www.jejusinbo.or.kr/"
+    search_url: "https://www.jejusinbo.or.kr/"
+    rss_or_api: none_found
+    notes: "제주 보증/정책자금. URL 확인 필요."
