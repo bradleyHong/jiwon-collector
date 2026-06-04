@@ -558,3 +558,136 @@ sources:
     search_url: "https://www.jejusinbo.or.kr/"
     rss_or_api: none_found
     notes: "제주 보증/정책자금. URL 확인 필요."
+
+  # ============================================================
+  # 17개 광역시·도청 본청 (2026-06-04 추가)
+  # 광역 단위 자체 사업 공고. 시청은 광역 차원 사업도 게재.
+  # ============================================================
+  - id: seoul_city
+    name: 서울특별시 고시공고
+    org: 서울특별시
+    adapter: html_list
+    url: "https://www.seoul.go.kr/news/news_notice.do"
+    search_url: "https://www.seoul.go.kr/news/news_notice.do"
+    rss_or_api: none_found
+    notes: "서울시 고시공고. 사업공고 페이지 확인 필요."
+  - id: gyeonggi_city
+    name: 경기도 공고
+    org: 경기도
+    adapter: html_list
+    url: "https://www.gg.go.kr/bbs/boardList.do?bsIdx=349"
+    search_url: "https://www.gg.go.kr/"
+    rss_or_api: none_found
+    notes: "경기도 사업공고. URL 확인 필요."
+  - id: incheon_city
+    name: 인천광역시 고시공고
+    org: 인천광역시
+    adapter: html_list
+    url: "https://www.incheon.go.kr/IC010205"
+    search_url: "https://www.incheon.go.kr/"
+    rss_or_api: none_found
+    notes: "인천시 고시공고. URL 확인 필요."
+  - id: busan_city
+    name: 부산광역시 고시공고
+    org: 부산광역시
+    adapter: html_list
+    url: "https://www.busan.go.kr/nbtnoticeBs/list.do"
+    search_url: "https://www.busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산시 고시공고. URL 확인 필요."
+  - id: gwangju_city
+    name: 광주광역시 고시공고
+    org: 광주광역시
+    adapter: html_list
+    url: "https://www.gwangju.go.kr/boardList.do?boardId=BD_0000000060"
+    search_url: "https://www.gwangju.go.kr/"
+    rss_or_api: none_found
+    notes: "광주시 고시공고. URL 확인 필요."
+  - id: daejeon_city
+    name: 대전광역시 고시공고
+    org: 대전광역시
+    adapter: html_list
+    url: "https://www.daejeon.go.kr/drh/board/boardList.do?menuSeq=2891"
+    search_url: "https://www.daejeon.go.kr/"
+    rss_or_api: none_found
+    notes: "대전시 고시공고. URL 확인 필요."
+  - id: ulsan_city
+    name: 울산광역시 고시공고
+    org: 울산광역시
+    adapter: html_list
+    url: "https://www.ulsan.go.kr/u/rep/contents.ulsan"
+    search_url: "https://www.ulsan.go.kr/"
+    rss_or_api: none_found
+    notes: "울산시 고시공고. URL 확인 필요."
+  - id: sejong_city
+    name: 세종특별자치시 고시공고
+    org: 세종특별자치시
+    adapter: html_list
+    url: "https://www.sejong.go.kr/citizen/sub04_04.do"
+    search_url: "https://www.sejong.go.kr/"
+    rss_or_api: none_found
+    notes: "세종시 고시공고. URL 확인 필요."
+  - id: gangwon_city
+    name: 강원특별자치도 공고
+    org: 강원특별자치도
+    adapter: html_list
+    url: "https://www.provin.gangwon.kr/portal/info/notice"
+    search_url: "https://www.provin.gangwon.kr/"
+    rss_or_api: none_found
+    notes: "강원도 공고. URL 확인 필요."
+  - id: chungbuk_city
+    name: 충청북도 공고
+    org: 충청북도
+    adapter: html_list
+    url: "https://www.chungbuk.go.kr/www/selectBbsNttList.do?bbsNo=10"
+    search_url: "https://www.chungbuk.go.kr/"
+    rss_or_api: none_found
+    notes: "충북도 공고. URL 확인 필요."
+  - id: chungnam_city
+    name: 충청남도 공고
+    org: 충청남도
+    adapter: html_list
+    url: "https://www.chungnam.go.kr/cnnet/board.do?mnu_cd=CNNMENU00057"
+    search_url: "https://www.chungnam.go.kr/"
+    rss_or_api: none_found
+    notes: "충남도 공고. URL 확인 필요."
+  - id: jeonbuk_city
+    name: 전북특별자치도 공고
+    org: 전북특별자치도
+    adapter: html_list
+    url: "https://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000005"
+    search_url: "https://www.jeonbuk.go.kr/"
+    rss_or_api: none_found
+    notes: "전북도 공고. URL 확인 필요."
+  - id: jeonnam_city
+    name: 전라남도 공고
+    org: 전라남도
+    adapter: html_list
+    url: "https://www.jeonnam.go.kr/board.do?menuId=jeonnam0202010000"
+    search_url: "https://www.jeonnam.go.kr/"
+    rss_or_api: none_found
+    notes: "전남도 공고. URL 확인 필요."
+  - id: gyeongbuk_city
+    name: 경상북도 공고
+    org: 경상북도
+    adapter: html_list
+    url: "https://www.gb.go.kr/Main/page.do?mnu_uid=4040"
+    search_url: "https://www.gb.go.kr/"
+    rss_or_api: none_found
+    notes: "경북도 공고. URL 확인 필요."
+  - id: gyeongnam_city
+    name: 경상남도 공고
+    org: 경상남도
+    adapter: html_list
+    url: "https://www.gyeongnam.go.kr/board/list.gyeongnam"
+    search_url: "https://www.gyeongnam.go.kr/"
+    rss_or_api: none_found
+    notes: "경남도 공고. URL 확인 필요."
+  - id: jeju_city
+    name: 제주특별자치도 공고
+    org: 제주특별자치도
+    adapter: html_list
+    url: "https://www.jeju.go.kr/news/news/notice.htm"
+    search_url: "https://www.jeju.go.kr/"
+    rss_or_api: none_found
+    notes: "제주도 공고. URL 확인 필요."
