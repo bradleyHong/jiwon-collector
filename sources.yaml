@@ -691,3 +691,103 @@ sources:
     search_url: "https://www.jeju.go.kr/"
     rss_or_api: none_found
     notes: "제주도 공고. URL 확인 필요."
+
+  # ============================================================
+  # 농업·농촌 지원 (2026-06-04 추가) — 농부·식품가공·축산·임어업
+  # ============================================================
+  - id: rda
+    name: 농촌진흥청 공고
+    org: 농촌진흥청
+    adapter: html_list
+    url: "https://www.rda.go.kr/board/boardList.do?boardId=npe&menuId=PS00069"
+    search_url: "https://www.rda.go.kr/"
+    rss_or_api: none_found
+    notes: "농업 R&D·기술보급 사업 공고. URL 확인 필요."
+  - id: mafra
+    name: 농림축산식품부 공고
+    org: 농림축산식품부
+    adapter: html_list
+    url: "https://www.mafra.go.kr/mafra/293/subview.do"
+    search_url: "https://www.mafra.go.kr/"
+    rss_or_api: none_found
+    notes: "농림·축산·식품 정책지원사업. URL 확인 필요."
+  - id: ekr
+    name: 한국농어촌공사 사업공고
+    org: 한국농어촌공사
+    adapter: html_list
+    url: "https://www.ekr.or.kr/Kr/Bbs/BbsList.aspx?bbsid=B0021"
+    search_url: "https://www.ekr.or.kr/"
+    rss_or_api: none_found
+    notes: "농어촌 정비·청년농업인·시설지원. URL 확인 필요."
+  - id: at_corp
+    name: 한국농수산식품유통공사(aT) 공고
+    org: 한국농수산식품유통공사
+    adapter: html_list
+    url: "https://www.at.or.kr/article/apko362000/list.action"
+    search_url: "https://www.at.or.kr/"
+    rss_or_api: none_found
+    notes: "농수산식품 유통·수출·브랜드 지원. URL 확인 필요."
+  - id: fact_korea
+    name: 농업기술실용화재단(FACT)
+    org: 농업기술실용화재단
+    adapter: html_list
+    url: "https://www.fact.or.kr/Cms/web/Page.aspx?id=180"
+    search_url: "https://www.fact.or.kr/"
+    rss_or_api: none_found
+    notes: "농업기술 사업화·실용화 지원. URL 확인 필요."
+  - id: apfs
+    name: 농업정책보험금융원
+    org: 농업정책보험금융원
+    adapter: html_list
+    url: "https://www.apfs.kr/board/boardList.do?bbsTpCd=NTC"
+    search_url: "https://www.apfs.kr/"
+    rss_or_api: none_found
+    notes: "농업 정책자금·보험·금융 지원. URL 확인 필요."
+  - id: maf_smartfarm
+    name: 스마트팜코리아
+    org: 농림축산식품부 스마트팜
+    adapter: html_list
+    url: "https://www.smartfarmkorea.net/"
+    search_url: "https://www.smartfarmkorea.net/"
+    rss_or_api: none_found
+    notes: "스마트팜 청년창업·시설 지원. URL 확인 필요."
+  - id: forest
+    name: 산림청 공고
+    org: 산림청
+    adapter: html_list
+    url: "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardList.do?bbsId=BBSMSTR_1036"
+    search_url: "https://www.forest.go.kr/"
+    rss_or_api: none_found
+    notes: "임업·산림 산업 지원사업. URL 확인 필요."
+  - id: fisheries
+    name: 해양수산부 공고
+    org: 해양수산부
+    adapter: html_list
+    url: "https://www.mof.go.kr/article/list.do?menuKey=395&boardKey=10"
+    search_url: "https://www.mof.go.kr/"
+    rss_or_api: none_found
+    notes: "수산·어업·양식 지원사업. URL 확인 필요."
+  - id: fipa
+    name: 한국수산자원공단
+    org: 한국수산자원공단
+    adapter: html_list
+    url: "https://www.fira.or.kr/notice/notice_list.do"
+    search_url: "https://www.fira.or.kr/"
+    rss_or_api: none_found
+    notes: "수산자원·어촌 지원사업. URL 확인 필요."
+  - id: livestock
+    name: 축산물품질평가원
+    org: 축산물품질평가원
+    adapter: html_list
+    url: "https://www.ekape.or.kr/board/board.do?menuId=menu100098"
+    search_url: "https://www.ekape.or.kr/"
+    rss_or_api: none_found
+    notes: "축산업 지원·인증·교육. URL 확인 필요."
+  - id: youth_farmer
+    name: 청년농업인 영농정착지원
+    org: 농림축산식품부
+    adapter: html_list
+    url: "https://www.agriedu.net/young/main.do"
+    search_url: "https://www.agriedu.net/"
+    rss_or_api: none_found
+    notes: "청년농업인 정착 지원 (월정착금). URL 확인 필요."
