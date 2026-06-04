@@ -791,3 +791,1798 @@ sources:
     search_url: "https://www.agriedu.net/"
     rss_or_api: none_found
     notes: "청년농업인 정착 지원 (월정착금). URL 확인 필요."
+
+  # ============================================================
+  # 218개 전국 시군구 (대구 8개 제외, 2026-06-04 추가)
+  # URL은 표준 영문 도메인 패턴. 실패 사이트는 reports 확인 후 수정.
+  # ============================================================
+
+  # ── 서울 (25개) ──
+  - id: seoul_jongno
+    name: 서울 종로구
+    org: 서울 종로구청
+    adapter: html_list
+    url: "https://www.jongno.go.kr/"
+    search_url: "https://www.jongno.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 종로구 고시공고. URL 확인 필요."
+  - id: seoul_junggu_seoul
+    name: 서울 중구
+    org: 서울 중구청
+    adapter: html_list
+    url: "https://www.junggu_seoul.go.kr/"
+    search_url: "https://www.junggu_seoul.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 중구 고시공고. URL 확인 필요."
+  - id: seoul_yongsan
+    name: 서울 용산구
+    org: 서울 용산구청
+    adapter: html_list
+    url: "https://www.yongsan.go.kr/"
+    search_url: "https://www.yongsan.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 용산구 고시공고. URL 확인 필요."
+  - id: seoul_seongdong
+    name: 서울 성동구
+    org: 서울 성동구청
+    adapter: html_list
+    url: "https://www.seongdong.go.kr/"
+    search_url: "https://www.seongdong.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 성동구 고시공고. URL 확인 필요."
+  - id: seoul_gwangjin
+    name: 서울 광진구
+    org: 서울 광진구청
+    adapter: html_list
+    url: "https://www.gwangjin.go.kr/"
+    search_url: "https://www.gwangjin.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 광진구 고시공고. URL 확인 필요."
+  - id: seoul_ddm
+    name: 서울 동대문구
+    org: 서울 동대문구청
+    adapter: html_list
+    url: "https://www.ddm.go.kr/"
+    search_url: "https://www.ddm.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 동대문구 고시공고. URL 확인 필요."
+  - id: seoul_jungnang
+    name: 서울 중랑구
+    org: 서울 중랑구청
+    adapter: html_list
+    url: "https://www.jungnang.go.kr/"
+    search_url: "https://www.jungnang.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 중랑구 고시공고. URL 확인 필요."
+  - id: seoul_seongbuk
+    name: 서울 성북구
+    org: 서울 성북구청
+    adapter: html_list
+    url: "https://www.seongbuk.go.kr/"
+    search_url: "https://www.seongbuk.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 성북구 고시공고. URL 확인 필요."
+  - id: seoul_gangbuk
+    name: 서울 강북구
+    org: 서울 강북구청
+    adapter: html_list
+    url: "https://www.gangbuk.go.kr/"
+    search_url: "https://www.gangbuk.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 강북구 고시공고. URL 확인 필요."
+  - id: seoul_dobong
+    name: 서울 도봉구
+    org: 서울 도봉구청
+    adapter: html_list
+    url: "https://www.dobong.go.kr/"
+    search_url: "https://www.dobong.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 도봉구 고시공고. URL 확인 필요."
+  - id: seoul_nowon
+    name: 서울 노원구
+    org: 서울 노원구청
+    adapter: html_list
+    url: "https://www.nowon.go.kr/"
+    search_url: "https://www.nowon.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 노원구 고시공고. URL 확인 필요."
+  - id: seoul_ep
+    name: 서울 은평구
+    org: 서울 은평구청
+    adapter: html_list
+    url: "https://www.ep.go.kr/"
+    search_url: "https://www.ep.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 은평구 고시공고. URL 확인 필요."
+  - id: seoul_sdm
+    name: 서울 서대문구
+    org: 서울 서대문구청
+    adapter: html_list
+    url: "https://www.sdm.go.kr/"
+    search_url: "https://www.sdm.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 서대문구 고시공고. URL 확인 필요."
+  - id: seoul_mapo
+    name: 서울 마포구
+    org: 서울 마포구청
+    adapter: html_list
+    url: "https://www.mapo.go.kr/"
+    search_url: "https://www.mapo.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 마포구 고시공고. URL 확인 필요."
+  - id: seoul_yangcheon
+    name: 서울 양천구
+    org: 서울 양천구청
+    adapter: html_list
+    url: "https://www.yangcheon.go.kr/"
+    search_url: "https://www.yangcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 양천구 고시공고. URL 확인 필요."
+  - id: seoul_gangseo_seoul
+    name: 서울 강서구
+    org: 서울 강서구청
+    adapter: html_list
+    url: "https://www.gangseo_seoul.go.kr/"
+    search_url: "https://www.gangseo_seoul.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 강서구 고시공고. URL 확인 필요."
+  - id: seoul_guro
+    name: 서울 구로구
+    org: 서울 구로구청
+    adapter: html_list
+    url: "https://www.guro.go.kr/"
+    search_url: "https://www.guro.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 구로구 고시공고. URL 확인 필요."
+  - id: seoul_geumcheon
+    name: 서울 금천구
+    org: 서울 금천구청
+    adapter: html_list
+    url: "https://www.geumcheon.go.kr/"
+    search_url: "https://www.geumcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 금천구 고시공고. URL 확인 필요."
+  - id: seoul_ydp
+    name: 서울 영등포구
+    org: 서울 영등포구청
+    adapter: html_list
+    url: "https://www.ydp.go.kr/"
+    search_url: "https://www.ydp.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 영등포구 고시공고. URL 확인 필요."
+  - id: seoul_dongjak
+    name: 서울 동작구
+    org: 서울 동작구청
+    adapter: html_list
+    url: "https://www.dongjak.go.kr/"
+    search_url: "https://www.dongjak.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 동작구 고시공고. URL 확인 필요."
+  - id: seoul_gwanak
+    name: 서울 관악구
+    org: 서울 관악구청
+    adapter: html_list
+    url: "https://www.gwanak.go.kr/"
+    search_url: "https://www.gwanak.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 관악구 고시공고. URL 확인 필요."
+  - id: seoul_seocho
+    name: 서울 서초구
+    org: 서울 서초구청
+    adapter: html_list
+    url: "https://www.seocho.go.kr/"
+    search_url: "https://www.seocho.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 서초구 고시공고. URL 확인 필요."
+  - id: seoul_gangnam
+    name: 서울 강남구
+    org: 서울 강남구청
+    adapter: html_list
+    url: "https://www.gangnam.go.kr/"
+    search_url: "https://www.gangnam.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 강남구 고시공고. URL 확인 필요."
+  - id: seoul_songpa
+    name: 서울 송파구
+    org: 서울 송파구청
+    adapter: html_list
+    url: "https://www.songpa.go.kr/"
+    search_url: "https://www.songpa.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 송파구 고시공고. URL 확인 필요."
+  - id: seoul_gangdong
+    name: 서울 강동구
+    org: 서울 강동구청
+    adapter: html_list
+    url: "https://www.gangdong.go.kr/"
+    search_url: "https://www.gangdong.go.kr/"
+    rss_or_api: none_found
+    notes: "서울 강동구 고시공고. URL 확인 필요."
+
+  # ── 부산 (16개) ──
+  - id: busan_junggu_busan
+    name: 부산 중구
+    org: 부산 중구청
+    adapter: html_list
+    url: "https://www.junggu_busan.go.kr/"
+    search_url: "https://www.junggu_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 중구 고시공고. URL 확인 필요."
+  - id: busan_seogu_busan
+    name: 부산 서구
+    org: 부산 서구청
+    adapter: html_list
+    url: "https://www.seogu_busan.go.kr/"
+    search_url: "https://www.seogu_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 서구 고시공고. URL 확인 필요."
+  - id: busan_donggu_busan
+    name: 부산 동구
+    org: 부산 동구청
+    adapter: html_list
+    url: "https://www.donggu_busan.go.kr/"
+    search_url: "https://www.donggu_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 동구 고시공고. URL 확인 필요."
+  - id: busan_yeongdo
+    name: 부산 영도구
+    org: 부산 영도구청
+    adapter: html_list
+    url: "https://www.yeongdo.go.kr/"
+    search_url: "https://www.yeongdo.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 영도구 고시공고. URL 확인 필요."
+  - id: busan_busanjin
+    name: 부산 부산진구
+    org: 부산 부산진구청
+    adapter: html_list
+    url: "https://www.busanjin.go.kr/"
+    search_url: "https://www.busanjin.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 부산진구 고시공고. URL 확인 필요."
+  - id: busan_dongnae
+    name: 부산 동래구
+    org: 부산 동래구청
+    adapter: html_list
+    url: "https://www.dongnae.go.kr/"
+    search_url: "https://www.dongnae.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 동래구 고시공고. URL 확인 필요."
+  - id: busan_namgu_busan
+    name: 부산 남구
+    org: 부산 남구청
+    adapter: html_list
+    url: "https://www.namgu_busan.go.kr/"
+    search_url: "https://www.namgu_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 남구 고시공고. URL 확인 필요."
+  - id: busan_bukgu_busan
+    name: 부산 북구
+    org: 부산 북구청
+    adapter: html_list
+    url: "https://www.bukgu_busan.go.kr/"
+    search_url: "https://www.bukgu_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 북구 고시공고. URL 확인 필요."
+  - id: busan_haeundae
+    name: 부산 해운대구
+    org: 부산 해운대구청
+    adapter: html_list
+    url: "https://www.haeundae.go.kr/"
+    search_url: "https://www.haeundae.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 해운대구 고시공고. URL 확인 필요."
+  - id: busan_saha
+    name: 부산 사하구
+    org: 부산 사하구청
+    adapter: html_list
+    url: "https://www.saha.go.kr/"
+    search_url: "https://www.saha.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 사하구 고시공고. URL 확인 필요."
+  - id: busan_geumjeong
+    name: 부산 금정구
+    org: 부산 금정구청
+    adapter: html_list
+    url: "https://www.geumjeong.go.kr/"
+    search_url: "https://www.geumjeong.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 금정구 고시공고. URL 확인 필요."
+  - id: busan_gangseo_busan
+    name: 부산 강서구
+    org: 부산 강서구청
+    adapter: html_list
+    url: "https://www.gangseo_busan.go.kr/"
+    search_url: "https://www.gangseo_busan.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 강서구 고시공고. URL 확인 필요."
+  - id: busan_yeonje
+    name: 부산 연제구
+    org: 부산 연제구청
+    adapter: html_list
+    url: "https://www.yeonje.go.kr/"
+    search_url: "https://www.yeonje.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 연제구 고시공고. URL 확인 필요."
+  - id: busan_suyeong
+    name: 부산 수영구
+    org: 부산 수영구청
+    adapter: html_list
+    url: "https://www.suyeong.go.kr/"
+    search_url: "https://www.suyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 수영구 고시공고. URL 확인 필요."
+  - id: busan_sasang
+    name: 부산 사상구
+    org: 부산 사상구청
+    adapter: html_list
+    url: "https://www.sasang.go.kr/"
+    search_url: "https://www.sasang.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 사상구 고시공고. URL 확인 필요."
+  - id: busan_gijang
+    name: 부산 기장군
+    org: 부산 기장군청
+    adapter: html_list
+    url: "https://www.gijang.go.kr/"
+    search_url: "https://www.gijang.go.kr/"
+    rss_or_api: none_found
+    notes: "부산 기장군 고시공고. URL 확인 필요."
+
+  # ── 인천 (10개) ──
+  - id: incheon_junggu_incheon
+    name: 인천 중구
+    org: 인천 중구청
+    adapter: html_list
+    url: "https://www.junggu_incheon.go.kr/"
+    search_url: "https://www.junggu_incheon.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 중구 고시공고. URL 확인 필요."
+  - id: incheon_donggu_incheon
+    name: 인천 동구
+    org: 인천 동구청
+    adapter: html_list
+    url: "https://www.donggu_incheon.go.kr/"
+    search_url: "https://www.donggu_incheon.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 동구 고시공고. URL 확인 필요."
+  - id: incheon_michuhol
+    name: 인천 미추홀구
+    org: 인천 미추홀구청
+    adapter: html_list
+    url: "https://www.michuhol.go.kr/"
+    search_url: "https://www.michuhol.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 미추홀구 고시공고. URL 확인 필요."
+  - id: incheon_yeonsu
+    name: 인천 연수구
+    org: 인천 연수구청
+    adapter: html_list
+    url: "https://www.yeonsu.go.kr/"
+    search_url: "https://www.yeonsu.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 연수구 고시공고. URL 확인 필요."
+  - id: incheon_namdong
+    name: 인천 남동구
+    org: 인천 남동구청
+    adapter: html_list
+    url: "https://www.namdong.go.kr/"
+    search_url: "https://www.namdong.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 남동구 고시공고. URL 확인 필요."
+  - id: incheon_bupyeong
+    name: 인천 부평구
+    org: 인천 부평구청
+    adapter: html_list
+    url: "https://www.bupyeong.go.kr/"
+    search_url: "https://www.bupyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 부평구 고시공고. URL 확인 필요."
+  - id: incheon_gyeyang
+    name: 인천 계양구
+    org: 인천 계양구청
+    adapter: html_list
+    url: "https://www.gyeyang.go.kr/"
+    search_url: "https://www.gyeyang.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 계양구 고시공고. URL 확인 필요."
+  - id: incheon_seogu_incheon
+    name: 인천 서구
+    org: 인천 서구청
+    adapter: html_list
+    url: "https://www.seogu_incheon.go.kr/"
+    search_url: "https://www.seogu_incheon.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 서구 고시공고. URL 확인 필요."
+  - id: incheon_ganghwa
+    name: 인천 강화군
+    org: 인천 강화군청
+    adapter: html_list
+    url: "https://www.ganghwa.go.kr/"
+    search_url: "https://www.ganghwa.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 강화군 고시공고. URL 확인 필요."
+  - id: incheon_ongjin
+    name: 인천 옹진군
+    org: 인천 옹진군청
+    adapter: html_list
+    url: "https://www.ongjin.go.kr/"
+    search_url: "https://www.ongjin.go.kr/"
+    rss_or_api: none_found
+    notes: "인천 옹진군 고시공고. URL 확인 필요."
+
+  # ── 광주 (5개) ──
+  - id: gwangju_donggu_gwangju
+    name: 광주 동구
+    org: 광주 동구청
+    adapter: html_list
+    url: "https://www.donggu_gwangju.go.kr/"
+    search_url: "https://www.donggu_gwangju.go.kr/"
+    rss_or_api: none_found
+    notes: "광주 동구 고시공고. URL 확인 필요."
+  - id: gwangju_seogu_gwangju
+    name: 광주 서구
+    org: 광주 서구청
+    adapter: html_list
+    url: "https://www.seogu_gwangju.go.kr/"
+    search_url: "https://www.seogu_gwangju.go.kr/"
+    rss_or_api: none_found
+    notes: "광주 서구 고시공고. URL 확인 필요."
+  - id: gwangju_namgu_gwangju
+    name: 광주 남구
+    org: 광주 남구청
+    adapter: html_list
+    url: "https://www.namgu_gwangju.go.kr/"
+    search_url: "https://www.namgu_gwangju.go.kr/"
+    rss_or_api: none_found
+    notes: "광주 남구 고시공고. URL 확인 필요."
+  - id: gwangju_bukgu_gwangju
+    name: 광주 북구
+    org: 광주 북구청
+    adapter: html_list
+    url: "https://www.bukgu_gwangju.go.kr/"
+    search_url: "https://www.bukgu_gwangju.go.kr/"
+    rss_or_api: none_found
+    notes: "광주 북구 고시공고. URL 확인 필요."
+  - id: gwangju_gwangsan
+    name: 광주 광산구
+    org: 광주 광산구청
+    adapter: html_list
+    url: "https://www.gwangsan.go.kr/"
+    search_url: "https://www.gwangsan.go.kr/"
+    rss_or_api: none_found
+    notes: "광주 광산구 고시공고. URL 확인 필요."
+
+  # ── 대전 (5개) ──
+  - id: daejeon_donggu_daejeon
+    name: 대전 동구
+    org: 대전 동구청
+    adapter: html_list
+    url: "https://www.donggu_daejeon.go.kr/"
+    search_url: "https://www.donggu_daejeon.go.kr/"
+    rss_or_api: none_found
+    notes: "대전 동구 고시공고. URL 확인 필요."
+  - id: daejeon_junggu_daejeon
+    name: 대전 중구
+    org: 대전 중구청
+    adapter: html_list
+    url: "https://www.junggu_daejeon.go.kr/"
+    search_url: "https://www.junggu_daejeon.go.kr/"
+    rss_or_api: none_found
+    notes: "대전 중구 고시공고. URL 확인 필요."
+  - id: daejeon_seogu_daejeon
+    name: 대전 서구
+    org: 대전 서구청
+    adapter: html_list
+    url: "https://www.seogu_daejeon.go.kr/"
+    search_url: "https://www.seogu_daejeon.go.kr/"
+    rss_or_api: none_found
+    notes: "대전 서구 고시공고. URL 확인 필요."
+  - id: daejeon_yuseong
+    name: 대전 유성구
+    org: 대전 유성구청
+    adapter: html_list
+    url: "https://www.yuseong.go.kr/"
+    search_url: "https://www.yuseong.go.kr/"
+    rss_or_api: none_found
+    notes: "대전 유성구 고시공고. URL 확인 필요."
+  - id: daejeon_daedeok
+    name: 대전 대덕구
+    org: 대전 대덕구청
+    adapter: html_list
+    url: "https://www.daedeok.go.kr/"
+    search_url: "https://www.daedeok.go.kr/"
+    rss_or_api: none_found
+    notes: "대전 대덕구 고시공고. URL 확인 필요."
+
+  # ── 울산 (5개) ──
+  - id: ulsan_junggu_ulsan
+    name: 울산 중구
+    org: 울산 중구청
+    adapter: html_list
+    url: "https://www.junggu_ulsan.go.kr/"
+    search_url: "https://www.junggu_ulsan.go.kr/"
+    rss_or_api: none_found
+    notes: "울산 중구 고시공고. URL 확인 필요."
+  - id: ulsan_namgu_ulsan
+    name: 울산 남구
+    org: 울산 남구청
+    adapter: html_list
+    url: "https://www.namgu_ulsan.go.kr/"
+    search_url: "https://www.namgu_ulsan.go.kr/"
+    rss_or_api: none_found
+    notes: "울산 남구 고시공고. URL 확인 필요."
+  - id: ulsan_donggu_ulsan
+    name: 울산 동구
+    org: 울산 동구청
+    adapter: html_list
+    url: "https://www.donggu_ulsan.go.kr/"
+    search_url: "https://www.donggu_ulsan.go.kr/"
+    rss_or_api: none_found
+    notes: "울산 동구 고시공고. URL 확인 필요."
+  - id: ulsan_bukgu_ulsan
+    name: 울산 북구
+    org: 울산 북구청
+    adapter: html_list
+    url: "https://www.bukgu_ulsan.go.kr/"
+    search_url: "https://www.bukgu_ulsan.go.kr/"
+    rss_or_api: none_found
+    notes: "울산 북구 고시공고. URL 확인 필요."
+  - id: ulsan_uljugun
+    name: 울산 울주군
+    org: 울산 울주군청
+    adapter: html_list
+    url: "https://www.uljugun.go.kr/"
+    search_url: "https://www.uljugun.go.kr/"
+    rss_or_api: none_found
+    notes: "울산 울주군 고시공고. URL 확인 필요."
+
+  # ── 경기 (31개) ──
+  - id: gg_suwon
+    name: 경기 수원시
+    org: 경기 수원시청
+    adapter: html_list
+    url: "https://www.suwon.go.kr/"
+    search_url: "https://www.suwon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 수원시 고시공고. URL 확인 필요."
+  - id: gg_seongnam
+    name: 경기 성남시
+    org: 경기 성남시청
+    adapter: html_list
+    url: "https://www.seongnam.go.kr/"
+    search_url: "https://www.seongnam.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 성남시 고시공고. URL 확인 필요."
+  - id: gg_uijeongbu
+    name: 경기 의정부시
+    org: 경기 의정부시청
+    adapter: html_list
+    url: "https://www.uijeongbu.go.kr/"
+    search_url: "https://www.uijeongbu.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 의정부시 고시공고. URL 확인 필요."
+  - id: gg_anyang
+    name: 경기 안양시
+    org: 경기 안양시청
+    adapter: html_list
+    url: "https://www.anyang.go.kr/"
+    search_url: "https://www.anyang.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 안양시 고시공고. URL 확인 필요."
+  - id: gg_bucheon
+    name: 경기 부천시
+    org: 경기 부천시청
+    adapter: html_list
+    url: "https://www.bucheon.go.kr/"
+    search_url: "https://www.bucheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 부천시 고시공고. URL 확인 필요."
+  - id: gg_gwangmyeong
+    name: 경기 광명시
+    org: 경기 광명시청
+    adapter: html_list
+    url: "https://www.gwangmyeong.go.kr/"
+    search_url: "https://www.gwangmyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 광명시 고시공고. URL 확인 필요."
+  - id: gg_pyeongtaek
+    name: 경기 평택시
+    org: 경기 평택시청
+    adapter: html_list
+    url: "https://www.pyeongtaek.go.kr/"
+    search_url: "https://www.pyeongtaek.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 평택시 고시공고. URL 확인 필요."
+  - id: gg_ddc
+    name: 경기 동두천시
+    org: 경기 동두천시청
+    adapter: html_list
+    url: "https://www.ddc.go.kr/"
+    search_url: "https://www.ddc.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 동두천시 고시공고. URL 확인 필요."
+  - id: gg_ansan
+    name: 경기 안산시
+    org: 경기 안산시청
+    adapter: html_list
+    url: "https://www.ansan.go.kr/"
+    search_url: "https://www.ansan.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 안산시 고시공고. URL 확인 필요."
+  - id: gg_goyang
+    name: 경기 고양시
+    org: 경기 고양시청
+    adapter: html_list
+    url: "https://www.goyang.go.kr/"
+    search_url: "https://www.goyang.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 고양시 고시공고. URL 확인 필요."
+  - id: gg_gwacheon
+    name: 경기 과천시
+    org: 경기 과천시청
+    adapter: html_list
+    url: "https://www.gwacheon.go.kr/"
+    search_url: "https://www.gwacheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 과천시 고시공고. URL 확인 필요."
+  - id: gg_guri
+    name: 경기 구리시
+    org: 경기 구리시청
+    adapter: html_list
+    url: "https://www.guri.go.kr/"
+    search_url: "https://www.guri.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 구리시 고시공고. URL 확인 필요."
+  - id: gg_nyj
+    name: 경기 남양주시
+    org: 경기 남양주시청
+    adapter: html_list
+    url: "https://www.nyj.go.kr/"
+    search_url: "https://www.nyj.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 남양주시 고시공고. URL 확인 필요."
+  - id: gg_osan
+    name: 경기 오산시
+    org: 경기 오산시청
+    adapter: html_list
+    url: "https://www.osan.go.kr/"
+    search_url: "https://www.osan.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 오산시 고시공고. URL 확인 필요."
+  - id: gg_siheung
+    name: 경기 시흥시
+    org: 경기 시흥시청
+    adapter: html_list
+    url: "https://www.siheung.go.kr/"
+    search_url: "https://www.siheung.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 시흥시 고시공고. URL 확인 필요."
+  - id: gg_gunpo
+    name: 경기 군포시
+    org: 경기 군포시청
+    adapter: html_list
+    url: "https://www.gunpo.go.kr/"
+    search_url: "https://www.gunpo.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 군포시 고시공고. URL 확인 필요."
+  - id: gg_uiwang
+    name: 경기 의왕시
+    org: 경기 의왕시청
+    adapter: html_list
+    url: "https://www.uiwang.go.kr/"
+    search_url: "https://www.uiwang.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 의왕시 고시공고. URL 확인 필요."
+  - id: gg_hanam
+    name: 경기 하남시
+    org: 경기 하남시청
+    adapter: html_list
+    url: "https://www.hanam.go.kr/"
+    search_url: "https://www.hanam.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 하남시 고시공고. URL 확인 필요."
+  - id: gg_yongin
+    name: 경기 용인시
+    org: 경기 용인시청
+    adapter: html_list
+    url: "https://www.yongin.go.kr/"
+    search_url: "https://www.yongin.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 용인시 고시공고. URL 확인 필요."
+  - id: gg_paju
+    name: 경기 파주시
+    org: 경기 파주시청
+    adapter: html_list
+    url: "https://www.paju.go.kr/"
+    search_url: "https://www.paju.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 파주시 고시공고. URL 확인 필요."
+  - id: gg_icheon
+    name: 경기 이천시
+    org: 경기 이천시청
+    adapter: html_list
+    url: "https://www.icheon.go.kr/"
+    search_url: "https://www.icheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 이천시 고시공고. URL 확인 필요."
+  - id: gg_anseong
+    name: 경기 안성시
+    org: 경기 안성시청
+    adapter: html_list
+    url: "https://www.anseong.go.kr/"
+    search_url: "https://www.anseong.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 안성시 고시공고. URL 확인 필요."
+  - id: gg_gimpo
+    name: 경기 김포시
+    org: 경기 김포시청
+    adapter: html_list
+    url: "https://www.gimpo.go.kr/"
+    search_url: "https://www.gimpo.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 김포시 고시공고. URL 확인 필요."
+  - id: gg_hwaseong
+    name: 경기 화성시
+    org: 경기 화성시청
+    adapter: html_list
+    url: "https://www.hwaseong.go.kr/"
+    search_url: "https://www.hwaseong.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 화성시 고시공고. URL 확인 필요."
+  - id: gg_gwangju_gg
+    name: 경기 광주시
+    org: 경기 광주시청
+    adapter: html_list
+    url: "https://www.gwangju_gg.go.kr/"
+    search_url: "https://www.gwangju_gg.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 광주시 고시공고. URL 확인 필요."
+  - id: gg_yangju
+    name: 경기 양주시
+    org: 경기 양주시청
+    adapter: html_list
+    url: "https://www.yangju.go.kr/"
+    search_url: "https://www.yangju.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 양주시 고시공고. URL 확인 필요."
+  - id: gg_pocheon
+    name: 경기 포천시
+    org: 경기 포천시청
+    adapter: html_list
+    url: "https://www.pocheon.go.kr/"
+    search_url: "https://www.pocheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 포천시 고시공고. URL 확인 필요."
+  - id: gg_yeoju
+    name: 경기 여주시
+    org: 경기 여주시청
+    adapter: html_list
+    url: "https://www.yeoju.go.kr/"
+    search_url: "https://www.yeoju.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 여주시 고시공고. URL 확인 필요."
+  - id: gg_yeoncheon
+    name: 경기 연천군
+    org: 경기 연천군청
+    adapter: html_list
+    url: "https://www.yeoncheon.go.kr/"
+    search_url: "https://www.yeoncheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 연천군 고시공고. URL 확인 필요."
+  - id: gg_gapyeong
+    name: 경기 가평군
+    org: 경기 가평군청
+    adapter: html_list
+    url: "https://www.gapyeong.go.kr/"
+    search_url: "https://www.gapyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 가평군 고시공고. URL 확인 필요."
+  - id: gg_yangpyeong
+    name: 경기 양평군
+    org: 경기 양평군청
+    adapter: html_list
+    url: "https://www.yangpyeong.go.kr/"
+    search_url: "https://www.yangpyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경기 양평군 고시공고. URL 확인 필요."
+
+  # ── 강원 (18개) ──
+  - id: gw_chuncheon
+    name: 강원 춘천시
+    org: 강원 춘천시청
+    adapter: html_list
+    url: "https://www.chuncheon.go.kr/"
+    search_url: "https://www.chuncheon.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 춘천시 고시공고. URL 확인 필요."
+  - id: gw_wonju
+    name: 강원 원주시
+    org: 강원 원주시청
+    adapter: html_list
+    url: "https://www.wonju.go.kr/"
+    search_url: "https://www.wonju.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 원주시 고시공고. URL 확인 필요."
+  - id: gw_gangneung
+    name: 강원 강릉시
+    org: 강원 강릉시청
+    adapter: html_list
+    url: "https://www.gangneung.go.kr/"
+    search_url: "https://www.gangneung.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 강릉시 고시공고. URL 확인 필요."
+  - id: gw_donghae
+    name: 강원 동해시
+    org: 강원 동해시청
+    adapter: html_list
+    url: "https://www.donghae.go.kr/"
+    search_url: "https://www.donghae.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 동해시 고시공고. URL 확인 필요."
+  - id: gw_taebaek
+    name: 강원 태백시
+    org: 강원 태백시청
+    adapter: html_list
+    url: "https://www.taebaek.go.kr/"
+    search_url: "https://www.taebaek.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 태백시 고시공고. URL 확인 필요."
+  - id: gw_sokcho
+    name: 강원 속초시
+    org: 강원 속초시청
+    adapter: html_list
+    url: "https://www.sokcho.go.kr/"
+    search_url: "https://www.sokcho.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 속초시 고시공고. URL 확인 필요."
+  - id: gw_samcheok
+    name: 강원 삼척시
+    org: 강원 삼척시청
+    adapter: html_list
+    url: "https://www.samcheok.go.kr/"
+    search_url: "https://www.samcheok.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 삼척시 고시공고. URL 확인 필요."
+  - id: gw_hongcheon
+    name: 강원 홍천군
+    org: 강원 홍천군청
+    adapter: html_list
+    url: "https://www.hongcheon.go.kr/"
+    search_url: "https://www.hongcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 홍천군 고시공고. URL 확인 필요."
+  - id: gw_hoengseong
+    name: 강원 횡성군
+    org: 강원 횡성군청
+    adapter: html_list
+    url: "https://www.hoengseong.go.kr/"
+    search_url: "https://www.hoengseong.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 횡성군 고시공고. URL 확인 필요."
+  - id: gw_yeongwol
+    name: 강원 영월군
+    org: 강원 영월군청
+    adapter: html_list
+    url: "https://www.yeongwol.go.kr/"
+    search_url: "https://www.yeongwol.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 영월군 고시공고. URL 확인 필요."
+  - id: gw_pyeongchang
+    name: 강원 평창군
+    org: 강원 평창군청
+    adapter: html_list
+    url: "https://www.pyeongchang.go.kr/"
+    search_url: "https://www.pyeongchang.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 평창군 고시공고. URL 확인 필요."
+  - id: gw_jeongseon
+    name: 강원 정선군
+    org: 강원 정선군청
+    adapter: html_list
+    url: "https://www.jeongseon.go.kr/"
+    search_url: "https://www.jeongseon.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 정선군 고시공고. URL 확인 필요."
+  - id: gw_cheorwon
+    name: 강원 철원군
+    org: 강원 철원군청
+    adapter: html_list
+    url: "https://www.cheorwon.go.kr/"
+    search_url: "https://www.cheorwon.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 철원군 고시공고. URL 확인 필요."
+  - id: gw_hwacheon
+    name: 강원 화천군
+    org: 강원 화천군청
+    adapter: html_list
+    url: "https://www.hwacheon.go.kr/"
+    search_url: "https://www.hwacheon.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 화천군 고시공고. URL 확인 필요."
+  - id: gw_yanggu
+    name: 강원 양구군
+    org: 강원 양구군청
+    adapter: html_list
+    url: "https://www.yanggu.go.kr/"
+    search_url: "https://www.yanggu.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 양구군 고시공고. URL 확인 필요."
+  - id: gw_inje
+    name: 강원 인제군
+    org: 강원 인제군청
+    adapter: html_list
+    url: "https://www.inje.go.kr/"
+    search_url: "https://www.inje.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 인제군 고시공고. URL 확인 필요."
+  - id: gw_goseong_gw
+    name: 강원 고성군
+    org: 강원 고성군청
+    adapter: html_list
+    url: "https://www.goseong_gw.go.kr/"
+    search_url: "https://www.goseong_gw.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 고성군 고시공고. URL 확인 필요."
+  - id: gw_yangyang
+    name: 강원 양양군
+    org: 강원 양양군청
+    adapter: html_list
+    url: "https://www.yangyang.go.kr/"
+    search_url: "https://www.yangyang.go.kr/"
+    rss_or_api: none_found
+    notes: "강원 양양군 고시공고. URL 확인 필요."
+
+  # ── 충북 (11개) ──
+  - id: cb_cheongju
+    name: 충북 청주시
+    org: 충북 청주시청
+    adapter: html_list
+    url: "https://www.cheongju.go.kr/"
+    search_url: "https://www.cheongju.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 청주시 고시공고. URL 확인 필요."
+  - id: cb_chungju
+    name: 충북 충주시
+    org: 충북 충주시청
+    adapter: html_list
+    url: "https://www.chungju.go.kr/"
+    search_url: "https://www.chungju.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 충주시 고시공고. URL 확인 필요."
+  - id: cb_jecheon
+    name: 충북 제천시
+    org: 충북 제천시청
+    adapter: html_list
+    url: "https://www.jecheon.go.kr/"
+    search_url: "https://www.jecheon.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 제천시 고시공고. URL 확인 필요."
+  - id: cb_boeun
+    name: 충북 보은군
+    org: 충북 보은군청
+    adapter: html_list
+    url: "https://www.boeun.go.kr/"
+    search_url: "https://www.boeun.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 보은군 고시공고. URL 확인 필요."
+  - id: cb_okcheon
+    name: 충북 옥천군
+    org: 충북 옥천군청
+    adapter: html_list
+    url: "https://www.okcheon.go.kr/"
+    search_url: "https://www.okcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 옥천군 고시공고. URL 확인 필요."
+  - id: cb_yeongdong
+    name: 충북 영동군
+    org: 충북 영동군청
+    adapter: html_list
+    url: "https://www.yeongdong.go.kr/"
+    search_url: "https://www.yeongdong.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 영동군 고시공고. URL 확인 필요."
+  - id: cb_jeungpyeong
+    name: 충북 증평군
+    org: 충북 증평군청
+    adapter: html_list
+    url: "https://www.jeungpyeong.go.kr/"
+    search_url: "https://www.jeungpyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 증평군 고시공고. URL 확인 필요."
+  - id: cb_jincheon
+    name: 충북 진천군
+    org: 충북 진천군청
+    adapter: html_list
+    url: "https://www.jincheon.go.kr/"
+    search_url: "https://www.jincheon.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 진천군 고시공고. URL 확인 필요."
+  - id: cb_goesan
+    name: 충북 괴산군
+    org: 충북 괴산군청
+    adapter: html_list
+    url: "https://www.goesan.go.kr/"
+    search_url: "https://www.goesan.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 괴산군 고시공고. URL 확인 필요."
+  - id: cb_eumseong
+    name: 충북 음성군
+    org: 충북 음성군청
+    adapter: html_list
+    url: "https://www.eumseong.go.kr/"
+    search_url: "https://www.eumseong.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 음성군 고시공고. URL 확인 필요."
+  - id: cb_danyang
+    name: 충북 단양군
+    org: 충북 단양군청
+    adapter: html_list
+    url: "https://www.danyang.go.kr/"
+    search_url: "https://www.danyang.go.kr/"
+    rss_or_api: none_found
+    notes: "충북 단양군 고시공고. URL 확인 필요."
+
+  # ── 충남 (15개) ──
+  - id: cn_cheonan
+    name: 충남 천안시
+    org: 충남 천안시청
+    adapter: html_list
+    url: "https://www.cheonan.go.kr/"
+    search_url: "https://www.cheonan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 천안시 고시공고. URL 확인 필요."
+  - id: cn_gongju
+    name: 충남 공주시
+    org: 충남 공주시청
+    adapter: html_list
+    url: "https://www.gongju.go.kr/"
+    search_url: "https://www.gongju.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 공주시 고시공고. URL 확인 필요."
+  - id: cn_boryeong
+    name: 충남 보령시
+    org: 충남 보령시청
+    adapter: html_list
+    url: "https://www.boryeong.go.kr/"
+    search_url: "https://www.boryeong.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 보령시 고시공고. URL 확인 필요."
+  - id: cn_asan
+    name: 충남 아산시
+    org: 충남 아산시청
+    adapter: html_list
+    url: "https://www.asan.go.kr/"
+    search_url: "https://www.asan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 아산시 고시공고. URL 확인 필요."
+  - id: cn_seosan
+    name: 충남 서산시
+    org: 충남 서산시청
+    adapter: html_list
+    url: "https://www.seosan.go.kr/"
+    search_url: "https://www.seosan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 서산시 고시공고. URL 확인 필요."
+  - id: cn_nonsan
+    name: 충남 논산시
+    org: 충남 논산시청
+    adapter: html_list
+    url: "https://www.nonsan.go.kr/"
+    search_url: "https://www.nonsan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 논산시 고시공고. URL 확인 필요."
+  - id: cn_gyeryong
+    name: 충남 계룡시
+    org: 충남 계룡시청
+    adapter: html_list
+    url: "https://www.gyeryong.go.kr/"
+    search_url: "https://www.gyeryong.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 계룡시 고시공고. URL 확인 필요."
+  - id: cn_dangjin
+    name: 충남 당진시
+    org: 충남 당진시청
+    adapter: html_list
+    url: "https://www.dangjin.go.kr/"
+    search_url: "https://www.dangjin.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 당진시 고시공고. URL 확인 필요."
+  - id: cn_geumsan
+    name: 충남 금산군
+    org: 충남 금산군청
+    adapter: html_list
+    url: "https://www.geumsan.go.kr/"
+    search_url: "https://www.geumsan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 금산군 고시공고. URL 확인 필요."
+  - id: cn_buyeo
+    name: 충남 부여군
+    org: 충남 부여군청
+    adapter: html_list
+    url: "https://www.buyeo.go.kr/"
+    search_url: "https://www.buyeo.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 부여군 고시공고. URL 확인 필요."
+  - id: cn_seocheon
+    name: 충남 서천군
+    org: 충남 서천군청
+    adapter: html_list
+    url: "https://www.seocheon.go.kr/"
+    search_url: "https://www.seocheon.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 서천군 고시공고. URL 확인 필요."
+  - id: cn_cheongyang
+    name: 충남 청양군
+    org: 충남 청양군청
+    adapter: html_list
+    url: "https://www.cheongyang.go.kr/"
+    search_url: "https://www.cheongyang.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 청양군 고시공고. URL 확인 필요."
+  - id: cn_hongseong
+    name: 충남 홍성군
+    org: 충남 홍성군청
+    adapter: html_list
+    url: "https://www.hongseong.go.kr/"
+    search_url: "https://www.hongseong.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 홍성군 고시공고. URL 확인 필요."
+  - id: cn_yesan
+    name: 충남 예산군
+    org: 충남 예산군청
+    adapter: html_list
+    url: "https://www.yesan.go.kr/"
+    search_url: "https://www.yesan.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 예산군 고시공고. URL 확인 필요."
+  - id: cn_taean
+    name: 충남 태안군
+    org: 충남 태안군청
+    adapter: html_list
+    url: "https://www.taean.go.kr/"
+    search_url: "https://www.taean.go.kr/"
+    rss_or_api: none_found
+    notes: "충남 태안군 고시공고. URL 확인 필요."
+
+  # ── 전북 (14개) ──
+  - id: jb_jeonju
+    name: 전북 전주시
+    org: 전북 전주시청
+    adapter: html_list
+    url: "https://www.jeonju.go.kr/"
+    search_url: "https://www.jeonju.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 전주시 고시공고. URL 확인 필요."
+  - id: jb_gunsan
+    name: 전북 군산시
+    org: 전북 군산시청
+    adapter: html_list
+    url: "https://www.gunsan.go.kr/"
+    search_url: "https://www.gunsan.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 군산시 고시공고. URL 확인 필요."
+  - id: jb_iksan
+    name: 전북 익산시
+    org: 전북 익산시청
+    adapter: html_list
+    url: "https://www.iksan.go.kr/"
+    search_url: "https://www.iksan.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 익산시 고시공고. URL 확인 필요."
+  - id: jb_jeongeup
+    name: 전북 정읍시
+    org: 전북 정읍시청
+    adapter: html_list
+    url: "https://www.jeongeup.go.kr/"
+    search_url: "https://www.jeongeup.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 정읍시 고시공고. URL 확인 필요."
+  - id: jb_namwon
+    name: 전북 남원시
+    org: 전북 남원시청
+    adapter: html_list
+    url: "https://www.namwon.go.kr/"
+    search_url: "https://www.namwon.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 남원시 고시공고. URL 확인 필요."
+  - id: jb_gimje
+    name: 전북 김제시
+    org: 전북 김제시청
+    adapter: html_list
+    url: "https://www.gimje.go.kr/"
+    search_url: "https://www.gimje.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 김제시 고시공고. URL 확인 필요."
+  - id: jb_wanju
+    name: 전북 완주군
+    org: 전북 완주군청
+    adapter: html_list
+    url: "https://www.wanju.go.kr/"
+    search_url: "https://www.wanju.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 완주군 고시공고. URL 확인 필요."
+  - id: jb_jinan
+    name: 전북 진안군
+    org: 전북 진안군청
+    adapter: html_list
+    url: "https://www.jinan.go.kr/"
+    search_url: "https://www.jinan.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 진안군 고시공고. URL 확인 필요."
+  - id: jb_muju
+    name: 전북 무주군
+    org: 전북 무주군청
+    adapter: html_list
+    url: "https://www.muju.go.kr/"
+    search_url: "https://www.muju.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 무주군 고시공고. URL 확인 필요."
+  - id: jb_jangsu
+    name: 전북 장수군
+    org: 전북 장수군청
+    adapter: html_list
+    url: "https://www.jangsu.go.kr/"
+    search_url: "https://www.jangsu.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 장수군 고시공고. URL 확인 필요."
+  - id: jb_imsil
+    name: 전북 임실군
+    org: 전북 임실군청
+    adapter: html_list
+    url: "https://www.imsil.go.kr/"
+    search_url: "https://www.imsil.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 임실군 고시공고. URL 확인 필요."
+  - id: jb_sunchang
+    name: 전북 순창군
+    org: 전북 순창군청
+    adapter: html_list
+    url: "https://www.sunchang.go.kr/"
+    search_url: "https://www.sunchang.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 순창군 고시공고. URL 확인 필요."
+  - id: jb_gochang
+    name: 전북 고창군
+    org: 전북 고창군청
+    adapter: html_list
+    url: "https://www.gochang.go.kr/"
+    search_url: "https://www.gochang.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 고창군 고시공고. URL 확인 필요."
+  - id: jb_buan
+    name: 전북 부안군
+    org: 전북 부안군청
+    adapter: html_list
+    url: "https://www.buan.go.kr/"
+    search_url: "https://www.buan.go.kr/"
+    rss_or_api: none_found
+    notes: "전북 부안군 고시공고. URL 확인 필요."
+
+  # ── 전남 (22개) ──
+  - id: jn_mokpo
+    name: 전남 목포시
+    org: 전남 목포시청
+    adapter: html_list
+    url: "https://www.mokpo.go.kr/"
+    search_url: "https://www.mokpo.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 목포시 고시공고. URL 확인 필요."
+  - id: jn_yeosu
+    name: 전남 여수시
+    org: 전남 여수시청
+    adapter: html_list
+    url: "https://www.yeosu.go.kr/"
+    search_url: "https://www.yeosu.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 여수시 고시공고. URL 확인 필요."
+  - id: jn_suncheon
+    name: 전남 순천시
+    org: 전남 순천시청
+    adapter: html_list
+    url: "https://www.suncheon.go.kr/"
+    search_url: "https://www.suncheon.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 순천시 고시공고. URL 확인 필요."
+  - id: jn_naju
+    name: 전남 나주시
+    org: 전남 나주시청
+    adapter: html_list
+    url: "https://www.naju.go.kr/"
+    search_url: "https://www.naju.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 나주시 고시공고. URL 확인 필요."
+  - id: jn_gwangyang
+    name: 전남 광양시
+    org: 전남 광양시청
+    adapter: html_list
+    url: "https://www.gwangyang.go.kr/"
+    search_url: "https://www.gwangyang.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 광양시 고시공고. URL 확인 필요."
+  - id: jn_damyang
+    name: 전남 담양군
+    org: 전남 담양군청
+    adapter: html_list
+    url: "https://www.damyang.go.kr/"
+    search_url: "https://www.damyang.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 담양군 고시공고. URL 확인 필요."
+  - id: jn_gokseong
+    name: 전남 곡성군
+    org: 전남 곡성군청
+    adapter: html_list
+    url: "https://www.gokseong.go.kr/"
+    search_url: "https://www.gokseong.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 곡성군 고시공고. URL 확인 필요."
+  - id: jn_gurye
+    name: 전남 구례군
+    org: 전남 구례군청
+    adapter: html_list
+    url: "https://www.gurye.go.kr/"
+    search_url: "https://www.gurye.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 구례군 고시공고. URL 확인 필요."
+  - id: jn_goheung
+    name: 전남 고흥군
+    org: 전남 고흥군청
+    adapter: html_list
+    url: "https://www.goheung.go.kr/"
+    search_url: "https://www.goheung.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 고흥군 고시공고. URL 확인 필요."
+  - id: jn_boseong
+    name: 전남 보성군
+    org: 전남 보성군청
+    adapter: html_list
+    url: "https://www.boseong.go.kr/"
+    search_url: "https://www.boseong.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 보성군 고시공고. URL 확인 필요."
+  - id: jn_hwasun
+    name: 전남 화순군
+    org: 전남 화순군청
+    adapter: html_list
+    url: "https://www.hwasun.go.kr/"
+    search_url: "https://www.hwasun.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 화순군 고시공고. URL 확인 필요."
+  - id: jn_jangheung
+    name: 전남 장흥군
+    org: 전남 장흥군청
+    adapter: html_list
+    url: "https://www.jangheung.go.kr/"
+    search_url: "https://www.jangheung.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 장흥군 고시공고. URL 확인 필요."
+  - id: jn_gangjin
+    name: 전남 강진군
+    org: 전남 강진군청
+    adapter: html_list
+    url: "https://www.gangjin.go.kr/"
+    search_url: "https://www.gangjin.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 강진군 고시공고. URL 확인 필요."
+  - id: jn_haenam
+    name: 전남 해남군
+    org: 전남 해남군청
+    adapter: html_list
+    url: "https://www.haenam.go.kr/"
+    search_url: "https://www.haenam.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 해남군 고시공고. URL 확인 필요."
+  - id: jn_yeongam
+    name: 전남 영암군
+    org: 전남 영암군청
+    adapter: html_list
+    url: "https://www.yeongam.go.kr/"
+    search_url: "https://www.yeongam.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 영암군 고시공고. URL 확인 필요."
+  - id: jn_muan
+    name: 전남 무안군
+    org: 전남 무안군청
+    adapter: html_list
+    url: "https://www.muan.go.kr/"
+    search_url: "https://www.muan.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 무안군 고시공고. URL 확인 필요."
+  - id: jn_hampyeong
+    name: 전남 함평군
+    org: 전남 함평군청
+    adapter: html_list
+    url: "https://www.hampyeong.go.kr/"
+    search_url: "https://www.hampyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 함평군 고시공고. URL 확인 필요."
+  - id: jn_yeonggwang
+    name: 전남 영광군
+    org: 전남 영광군청
+    adapter: html_list
+    url: "https://www.yeonggwang.go.kr/"
+    search_url: "https://www.yeonggwang.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 영광군 고시공고. URL 확인 필요."
+  - id: jn_jangseong
+    name: 전남 장성군
+    org: 전남 장성군청
+    adapter: html_list
+    url: "https://www.jangseong.go.kr/"
+    search_url: "https://www.jangseong.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 장성군 고시공고. URL 확인 필요."
+  - id: jn_wando
+    name: 전남 완도군
+    org: 전남 완도군청
+    adapter: html_list
+    url: "https://www.wando.go.kr/"
+    search_url: "https://www.wando.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 완도군 고시공고. URL 확인 필요."
+  - id: jn_jindo
+    name: 전남 진도군
+    org: 전남 진도군청
+    adapter: html_list
+    url: "https://www.jindo.go.kr/"
+    search_url: "https://www.jindo.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 진도군 고시공고. URL 확인 필요."
+  - id: jn_sinan
+    name: 전남 신안군
+    org: 전남 신안군청
+    adapter: html_list
+    url: "https://www.sinan.go.kr/"
+    search_url: "https://www.sinan.go.kr/"
+    rss_or_api: none_found
+    notes: "전남 신안군 고시공고. URL 확인 필요."
+
+  # ── 경북 (23개) ──
+  - id: gb_pohang
+    name: 경북 포항시
+    org: 경북 포항시청
+    adapter: html_list
+    url: "https://www.pohang.go.kr/"
+    search_url: "https://www.pohang.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 포항시 고시공고. URL 확인 필요."
+  - id: gb_gyeongju
+    name: 경북 경주시
+    org: 경북 경주시청
+    adapter: html_list
+    url: "https://www.gyeongju.go.kr/"
+    search_url: "https://www.gyeongju.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 경주시 고시공고. URL 확인 필요."
+  - id: gb_gimcheon
+    name: 경북 김천시
+    org: 경북 김천시청
+    adapter: html_list
+    url: "https://www.gimcheon.go.kr/"
+    search_url: "https://www.gimcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 김천시 고시공고. URL 확인 필요."
+  - id: gb_andong
+    name: 경북 안동시
+    org: 경북 안동시청
+    adapter: html_list
+    url: "https://www.andong.go.kr/"
+    search_url: "https://www.andong.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 안동시 고시공고. URL 확인 필요."
+  - id: gb_gumi
+    name: 경북 구미시
+    org: 경북 구미시청
+    adapter: html_list
+    url: "https://www.gumi.go.kr/"
+    search_url: "https://www.gumi.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 구미시 고시공고. URL 확인 필요."
+  - id: gb_yeongju
+    name: 경북 영주시
+    org: 경북 영주시청
+    adapter: html_list
+    url: "https://www.yeongju.go.kr/"
+    search_url: "https://www.yeongju.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 영주시 고시공고. URL 확인 필요."
+  - id: gb_yeongcheon
+    name: 경북 영천시
+    org: 경북 영천시청
+    adapter: html_list
+    url: "https://www.yeongcheon.go.kr/"
+    search_url: "https://www.yeongcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 영천시 고시공고. URL 확인 필요."
+  - id: gb_sangju
+    name: 경북 상주시
+    org: 경북 상주시청
+    adapter: html_list
+    url: "https://www.sangju.go.kr/"
+    search_url: "https://www.sangju.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 상주시 고시공고. URL 확인 필요."
+  - id: gb_mungyeong
+    name: 경북 문경시
+    org: 경북 문경시청
+    adapter: html_list
+    url: "https://www.mungyeong.go.kr/"
+    search_url: "https://www.mungyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 문경시 고시공고. URL 확인 필요."
+  - id: gb_gyeongsan
+    name: 경북 경산시
+    org: 경북 경산시청
+    adapter: html_list
+    url: "https://www.gyeongsan.go.kr/"
+    search_url: "https://www.gyeongsan.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 경산시 고시공고. URL 확인 필요."
+  - id: gb_gunwi
+    name: 경북 군위군
+    org: 경북 군위군청
+    adapter: html_list
+    url: "https://www.gunwi.go.kr/"
+    search_url: "https://www.gunwi.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 군위군 고시공고. URL 확인 필요."
+  - id: gb_uiseong
+    name: 경북 의성군
+    org: 경북 의성군청
+    adapter: html_list
+    url: "https://www.uiseong.go.kr/"
+    search_url: "https://www.uiseong.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 의성군 고시공고. URL 확인 필요."
+  - id: gb_cheongsong
+    name: 경북 청송군
+    org: 경북 청송군청
+    adapter: html_list
+    url: "https://www.cheongsong.go.kr/"
+    search_url: "https://www.cheongsong.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 청송군 고시공고. URL 확인 필요."
+  - id: gb_yeongyang
+    name: 경북 영양군
+    org: 경북 영양군청
+    adapter: html_list
+    url: "https://www.yeongyang.go.kr/"
+    search_url: "https://www.yeongyang.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 영양군 고시공고. URL 확인 필요."
+  - id: gb_yeongdeok
+    name: 경북 영덕군
+    org: 경북 영덕군청
+    adapter: html_list
+    url: "https://www.yeongdeok.go.kr/"
+    search_url: "https://www.yeongdeok.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 영덕군 고시공고. URL 확인 필요."
+  - id: gb_cheongdo
+    name: 경북 청도군
+    org: 경북 청도군청
+    adapter: html_list
+    url: "https://www.cheongdo.go.kr/"
+    search_url: "https://www.cheongdo.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 청도군 고시공고. URL 확인 필요."
+  - id: gb_goryeong
+    name: 경북 고령군
+    org: 경북 고령군청
+    adapter: html_list
+    url: "https://www.goryeong.go.kr/"
+    search_url: "https://www.goryeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 고령군 고시공고. URL 확인 필요."
+  - id: gb_seongju
+    name: 경북 성주군
+    org: 경북 성주군청
+    adapter: html_list
+    url: "https://www.seongju.go.kr/"
+    search_url: "https://www.seongju.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 성주군 고시공고. URL 확인 필요."
+  - id: gb_chilgok
+    name: 경북 칠곡군
+    org: 경북 칠곡군청
+    adapter: html_list
+    url: "https://www.chilgok.go.kr/"
+    search_url: "https://www.chilgok.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 칠곡군 고시공고. URL 확인 필요."
+  - id: gb_yecheon
+    name: 경북 예천군
+    org: 경북 예천군청
+    adapter: html_list
+    url: "https://www.yecheon.go.kr/"
+    search_url: "https://www.yecheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 예천군 고시공고. URL 확인 필요."
+  - id: gb_bonghwa
+    name: 경북 봉화군
+    org: 경북 봉화군청
+    adapter: html_list
+    url: "https://www.bonghwa.go.kr/"
+    search_url: "https://www.bonghwa.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 봉화군 고시공고. URL 확인 필요."
+  - id: gb_uljin
+    name: 경북 울진군
+    org: 경북 울진군청
+    adapter: html_list
+    url: "https://www.uljin.go.kr/"
+    search_url: "https://www.uljin.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 울진군 고시공고. URL 확인 필요."
+  - id: gb_ulleung
+    name: 경북 울릉군
+    org: 경북 울릉군청
+    adapter: html_list
+    url: "https://www.ulleung.go.kr/"
+    search_url: "https://www.ulleung.go.kr/"
+    rss_or_api: none_found
+    notes: "경북 울릉군 고시공고. URL 확인 필요."
+
+  # ── 경남 (18개) ──
+  - id: gn_changwon
+    name: 경남 창원시
+    org: 경남 창원시청
+    adapter: html_list
+    url: "https://www.changwon.go.kr/"
+    search_url: "https://www.changwon.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 창원시 고시공고. URL 확인 필요."
+  - id: gn_jinju
+    name: 경남 진주시
+    org: 경남 진주시청
+    adapter: html_list
+    url: "https://www.jinju.go.kr/"
+    search_url: "https://www.jinju.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 진주시 고시공고. URL 확인 필요."
+  - id: gn_tongyeong
+    name: 경남 통영시
+    org: 경남 통영시청
+    adapter: html_list
+    url: "https://www.tongyeong.go.kr/"
+    search_url: "https://www.tongyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 통영시 고시공고. URL 확인 필요."
+  - id: gn_sacheon
+    name: 경남 사천시
+    org: 경남 사천시청
+    adapter: html_list
+    url: "https://www.sacheon.go.kr/"
+    search_url: "https://www.sacheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 사천시 고시공고. URL 확인 필요."
+  - id: gn_gimhae
+    name: 경남 김해시
+    org: 경남 김해시청
+    adapter: html_list
+    url: "https://www.gimhae.go.kr/"
+    search_url: "https://www.gimhae.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 김해시 고시공고. URL 확인 필요."
+  - id: gn_miryang
+    name: 경남 밀양시
+    org: 경남 밀양시청
+    adapter: html_list
+    url: "https://www.miryang.go.kr/"
+    search_url: "https://www.miryang.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 밀양시 고시공고. URL 확인 필요."
+  - id: gn_geoje
+    name: 경남 거제시
+    org: 경남 거제시청
+    adapter: html_list
+    url: "https://www.geoje.go.kr/"
+    search_url: "https://www.geoje.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 거제시 고시공고. URL 확인 필요."
+  - id: gn_yangsan
+    name: 경남 양산시
+    org: 경남 양산시청
+    adapter: html_list
+    url: "https://www.yangsan.go.kr/"
+    search_url: "https://www.yangsan.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 양산시 고시공고. URL 확인 필요."
+  - id: gn_uiryeong
+    name: 경남 의령군
+    org: 경남 의령군청
+    adapter: html_list
+    url: "https://www.uiryeong.go.kr/"
+    search_url: "https://www.uiryeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 의령군 고시공고. URL 확인 필요."
+  - id: gn_haman
+    name: 경남 함안군
+    org: 경남 함안군청
+    adapter: html_list
+    url: "https://www.haman.go.kr/"
+    search_url: "https://www.haman.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 함안군 고시공고. URL 확인 필요."
+  - id: gn_changnyeong
+    name: 경남 창녕군
+    org: 경남 창녕군청
+    adapter: html_list
+    url: "https://www.changnyeong.go.kr/"
+    search_url: "https://www.changnyeong.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 창녕군 고시공고. URL 확인 필요."
+  - id: gn_goseong_gn
+    name: 경남 고성군
+    org: 경남 고성군청
+    adapter: html_list
+    url: "https://www.goseong_gn.go.kr/"
+    search_url: "https://www.goseong_gn.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 고성군 고시공고. URL 확인 필요."
+  - id: gn_namhae
+    name: 경남 남해군
+    org: 경남 남해군청
+    adapter: html_list
+    url: "https://www.namhae.go.kr/"
+    search_url: "https://www.namhae.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 남해군 고시공고. URL 확인 필요."
+  - id: gn_hadong
+    name: 경남 하동군
+    org: 경남 하동군청
+    adapter: html_list
+    url: "https://www.hadong.go.kr/"
+    search_url: "https://www.hadong.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 하동군 고시공고. URL 확인 필요."
+  - id: gn_sancheong
+    name: 경남 산청군
+    org: 경남 산청군청
+    adapter: html_list
+    url: "https://www.sancheong.go.kr/"
+    search_url: "https://www.sancheong.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 산청군 고시공고. URL 확인 필요."
+  - id: gn_hamyang
+    name: 경남 함양군
+    org: 경남 함양군청
+    adapter: html_list
+    url: "https://www.hamyang.go.kr/"
+    search_url: "https://www.hamyang.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 함양군 고시공고. URL 확인 필요."
+  - id: gn_geochang
+    name: 경남 거창군
+    org: 경남 거창군청
+    adapter: html_list
+    url: "https://www.geochang.go.kr/"
+    search_url: "https://www.geochang.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 거창군 고시공고. URL 확인 필요."
+  - id: gn_hapcheon
+    name: 경남 합천군
+    org: 경남 합천군청
+    adapter: html_list
+    url: "https://www.hapcheon.go.kr/"
+    search_url: "https://www.hapcheon.go.kr/"
+    rss_or_api: none_found
+    notes: "경남 합천군 고시공고. URL 확인 필요."
+
+  # ── 제주 (2개) ──
+  - id: jj_jejusi
+    name: 제주 제주시
+    org: 제주 제주시청
+    adapter: html_list
+    url: "https://www.jejusi.go.kr/"
+    search_url: "https://www.jejusi.go.kr/"
+    rss_or_api: none_found
+    notes: "제주 제주시 고시공고. URL 확인 필요."
+  - id: jj_seogwipo
+    name: 제주 서귀포시
+    org: 제주 서귀포시청
+    adapter: html_list
+    url: "https://www.seogwipo.go.kr/"
+    search_url: "https://www.seogwipo.go.kr/"
+    rss_or_api: none_found
+    notes: "제주 서귀포시 고시공고. URL 확인 필요."
