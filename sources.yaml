@@ -4,7 +4,7 @@ settings:
   timeout_seconds: 10
   user_agent: "daegu-grants-monitor/1.0 (+https://github.com/OWNER/REPO)"
   minimum_amount_krw: 20000000
-  detail_fetch_limit_per_source: 2
+  detail_fetch_limit_per_source: 30
 
 sources:
   - id: daegu_women_startup
