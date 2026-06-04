@@ -2,8 +2,10 @@ name: Daegu Grant Watch
 
 on:
   schedule:
-    # 308개 사이트로 늘면서 매일 09:00 KST 한 번만 수집 (GitHub Actions 무료 한도 안)
+    # 6대 광역시 + 중앙 + 농업만 활성 → 매일 09:00, 14:00 두 번 수집 (0원)
     - cron: "0 9 * * *"
+      timezone: "Asia/Seoul"
+    - cron: "0 14 * * *"
       timezone: "Asia/Seoul"
   workflow_dispatch:
 
