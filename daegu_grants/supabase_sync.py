@@ -41,6 +41,41 @@ def _infer_categories(opp: Opportunity) -> list[str]:
     return found or ["보조금"]
 
 
+LOCALIZED_REGISTRATION_KEYWORDS: tuple[str, ...] = (
+    "관내 등록",
+    "관내등록",
+    "관내 이전",
+    "관내이전",
+    "지역 등록",
+    "지역등록",
+    "지역 사업자",
+    "지역사업자",
+    "지역 정착",
+    "지역정착",
+    "지역소재",
+    "지역 소재",
+    "본점 이전",
+    "본점이전",
+    "지역 본점",
+    "지역본점",
+    "지역 사무소",
+    "현지 등록",
+    "현지등록",
+    "관할 등록",
+    "사업자등록 예정",
+    "사업자 등록 예정",
+    "선정 후 사업자",
+    "선정후 사업자",
+    "지역 신규창업",
+    "지역신규창업",
+)
+
+
+def _has_localized_registration(opp: Opportunity) -> bool:
+    text = (opp.title or "") + " " + (opp.summary or "") + " " + (opp.target or "")
+    return any(kw in text for kw in LOCALIZED_REGISTRATION_KEYWORDS)
+
+
 RESULT_KEYWORDS: tuple[str, ...] = (
     "선정결과",
     "선정 결과",
@@ -94,6 +129,13 @@ def _to_date(s: str) -> str | None:
     return None
 
 
+def _build_industries(opp: Opportunity) -> list[str]:
+    base = list(opp.keywords[:8])
+    if _has_localized_registration(opp) and "신규사업자 등록" not in base:
+        base.append("신규사업자 등록")
+    return base
+
+
 def to_program_row(opp: Opportunity) -> dict:
     return {
         "id": opp.dedupe_key,
@@ -103,7 +145,7 @@ def to_program_row(opp: Opportunity) -> dict:
         "org": opp.org,
         "regions": _parse_regions(opp.region),
         "categories": _infer_categories(opp),
-        "industries": opp.keywords[:8],
+        "industries": _build_industries(opp),
         "keywords": opp.keywords,
         "target_summary": opp.target or opp.eligibility,
         "amount_min": None,
