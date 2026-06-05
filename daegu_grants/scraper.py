@@ -44,6 +44,7 @@ class Scraper:
         self.delay = float(settings.get("request_delay_seconds", 1.5))
         self.minimum_amount = int(settings.get("minimum_amount_krw", 20_000_000))
         self.detail_fetch_limit = int(settings.get("detail_fetch_limit_per_source", 6))
+        self.max_runtime_seconds = int(settings.get("max_runtime_seconds", 0) or 0)
         self._robots: dict[str, urllib.robotparser.RobotFileParser] = {}
 
     def can_fetch(self, url: str) -> bool:
@@ -73,7 +74,15 @@ class Scraper:
         today = today or date.today()
         opportunities: list[Opportunity] = []
         errors: list[str] = []
-        for source in sources:
+        started_at = time.monotonic()
+        for index, source in enumerate(sources, start=1):
+            if self.max_runtime_seconds and time.monotonic() - started_at > self.max_runtime_seconds:
+                remaining = len(sources) - index + 1
+                errors.append(
+                    f"time budget reached after {index - 1}/{len(sources)} sources; "
+                    f"skipped {remaining} remaining sources"
+                )
+                break
             try:
                 if source.adapter == "rss":
                     opportunities.extend(self.scrape_rss(source, today))

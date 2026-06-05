@@ -5,6 +5,7 @@ settings:
   user_agent: "daegu-grants-monitor/1.0 (+https://github.com/OWNER/REPO)"
   minimum_amount_krw: 20000000
   detail_fetch_limit_per_source: 4
+  max_runtime_seconds: 3300
 
   # 전국 300개 이상 모두 활성. 무료 GitHub Actions 안정성을 위해 상세 페이지는 source별 소수만 확인.
   # 일부 지역만 운영하려면 enabled_source_id_prefixes 리스트 추가.
