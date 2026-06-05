@@ -186,8 +186,15 @@ def calculate_dday(deadline: date | None, today: date | None = None) -> str:
 
 def extract_region(text: str) -> str:
     text = clean_text(text)
-    if "대구" in text:
-        return "대구"
+    region_patterns = [
+        ("대구", ["대구광역시", "대구 ", "대구시", "대구테크노파크", "대구디지털", "대구창조", "대구콘텐츠", "대구신용보증", "대구 소재"]),
+        ("부산", ["부산광역시", "부산 ", "부산시", "부산테크노파크", "부산신용보증", "부산 소재"]),
+        ("경북", ["경상북도", "경북 ", "경북도", "경북테크노파크", "경북신용보증", "경북 소재"]),
+        ("경남", ["경상남도", "경남 ", "경남도", "경남테크노파크", "경남신용보증", "경남 소재"]),
+    ]
+    for region, patterns in region_patterns:
+        if any(pattern in text for pattern in patterns):
+            return region
     if "전국" in text or "소재지 제한" in text:
         return "전국"
     return ""
