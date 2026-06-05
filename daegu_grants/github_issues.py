@@ -91,13 +91,24 @@ def create_issue(opp: Opportunity, draft_path: Path | None, dry_run: bool = Fals
 def create_issues(opportunities: list[Opportunity], draft_paths: dict[str, Path], dry_run: bool = False) -> list[str]:
     urls = []
     seen_titles = set()
+    max_issues = int(os.getenv("MAX_ISSUES_PER_RUN", "5"))
     for opp in opportunities:
+        if len(urls) >= max_issues:
+            break
         display_key = (opp.org, normalize_opportunity_title(opp.title), opp.deadline)
         if display_key in seen_titles:
             continue
         if should_create_issue(opp):
-            created = create_issue(opp, draft_paths.get(opp.dedupe_key), dry_run=dry_run)
             seen_titles.add(display_key)
+            try:
+                created = create_issue(opp, draft_paths.get(opp.dedupe_key), dry_run=dry_run)
+            except requests.RequestException as exc:
+                response = exc.response
+                detail = ""
+                if response is not None:
+                    detail = f" {response.status_code} {response.text[:200]}"
+                print(f"[github_issues] issue creation skipped:{detail} {exc}")
+                continue
             if created:
                 urls.append(created)
     return urls

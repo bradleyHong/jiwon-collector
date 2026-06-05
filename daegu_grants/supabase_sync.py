@@ -137,7 +137,7 @@ def _build_industries(opp: Opportunity) -> list[str]:
 
 
 def to_program_row(opp: Opportunity) -> dict:
-    return {
+    return _clean_for_postgres({
         "id": opp.dedupe_key,
         "source": opp.source_id or "unknown",
         "source_url": opp.url,
@@ -158,7 +158,7 @@ def to_program_row(opp: Opportunity) -> dict:
         "priority": opp.priority or "normal",
         "raw_text": opp.summary,
         "is_result_announcement": _is_result_announcement(opp),
-    }
+    })
 
 
 def upsert_programs(opportunities: Iterable[Opportunity]) -> int:
@@ -195,7 +195,38 @@ def upsert_programs(opportunities: Iterable[Opportunity]) -> int:
                 f"[supabase_sync] batch {i}-{i+len(batch)} failed: "
                 f"{resp.status_code} {resp.text[:200]}"
             )
+            sent += _upsert_rows_one_by_one(endpoint, headers, batch, start=i)
             continue
         sent += len(batch)
     print(f"[supabase_sync] upserted {sent}/{len(rows)} programs")
     return sent
+
+
+def _upsert_rows_one_by_one(endpoint: str, headers: dict[str, str], rows: list[dict], start: int = 0) -> int:
+    """Batch 실패 시 한 행씩 재시도해 전체 수집 실패를 막는다."""
+    sent = 0
+    for offset, row in enumerate(rows):
+        try:
+            resp = requests.post(endpoint, headers=headers, json=[row], timeout=20)
+        except requests.RequestException as exc:
+            print(f"[supabase_sync] row {start + offset} request error: {exc}")
+            continue
+        if resp.status_code >= 300:
+            print(
+                f"[supabase_sync] row {start + offset} skipped: "
+                f"{resp.status_code} {resp.text[:200]} title={row.get('title', '')[:80]}"
+            )
+            continue
+        sent += 1
+    return sent
+
+
+def _clean_for_postgres(value):
+    """Postgres text/jsonb가 거부하는 NUL 제어문자를 재귀적으로 제거한다."""
+    if isinstance(value, str):
+        return value.replace("\x00", "")
+    if isinstance(value, list):
+        return [_clean_for_postgres(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _clean_for_postgres(item) for key, item in value.items()}
+    return value

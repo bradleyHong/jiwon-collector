@@ -1,6 +1,6 @@
 # 대구 정부지원사업 모니터링 자동화
 
-매일 오전 9시 7분(Asia/Seoul 기준)에 대구 및 전국 단위 정부지원사업/창업지원/콘텐츠지원 공고를 수집하고, AI/인공지능/미디어아트/미디어파사드/영상/콘텐츠/XR/VR/AR/전시/공공디자인/디지털콘텐츠 관련 유망 공고를 선별합니다.
+매일 오전 9시대(Asia/Seoul 기준)에 대구 및 전국 단위 정부지원사업/창업지원/콘텐츠지원 공고를 수집하고, 무료 GitHub Actions 지연에 대비해 오전 11시대 보강 수집을 한 번 더 실행합니다. AI/인공지능/미디어아트/미디어파사드/영상/콘텐츠/XR/VR/AR/전시/공공디자인/디지털콘텐츠 관련 유망 공고를 선별합니다.
 
 ## 주요 기능
 
@@ -86,7 +86,8 @@ Repository Settings > Secrets and variables > Actions에 아래 값을 설정하
 
 `.github/workflows/daily-watch.yml`은 다음 조건으로 실행됩니다.
 
-- `timezone: "Asia/Seoul"`을 사용해 매일 09:07 KST 실행
+- GitHub Actions cron은 UTC 기준이므로 `17 0 * * *`로 매일 09:17 KST 실행
+- 무료 Actions 지연/누락 대비로 `37 2 * * *`, 즉 11:37 KST 보강 수집 실행
 - `workflow_dispatch` 수동 실행
 - 실행 후 `reports`, `data`, `drafts` 변경사항 commit/push
 - `high_priority` 또는 `needs_review` 공고가 있으면 Issue 생성

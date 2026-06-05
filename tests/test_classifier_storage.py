@@ -2,6 +2,7 @@ from datetime import date
 
 from daegu_grants.classifier import classify
 from daegu_grants.storage import Opportunity, deduplicate
+from daegu_grants.supabase_sync import to_program_row
 
 
 def test_classifier_high_priority():
@@ -64,3 +65,17 @@ def test_deduplicate_keeps_higher_score():
     result = deduplicate([low, high])
     assert len(result) == 1
     assert result[0].score == 90
+
+
+def test_supabase_row_removes_nul_characters():
+    opp = Opportunity(
+        org="A",
+        title="NUL\x00 포함 공고",
+        url="https://example.com/1",
+        summary="본문\x00요약",
+        keywords=["AI\x00", "영상"],
+    )
+    row = to_program_row(opp)
+    assert "\x00" not in row["title"]
+    assert "\x00" not in row["raw_text"]
+    assert all("\x00" not in keyword for keyword in row["keywords"])

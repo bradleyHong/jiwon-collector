@@ -2,9 +2,10 @@ name: Daegu Grant Watch
 
 on:
   schedule:
-    # 전국 308개 사이트 매일 09:00 KST 1회 수집 (메일 발송 12:00 전)
-    - cron: "0 9 * * *"
-      timezone: "Asia/Seoul"
+    # GitHub Actions cron은 UTC 기준. 00:17 UTC = 09:17 KST.
+    - cron: "17 0 * * *"
+    # 무료 Actions 지연/누락 대비: 02:37 UTC = 11:37 KST 보강 수집.
+    - cron: "37 2 * * *"
   workflow_dispatch:
 
 permissions:
