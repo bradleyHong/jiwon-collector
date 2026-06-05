@@ -1,11 +1,11 @@
 # 지원서 초안
 
-- 공고명: 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」
-- 기관: 대구디지털혁신진흥원
-- 원문 링크: https://www.dip.or.kr/home/notice/businessbbs/boardRead.ubs?fboardcd=business&fboardnum=9047&sfpage=1&sfpsize=10&sfsearch=ftitle
-- 마감일: 2026-06-18
-- 지원금/지원규모: 200,000천원
-- 상태: updated
+- 공고명: 사업화 D-17 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 새로운게시글 초격차 스타트업 프로젝트 창업진흥원 조회 3,886
+- 기관: 창업진흥원
+- 원문 링크: https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=177764
+- 마감일: 2026-06-22
+- 지원금/지원규모: 확인 필요
+- 상태: needs_review
 
 ## 사업 신청 배경
 
