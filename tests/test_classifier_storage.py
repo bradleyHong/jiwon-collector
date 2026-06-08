@@ -67,6 +67,28 @@ def test_deduplicate_keeps_higher_score():
     assert result[0].score == 90
 
 
+def test_deduplicate_merges_same_program_from_multiple_sources():
+    first = Opportunity(
+        org="K-Startup",
+        title="2026년 대구 콘텐츠 제작지원 참가기업 모집 공고",
+        url="https://k-startup.example.com/1",
+        deadline="2026-06-30",
+        amount_text="최대 5천만원",
+        score=70,
+    )
+    second = Opportunity(
+        org="대구콘텐츠진흥원",
+        title="사업공고 2026년 대구 콘텐츠 제작지원 참가기업 모집 공고 조회 123",
+        url="https://dip.example.com/notice/1",
+        deadline="2026-06-30",
+        amount_text="최대 5천만원",
+        score=80,
+    )
+    result = deduplicate([first, second])
+    assert len(result) == 1
+    assert result[0].org == "대구콘텐츠진흥원"
+
+
 def test_supabase_row_removes_nul_characters():
     opp = Opportunity(
         org="A",

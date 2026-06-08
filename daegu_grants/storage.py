@@ -3,6 +3,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 from dataclasses import asdict, dataclass, field
 from datetime import date
 from pathlib import Path
@@ -56,6 +57,17 @@ class Opportunity:
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
 
     @property
+    def semantic_dedupe_key(self) -> str:
+        raw = "|".join([
+            normalize_title_for_dedupe(self.title),
+            self.deadline.strip() or "rolling",
+            normalize_amount_for_dedupe(self.amount_text),
+        ])
+        if len(raw.replace("|", "")) < 10:
+            return self.dedupe_key
+        return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:24]
+
+    @property
     def fingerprint(self) -> str:
         raw = json.dumps(asdict(self), ensure_ascii=False, sort_keys=True)
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
@@ -99,10 +111,38 @@ def save_seen(seen: dict[str, str], path: str | Path = "data/seen.json") -> None
 def deduplicate(opportunities: list[Opportunity]) -> list[Opportunity]:
     by_key: dict[str, Opportunity] = {}
     for opp in opportunities:
-        current = by_key.get(opp.dedupe_key)
-        if current is None or opp.score > current.score:
-            by_key[opp.dedupe_key] = opp
+        key = opp.semantic_dedupe_key
+        current = by_key.get(key)
+        if current is None or opportunity_rank(opp) > opportunity_rank(current):
+            by_key[key] = opp
     return sorted(by_key.values(), key=lambda item: (item.status == "expired", -item.score, item.deadline or "9999"))
+
+
+def opportunity_rank(opp: Opportunity) -> tuple[int, int, int]:
+    has_direct_url = int(bool(opp.url and not opp.url.endswith("/")))
+    has_amount = int(opp.amount_value is not None or bool(opp.amount_text))
+    return (opp.score, has_amount, has_direct_url)
+
+
+def normalize_title_for_dedupe(title: str) -> str:
+    text = title.lower()
+    text = re.sub(r"https?://\S+", " ", text)
+    text = re.sub(r"\d{4}[-./년]\s*\d{1,2}[-./월]\s*\d{1,2}일?", " ", text)
+    text = re.sub(r"\d{4}[-./]\d{1,2}[-./]\d{1,2}", " ", text)
+    text = re.sub(r"\bd[-+]?\d+\b", " ", text)
+    text = re.sub(r"조회\s*\d+", " ", text)
+    text = re.sub(r"등록일자\s*\S+", " ", text)
+    text = re.sub(r"마감일자\s*\S+", " ", text)
+    text = re.sub(r"(사업)?공고|모집공고|모집|참가기업|참여기업|지원사업|사업화", " ", text)
+    text = re.sub(r"[^0-9a-z가-힣]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def normalize_amount_for_dedupe(amount: str) -> str:
+    text = amount.lower().strip()
+    if not text or "확인" in text:
+        return "amount_unknown"
+    return re.sub(r"[^0-9억만원천백십]+", "", text)[:24] or "amount_unknown"
 
 
 def apply_seen_status(opportunities: list[Opportunity], seen: dict[str, str]) -> list[Opportunity]:
@@ -136,4 +176,3 @@ def save_csv(opportunities: list[Opportunity], path: str | Path = "data/opportun
         writer.writeheader()
         for opp in opportunities:
             writer.writerow(opp.to_csv_row())
-
