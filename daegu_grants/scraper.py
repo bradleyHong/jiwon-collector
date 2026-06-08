@@ -52,9 +52,13 @@ class Scraper:
         base = f"{parsed.scheme}://{parsed.netloc}"
         if base not in self._robots:
             rp = urllib.robotparser.RobotFileParser()
-            rp.set_url(urljoin(base, "/robots.txt"))
+            robots_url = urljoin(base, "/robots.txt")
+            rp.set_url(robots_url)
             try:
-                rp.read()
+                response = self.session.get(robots_url, timeout=min(self.timeout, 5))
+                if response.status_code >= 400:
+                    return True
+                rp.parse(response.text.splitlines())
             except Exception:
                 return True
             self._robots[base] = rp

@@ -5,7 +5,7 @@ settings:
   user_agent: "daegu-grants-monitor/1.0 (+https://github.com/OWNER/REPO)"
   minimum_amount_krw: 20000000
   detail_fetch_limit_per_source: 4
-  max_runtime_seconds: 3300
+  max_runtime_seconds: 900
 
   # MVP 운영권역: 대구·경북·경남·부산 + 전국 핵심 공고.
   # 전국 300개 이상 전체 수집은 안정화 후 확장한다.
