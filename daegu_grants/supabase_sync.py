@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Iterable
 
 import requests
@@ -158,6 +158,7 @@ def to_program_row(opp: Opportunity) -> dict:
         "priority": opp.priority or "normal",
         "raw_text": opp.summary,
         "is_result_announcement": _is_result_announcement(opp),
+        "scraped_at": datetime.now(timezone.utc).isoformat(),
     })
 
 

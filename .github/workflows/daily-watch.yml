@@ -2,10 +2,16 @@ name: Daegu Grant Watch
 
 on:
   schedule:
+    # GitHub Actions cron은 UTC 기준. 23:57 UTC = 08:57 KST 사전 수집.
+    - cron: "57 23 * * *"
     # GitHub Actions cron은 UTC 기준. 00:17 UTC = 09:17 KST.
     - cron: "17 0 * * *"
+    # 무료 Actions 지연/누락 대비: 00:47 UTC = 09:47 KST 재시도.
+    - cron: "47 0 * * *"
     # 무료 Actions 지연/누락 대비: 02:37 UTC = 11:37 KST 보강 수집.
     - cron: "37 2 * * *"
+    # 오후 한 번 더 확인: 06:17 UTC = 15:17 KST.
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 permissions:
