@@ -185,18 +185,31 @@ def calculate_dday(deadline: date | None, today: date | None = None) -> str:
 
 
 def extract_region(text: str) -> str:
+    """공고에서 지역을 추출. 매칭된 '모든' 지역을 콤마로 반환(다중 지역 공고 대응).
+
+    이전 버전은 첫 매칭에서 멈춰 '대구경북 공동' 공고가 대구로만 태깅돼
+    부산/경북 사장님에게 잘못 가는 사고가 있었음. 이를 막기 위해 전부 반환한다.
+    """
     text = clean_text(text)
     region_patterns = [
         ("대구", ["대구광역시", "대구 ", "대구시", "대구테크노파크", "대구디지털", "대구창조", "대구콘텐츠", "대구신용보증", "대구 소재"]),
-        ("부산", ["부산광역시", "부산 ", "부산시", "부산테크노파크", "부산신용보증", "부산 소재"]),
+        ("부산", ["부산광역시", "부산 ", "부산시", "부산테크노파크", "부산신용보증", "부산경제진흥원", "부산 소재"]),
+        ("울산", ["울산광역시", "울산 ", "울산시", "울산테크노파크", "울산신용보증", "울산경제진흥원", "울산 소재"]),
         ("경북", ["경상북도", "경북 ", "경북도", "경북테크노파크", "경북신용보증", "경북 소재"]),
         ("경남", ["경상남도", "경남 ", "경남도", "경남테크노파크", "경남신용보증", "경남 소재"]),
     ]
+    matched = []
     for region, patterns in region_patterns:
         if any(pattern in text for pattern in patterns):
-            return region
-    if "전국" in text or "소재지 제한" in text:
+            matched.append(region)
+
+    # 전국 단위 신호가 있으면 지역 무관 → 전국으로 통일
+    national_signals = ["전국", "소재지 제한", "전 지역", "지역 무관", "전국 소재"]
+    if any(sig in text for sig in national_signals):
         return "전국"
+
+    if matched:
+        return ", ".join(matched)
     return ""
 
 
