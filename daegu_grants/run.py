@@ -13,6 +13,7 @@ from .scraper import Scraper
 from .sources import load_config
 from .storage import apply_seen_status, deduplicate, ensure_dirs, load_seen, save_csv, save_seen, update_seen
 from .supabase_sync import upsert_programs
+from .claude_refine import refine_opportunities
 
 
 def parse_args() -> argparse.Namespace:
@@ -58,8 +59,11 @@ def main() -> None:
     markdown = build_report(opportunities, errors, today=today)
     html = build_html_report(opportunities, errors, today=today)
     dated_report, latest_report, dated_html, latest_html = write_reports(markdown, html, today=today)
+    # Claude 정제: 정규식이 애매해하는 공고만 골라 Haiku로 교정 (지역·금액·슬로건)
+    refine_stats = refine_opportunities(opportunities)
     save_csv(opportunities)
     upserted = upsert_programs(opportunities)
+    print(f"claude_refine={refine_stats}")
 
     issue_urls = create_issues(opportunities, draft_paths, dry_run=args.dry_run)
     message = build_message(opportunities)
