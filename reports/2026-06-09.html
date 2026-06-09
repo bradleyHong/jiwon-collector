@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>대구 정부지원사업 모니터링</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #1f2933;
+      --muted: #64748b;
+      --line: #e5e7eb;
+      --blue: #2563eb;
+      --blue-soft: #eaf2ff;
+      --green: #047857;
+      --green-soft: #e9f8f1;
+      --amber: #b45309;
+      --amber-soft: #fff4df;
+      --red: #b42318;
+      --red-soft: #ffe9e7;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 48px; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-end;
+      margin-bottom: 18px;
+    }
+    h1 { margin: 0; font-size: 28px; letter-spacing: 0; word-break: keep-all; overflow-wrap: break-word; }
+    .subtitle { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .company-tools {
+      margin-top: 14px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .company-tools span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      margin-right: 2px;
+    }
+    .company-tools button {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #334155;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .company-profile-panel {
+      margin-top: 14px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .company-profile-panel summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 14px;
+      font-weight: 900;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+    .company-profile-panel summary::-webkit-details-marker { display: none; }
+    .company-profile-panel summary span { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .condition-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 0 14px 14px;
+    }
+    .condition-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fbfcfe;
+    }
+    .condition-card h3 { margin: 0 0 8px; font-size: 13px; }
+    .condition-card ul { margin: 0; padding-left: 17px; color: #475569; font-size: 12px; }
+    .condition-card li + li { margin-top: 5px; }
+    .run-date { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 22px;
+    }
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .stat strong { display: block; font-size: 24px; line-height: 1.1; }
+    .stat span { display: block; margin-top: 5px; color: var(--muted); font-size: 13px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+    .panel.fresh {
+      border-color: #99f6e4;
+      background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 80%);
+    }
+    .panel.fresh .panel-head {
+      background: #ccfbf1;
+      border-bottom-color: #99f6e4;
+    }
+    .fresh-label {
+      color: #0f766e;
+      background: #ffffff;
+      border: 1px solid #5eead4;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      align-items: center;
+    }
+    h2 { margin: 0; font-size: 18px; word-break: keep-all; }
+    .hint { color: var(--muted); font-size: 13px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 16px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .js-filter-item.is-hidden { display: none; }
+    .js-filter-item {
+      animation: resultIn 360ms cubic-bezier(.2,.75,.25,1) both;
+      will-change: transform, opacity;
+    }
+    body.has-filter .js-filter-item:not(.is-hidden) {
+      animation-name: resultFlow;
+    }
+    @keyframes resultIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes resultFlow {
+      from { opacity: 0; transform: translateY(18px) scale(.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .b-high { color: var(--red); background: var(--red-soft); }
+    .b-review { color: var(--amber); background: var(--amber-soft); }
+    .b-normal { color: var(--blue); background: var(--blue-soft); }
+    .b-new { color: var(--green); background: var(--green-soft); }
+    .d-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .d-urgent { color: var(--red); background: var(--red-soft); }
+    .d-normal { color: var(--blue); background: var(--blue-soft); }
+    .d-muted { color: var(--muted); background: #f1f5f9; }
+    .card h3 { margin: 0; font-size: 16px; line-height: 1.45; word-break: keep-all; overflow-wrap: break-word; }
+    .meta { color: var(--muted); font-size: 13px; }
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .fact {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      background: #fbfcfe;
+      min-height: 58px;
+    }
+    .fact.strong { background: #eff6ff; border-color: #bfdbfe; }
+    .fact.warn { background: #fff7ed; border-color: #fed7aa; }
+    .fact-label { display: block; color: var(--muted); font-size: 11px; font-weight: 800; }
+    .fact-value { display: block; margin-top: 3px; color: var(--text); font-size: 13px; font-weight: 800; line-height: 1.35; }
+    .chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mini-chip {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: #475569;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .summary { color: #334155; font-size: 13px; margin: 0; }
+    .actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+    a.button,
+    button.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      border: 0;
+      border-radius: 6px;
+      padding: 7px 11px;
+      color: #ffffff;
+      background: var(--blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .button.secondary { color: #1f2933; background: #f1f5f9; border: 1px solid #dbe3ee; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 920px; }
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfe;
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      font-size: 14px;
+    }
+    .title-cell { min-width: 360px; }
+    .title-button {
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 0;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1.45;
+    }
+    .title-button:hover { color: var(--blue); }
+    .org { color: var(--muted); font-size: 12px; margin-top: 4px; }
+    .deadline { white-space: nowrap; font-weight: 700; }
+    .money { white-space: nowrap; }
+    .next { color: #334155; max-width: 150px; }
+    .filters {
+      padding: 16px;
+    }
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 180px minmax(220px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .filter-field label { display: block; color: var(--muted); font-size: 12px; font-weight: 800; margin-bottom: 5px; }
+    .filter-field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 40px;
+      padding: 8px 10px;
+      font-size: 14px;
+      background: #ffffff;
+    }
+    .quick-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .quick-filters button {
+      border: 1px solid #bfdbfe;
+      background: var(--blue-soft);
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    #filter-count { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .muted { box-shadow: none; }
+    .muted h2 { padding: 18px 20px 0; }
+    .errors { margin: 10px 20px 18px; padding-left: 18px; color: var(--muted); font-size: 13px; }
+    .empty { color: var(--muted); text-align: center; padding: 28px; }
+    footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .company-footer {
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .company-footer strong { display: block; color: var(--text); font-size: 16px; margin-bottom: 6px; }
+    .company-lines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; }
+    .company-line b { color: #475569; margin-right: 6px; }
+    .service-note {
+      margin-top: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    /* Startup UI refresh */
+    body { background: #eef2f7; }
+    .wrap { max-width: 1280px; padding: 18px 24px 52px; }
+    header.hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 230px;
+      align-items: flex-start;
+      padding: 32px;
+      background: #101827;
+      border: 1px solid #263348;
+      border-radius: 18px;
+      color: #ffffff;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+    }
+    .media-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: .52;
+      pointer-events: none;
+    }
+    header.hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.18));
+      pointer-events: none;
+    }
+    header.hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 42%;
+      background: linear-gradient(180deg, transparent, rgba(16,24,39,.92));
+      pointer-events: none;
+    }
+    .hero-main, .hero-side { position: relative; z-index: 1; }
+    .hero-main { min-width: 0; max-width: 900px; }
+    .hero-side { width: 230px; display: grid; gap: 10px; justify-items: end; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: #c7d2fe;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    header.hero h1 { color: #ffffff; font-size: clamp(32px, 5vw, 58px); line-height: 1.06; max-width: 850px; word-break: keep-all; }
+    header.hero .subtitle { color: #d7deea; font-size: clamp(15px, 1.5vw, 18px); max-width: 760px; word-break: keep-all; }
+    header.hero .company-tools { margin-top: 18px; }
+    header.hero .company-tools span { color: #aab7cc; }
+    header.hero .company-tools button {
+      border-color: rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.10);
+      color: #ffffff;
+      padding: 7px 11px;
+    }
+    header.hero .company-tools button:hover { background: rgba(255,255,255,0.18); }
+    header.hero .company-profile-panel {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.14);
+      border-radius: 14px;
+    }
+    header.hero .company-profile-panel summary { color: #ffffff; }
+    header.hero .company-profile-panel summary span { color: #aab7cc; }
+    header.hero .condition-card {
+      border-color: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+    }
+    header.hero .condition-card h3 { color: #ffffff; }
+    header.hero .condition-card ul { color: #d7deea; }
+    .run-date {
+      color: #dbeafe;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 7px 11px;
+    }
+    .plan-card {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.10);
+      border-radius: 14px;
+      padding: 14px;
+      color: #ffffff;
+    }
+    .plan-card strong { display: block; font-size: 18px; line-height: 1; }
+    .plan-card span { display: block; margin-top: 6px; color: #cbd5e1; font-size: 12px; }
+    .stat, .panel, .card, .fact, .company-footer, .service-note { border-radius: 16px; }
+    .stat { padding: 18px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+    .panel { box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10); }
+    .panel-head { padding: 18px 22px; }
+    .panel.fresh .panel-head { background: #d7fdf2; }
+    h2 { font-size: 19px; }
+    .card {
+      border-radius: 14px;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+    .card:hover { border-color: #bfd0e7; box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08); transform: translateY(-1px); }
+    .fact { border-radius: 12px; }
+    a.button, button.button { border-radius: 10px; background: #1f4ed8; }
+    .filters { padding: 18px; }
+    .filter-grid { grid-template-columns: 190px minmax(260px, 1fr) auto; gap: 12px; }
+    .filter-field input { border-radius: 12px; min-height: 44px; padding: 9px 12px; }
+    .quick-filters button { padding: 10px 12px; }
+    .business-search {
+      margin: 26px 0 18px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      max-width: 850px;
+    }
+    .business-search-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .business-search h2 { font-size: 18px; margin: 0; color: #ffffff; }
+    .business-search p { margin: 5px 0 0; color: #aab7cc; font-size: 14px; }
+    .chat-row {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) auto;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 22px;
+      background: rgba(255,255,255,0.94);
+      box-shadow: 0 22px 70px rgba(2, 6, 23, .34);
+    }
+    #business-query {
+      width: 100%;
+      min-height: 60px;
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 18px;
+      outline: none;
+      background: transparent;
+      color: #101827;
+    }
+    #business-query:focus { box-shadow: none; }
+    #business-search-button {
+      border: 0;
+      border-radius: 16px;
+      min-height: 60px;
+      padding: 0 22px;
+      background: #101827;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    #business-search-button:hover { background: #1f4ed8; }
+    .search-examples { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .search-examples button {
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.09);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .search-examples button:hover { background: rgba(255,255,255,.17); }
+    #business-response {
+      margin-top: 12px;
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(17, 185, 129, .12);
+      border: 1px solid rgba(94, 234, 212, .26);
+      color: #d1fae5;
+      font-size: 14px;
+      font-weight: 800;
+      display: none;
+    }
+    .result-lane {
+      margin-top: 22px;
+      position: relative;
+      z-index: 2;
+    }
+    .result-lane-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+      margin: 0 0 14px;
+      color: #334155;
+    }
+    .result-lane-head h2 { font-size: 20px; }
+    .result-state {
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .followup-search {
+      margin: 18px 0;
+      padding: 18px;
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+    }
+    .followup-search h2 { font-size: 18px; }
+    .followup-search p { margin: 4px 0 14px; color: #64748b; font-size: 13px; }
+    .followup-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 8px;
+    }
+    #followup-query {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 11px 13px;
+      font-size: 14px;
+      outline: none;
+    }
+    #followup-query:focus { border-color: #1f4ed8; box-shadow: 0 0 0 4px rgba(31,78,216,.11); }
+    #followup-search-button {
+      border: 0;
+      border-radius: 14px;
+      padding: 0 16px;
+      background: #101827;
+      color: #ffffff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    #search-history {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    #search-history span {
+      border: 1px solid #dbe3ee;
+      background: #f8fafc;
+      color: #475569;
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .ad-slot {
+      margin: 18px 0;
+      border: 1px dashed #adc0d7;
+      border-radius: 16px;
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .subscribe-cta {
+      margin: 28px 0 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.7fr);
+      gap: 18px;
+      padding: 24px;
+      border-radius: 18px;
+      background: #101827;
+      color: #ffffff;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+    }
+    .subscribe-cta h2 { color: #ffffff; font-size: 24px; }
+    .subscribe-cta p { color: #cbd5e1; margin: 8px 0 0; }
+    .subscribe-list { margin: 16px 0 0; padding-left: 18px; color: #d7deea; }
+    .subscribe-price {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .subscribe-price strong { display: block; font-size: 30px; line-height: 1; }
+    .subscribe-price span { display: block; margin-top: 8px; color: #cbd5e1; font-size: 13px; }
+    .subscribe-button {
+      display: inline-flex;
+      justify-content: center;
+      width: 100%;
+      margin-top: 16px;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #ffffff;
+      color: #101827;
+      text-decoration: none;
+      font-weight: 900;
+    }
+    body.is-subscriber .ad-slot,
+    body.is-subscriber .subscribe-cta { display: none; }
+    [hidden] { display: none !important; }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(15, 23, 42, 0.62);
+    }
+    .modal {
+      width: min(760px, 100%);
+      max-height: min(760px, calc(100vh - 40px));
+      overflow: auto;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 26px 90px rgba(15, 23, 42, 0.35);
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 20px 22px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-head h2 { margin-top: 6px; font-size: 21px; line-height: 1.35; }
+    .modal-close {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #dbe3ee;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #334155;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal-body { padding: 18px 22px 22px; }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .detail-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: #fbfcfe;
+    }
+    .detail-box b { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+    .detail-box span { display: block; color: var(--text); font-weight: 800; line-height: 1.4; }
+    .detail-summary {
+      margin: 0 0 16px;
+      color: #334155;
+      line-height: 1.65;
+    }
+    .detail-url {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 12px;
+      word-break: break-all;
+    }
+    .copy-status { color: #047857; font-size: 12px; font-weight: 800; align-self: center; }
+    @media (max-width: 820px) {
+      .wrap { padding: 22px 12px 36px; }
+      header.hero { display: block; min-height: auto; padding: 20px; border-radius: 16px; }
+      .hero-side { width: auto; justify-items: start; margin-top: 16px; }
+      .run-date { margin-top: 8px; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cards { grid-template-columns: 1fr; }
+      .filter-grid { grid-template-columns: 1fr; }
+      .company-footer { grid-template-columns: 1fr; }
+      .company-lines { grid-template-columns: 1fr; }
+      .condition-grid { grid-template-columns: 1fr; }
+      .chat-row { grid-template-columns: 1fr; }
+      .followup-row { grid-template-columns: 1fr; }
+      #business-query { font-size: 15px; min-height: 52px; }
+      #business-search-button { min-height: 48px; }
+      .subscribe-cta { grid-template-columns: 1fr; }
+      .result-lane { margin-top: 16px; }
+      h1 { font-size: 23px; }
+      .company-profile-panel summary { display: block; }
+      .company-profile-panel summary span { display: block; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <canvas class="media-canvas" id="media-canvas" aria-hidden="true"></canvas>
+      <div class="hero-main">
+        <div class="eyebrow">DAEGU GRANT OS · 상상연필 맞춤형</div>
+        <h1>대구 정부지원사업 모니터링</h1>
+        <p class="subtitle">회사 프로필과 관심 종목을 기준으로 대구 지원사업, 정책자금, 보증/대출 공고를 선별합니다.</p>
+        <section class="business-search" aria-label="맞춤 공고 검색">
+          <div class="business-search-head">
+            <div>
+              <h2>여러분의 사업은 어떤건가요?</h2>
+              <p>문장으로 적으면 관련 업종, 지원규모, 정책자금 조건으로 결과가 정리됩니다.</p>
+            </div>
+          </div>
+          <div class="chat-row">
+            <input id="business-query" type="search" placeholder="예: 대구 수성구 꽃집인데 온라인 판매랑 소상공인 대출 지원금 찾고 싶어요">
+            <button id="business-search-button" type="button">맞춤 공고 찾기</button>
+          </div>
+          <div class="search-examples">
+            <button type="button" data-example="대구 제조공장인데 로봇 자동화와 정책자금이 필요해요">제조공장 로봇 자동화</button>
+            <button type="button" data-example="대구 꽃집인데 온라인 판매, 도소매, 소상공인 대출 지원을 찾고 싶어요">꽃집 온라인 판매</button>
+            <button type="button" data-example="미디어아트 전시 콘텐츠 제작지원 2천만원 이상을 찾고 있어요">미디어아트 전시</button>
+          </div>
+          <div id="business-response"></div>
+        </section>
+        <div class="company-tools">
+          <span>우리 회사 관심 종목</span>
+          <button type="button" data-text="AI">AI</button><button type="button" data-text="영상">영상</button><button type="button" data-text="미디어아트">미디어아트</button><button type="button" data-text="미디어파사드">미디어파사드</button><button type="button" data-text="콘텐츠">콘텐츠</button><button type="button" data-text="전시">전시</button><button type="button" data-text="공공디자인">공공디자인</button><button type="button" data-text="제조업">제조업</button><button type="button" data-text="도소매업">도소매업</button><button type="button" data-text="꽃">꽃</button><button type="button" data-text="로봇">로봇</button><button type="button" data-text="정책자금">정책자금</button><button type="button" data-text="대출">대출</button><button type="button" data-text="보증">보증</button><button type="button" data-text="창업 7년 이하">창업 7년 이하</button><button type="button" data-text="신규창업">신규창업</button>
+        </div>
+        
+        <details class="company-profile-panel" open>
+          <summary>회사 맞춤 검색 조건 <span>관심 분야와 필터 기준 보기</span></summary>
+          <div class="condition-grid"><section class="condition-card"><h3>콘텐츠/아트</h3><ul><li>미디어아트, 미디어파사드, 영상, 전시, 공공디자인, 디지털콘텐츠 제작지원</li><li>콘텐츠 IP 확장, 지역특화콘텐츠, 웹툰/게임/실감콘텐츠/XR/VR/AR</li></ul></section><section class="condition-card"><h3>정책자금/보증</h3><ul><li>중소기업 정책자금, 소상공인 정책자금, 특례보증, 이자지원, 경영안정자금</li><li>신용보증기금, 기술보증기금, 대구신용보증재단 관련 보증/대출</li></ul></section><section class="condition-card"><h3>업종/사업자 조건</h3><ul><li>대구 소재 기업, 창업 7년 이하, 신규창업, 예비창업자, 소상공인, 중소기업</li><li>제조업, 도소매업, 꽃/화훼, 로봇, 전자상거래, 정보서비스업</li></ul></section><section class="condition-card"><h3>우선 확인 기준</h3><ul><li>지원금 2천만원 이상</li><li>총사업비만 공개된 경우 선정 기업 수로 기업당 추정액 계산</li><li>마감 7일 이내는 긴급 확인</li></ul></section></div>
+        </details>
+    
+      </div>
+      <div class="hero-side">
+        <div class="run-date">실행일 2026-06-09</div>
+        <div class="plan-card"><strong>Basic</strong><span>월 3만원 · 매일 9시 맞춤 메일</span></div>
+      </div>
+    </header>
+
+    <main class="result-lane" id="results">
+      <div class="result-lane-head">
+        <h2>오늘의 지원사업 인덱스</h2>
+        <div class="result-state" id="result-state">검색하면 아래 공고가 부드럽게 추려집니다.</div>
+      </div>
+    <div class="ad-slot" data-ad-slot>광고 영역 · 구독자는 광고 없이 이용합니다</div>
+
+    <section class="stats">
+      <div class="stat"><strong>160</strong><span>수집 후보</span></div>
+      <div class="stat"><strong>23</strong><span>표시 공고</span></div>
+      <div class="stat"><strong>12</strong><span>새 공고</span></div>
+      <div class="stat"><strong>7</strong><span>7일 이내 마감</span></div>
+    </section>
+
+    <section class="panel filters">
+      <div class="filter-grid">
+        <div class="filter-field">
+          <label for="filter-amount">최소 지원규모</label>
+          <input id="filter-amount" type="number" min="0" step="1000000" placeholder="예: 20000000">
+        </div>
+        <div class="filter-field">
+          <label for="filter-text">대상/업종/조건 검색</label>
+          <input id="filter-text" type="search" placeholder="창업 7년 이하, 신규창업, 제조업, 도소매, 로봇, 꽃, 대출">
+        </div>
+        <div class="quick-filters">
+          <button type="button" data-amount="20000000">2천만원+</button>
+          <button type="button" data-text="창업 7년 이하">창업 7년 이하</button>
+          <button type="button" data-text="신규창업">신규창업</button>
+          <button type="button" data-text="융자|보증|대출">대출/보증</button>
+        </div>
+      </div>
+      <div id="filter-count">필터 전 전체 후보를 보여줍니다.</div>
+    </section>
+
+    <section class="panel fresh">
+      <div class="panel-head">
+        <h2>새로 올라온 공고</h2>
+        <span class="fresh-label">NEW FIRST</span>
+      </div>
+      <div class="cards">
+        <article class="card js-filter-item" data-amount="200000000" data-search="2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 대구디지털혁신진흥원 200,000천원 콘텐츠기업, 제조업, 제조기업 대구 높음 대구 신청 가능성 높음 AI 콘텐츠 제조 진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」</h3>
+          <div class="meta">대구디지털혁신진흥원 · <span class="d-chip d-normal">D-9</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">지원금/규모</span><span class="fact-value">200,000천원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">콘텐츠기업, 제조업, 제조기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">2026-06-18 <span class="d-chip d-normal">D-9</span></span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">AI</span><span class="mini-chip">콘텐츠</span><span class="mini-chip">제조</span><span class="mini-chip">콘텐츠기업</span><span class="mini-chip">제조업</span><span class="mini-chip">제조기업</span></div>
+          <p class="summary">진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="8962c6abaf19">상세 보기</button></div>
+        </article>
+    
+
+        <article class="card js-filter-item" data-amount="67300000000" data-search="투 · 융자복합금융 지원 업무 신용보증기금 673억원 창업 5년 이하, 창업기업, 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 융자 보증 신용보증 투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&amp;A보증 VC펀드출자금보증 주요업무&gt;투 · 융자복합금융 지원 업무&gt;보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CRE...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>투 · 융자복합금융 지원 업무</h3>
+          <div class="meta">신용보증기금 · <span class="d-chip d-muted">소진시까지</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">정책자금/융자 규모</span><span class="fact-value">673억원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">창업 5년 이하, 창업기업, 중소기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">소진시까지</span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">콘텐츠</span><span class="mini-chip">융자</span><span class="mini-chip">보증</span><span class="mini-chip">신용보증</span><span class="mini-chip">창업 5년 이하</span><span class="mini-chip">창업기업</span></div>
+          <p class="summary">투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&amp;A보증 VC펀드출자금보증 주요업무&gt;투 · 융자복합금융 지원 업무&gt;보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="f3463b8179b1">상세 보기</button></div>
+        </article>
+    
+
+        <article class="card js-filter-item" data-amount="1000000000" data-search="문화콘텐츠 프로젝트투자 신용보증기금 10억원 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 AR 융자 보증 신용보증 문화콘텐츠 프로젝트투자 주요업무&gt;투 · 융자복합금융 지원 업무&gt;문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>문화콘텐츠 프로젝트투자</h3>
+          <div class="meta">신용보증기금 · <span class="d-chip d-muted">소진시까지</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">정책자금/융자 규모</span><span class="fact-value">10억원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">중소기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">소진시까지</span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">콘텐츠</span><span class="mini-chip">AR</span><span class="mini-chip">융자</span><span class="mini-chip">보증</span><span class="mini-chip">신용보증</span><span class="mini-chip">중소기업</span></div>
+          <p class="summary">문화콘텐츠 프로젝트투자 주요업무&gt;투 · 융자복합금융 지원 업무&gt;문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="577ad0073e70">상세 보기</button></div>
+        </article>
+    </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>오늘 먼저 볼 공고</h2>
+        <span class="hint">상위 3개</span>
+      </div>
+      <div class="cards">
+        <article class="card js-filter-item" data-amount="200000000" data-search="2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 대구디지털혁신진흥원 200,000천원 콘텐츠기업, 제조업, 제조기업 대구 높음 대구 신청 가능성 높음 AI 콘텐츠 제조 진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」</h3>
+          <div class="meta">대구디지털혁신진흥원 · <span class="d-chip d-normal">D-9</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">지원금/규모</span><span class="fact-value">200,000천원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">콘텐츠기업, 제조업, 제조기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">2026-06-18 <span class="d-chip d-normal">D-9</span></span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">AI</span><span class="mini-chip">콘텐츠</span><span class="mini-chip">제조</span><span class="mini-chip">콘텐츠기업</span><span class="mini-chip">제조업</span><span class="mini-chip">제조기업</span></div>
+          <p class="summary">진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="8962c6abaf19">상세 보기</button></div>
+        </article>
+    
+
+        <article class="card js-filter-item" data-amount="67300000000" data-search="투 · 융자복합금융 지원 업무 신용보증기금 673억원 창업 5년 이하, 창업기업, 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 융자 보증 신용보증 투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&amp;A보증 VC펀드출자금보증 주요업무&gt;투 · 융자복합금융 지원 업무&gt;보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CRE...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>투 · 융자복합금융 지원 업무</h3>
+          <div class="meta">신용보증기금 · <span class="d-chip d-muted">소진시까지</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">정책자금/융자 규모</span><span class="fact-value">673억원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">창업 5년 이하, 창업기업, 중소기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">소진시까지</span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">콘텐츠</span><span class="mini-chip">융자</span><span class="mini-chip">보증</span><span class="mini-chip">신용보증</span><span class="mini-chip">창업 5년 이하</span><span class="mini-chip">창업기업</span></div>
+          <p class="summary">투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&amp;A보증 VC펀드출자금보증 주요업무&gt;투 · 융자복합금융 지원 업무&gt;보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="f3463b8179b1">상세 보기</button></div>
+        </article>
+    
+
+        <article class="card js-filter-item" data-amount="1000000000" data-search="문화콘텐츠 프로젝트투자 신용보증기금 10억원 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 AR 융자 보증 신용보증 문화콘텐츠 프로젝트투자 주요업무&gt;투 · 융자복합금융 지원 업무&gt;문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주...">
+          <div class="badges"><span class="badge b-high">높음</span><span class="badge b-normal">업데이트</span></div>
+          <h3>문화콘텐츠 프로젝트투자</h3>
+          <div class="meta">신용보증기금 · <span class="d-chip d-muted">소진시까지</span></div>
+          
+          <div class="facts">
+            <div class="fact strong"><span class="fact-label">정책자금/융자 규모</span><span class="fact-value">10억원</span></div>
+            <div class="fact"><span class="fact-label">대상/업력</span><span class="fact-value">중소기업</span></div>
+            <div class="fact"><span class="fact-label">마감/운영</span><span class="fact-value">소진시까지</span></div>
+            <div class="fact"><span class="fact-label">지역/가능성</span><span class="fact-value">대구 신청 가능성 높음</span></div>
+          </div>
+    
+          <div class="chip-row"><span class="mini-chip">콘텐츠</span><span class="mini-chip">AR</span><span class="mini-chip">융자</span><span class="mini-chip">보증</span><span class="mini-chip">신용보증</span><span class="mini-chip">중소기업</span></div>
+          <p class="summary">문화콘텐츠 프로젝트투자 주요업무&gt;투 · 융자복합금융 지원 업무&gt;문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE…</p>
+          <div class="actions"><button class="button" type="button" data-detail-id="577ad0073e70">상세 보기</button></div>
+        </article>
+    </div>
+    </section>
+
+    <section class="followup-search" aria-label="추가 질문 검색">
+      <h2>더 좁혀서 물어보기</h2>
+      <p>아래에서 다시 질문하면 현재 결과가 한 번 더 맞춤 정리됩니다.</p>
+      <div class="followup-row">
+        <input id="followup-query" type="search" placeholder="예: 이번엔 대출 말고 콘텐츠 제작지원만 보여줘">
+        <button id="followup-search-button" type="button">다시 추리기</button>
+      </div>
+      <div id="search-history"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>전체 후보</h2>
+        <span class="hint">상위 40개</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>추천</th>
+              <th>마감</th>
+              <th>사업명</th>
+              <th>지원금</th>
+              <th>대상/업력</th>
+              <th>관련성</th>
+              <th>신청 가능성</th>
+              <th>다음 액션</th>
+            </tr>
+          </thead>
+          <tbody id="opportunity-table">
+            <tr class="js-filter-item" data-amount="200000000" data-search="2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 대구디지털혁신진흥원 200,000천원 콘텐츠기업, 제조업, 제조기업 대구 높음 대구 신청 가능성 높음 AI 콘텐츠 제조 진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공...">
+              <td><span class="badge b-high">높음</span></td>
+              <td class="deadline">2026-06-18<br><span class="meta"><span class="d-chip d-normal">D-9</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="8962c6abaf19">2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」</button><div class="org">대구디지털혁신진흥원 · updated</div></td>
+              <td class="money">200,000천원</td>
+              <td>콘텐츠기업, 제조업, 제조기업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원요건/서류 즉시 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="67300000000" data-search="투 · 융자복합금융 지원 업무 신용보증기금 673억원 창업 5년 이하, 창업기업, 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 융자 보증 신용보증 투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&amp;A보증 VC펀드출자금보증 주요업무&gt;투 · 융자복합금융 지원 업무&gt;보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CRE...">
+              <td><span class="badge b-high">높음</span></td>
+              <td class="deadline">소진시까지<br><span class="meta"><span class="d-chip d-muted">소진시까지</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="f3463b8179b1">투 · 융자복합금융 지원 업무</button><div class="org">신용보증기금 · updated</div></td>
+              <td class="money">673억원</td>
+              <td>창업 5년 이하, 창업기업, 중소기업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">기업별 한도·금리·보증요건 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="1000000000" data-search="문화콘텐츠 프로젝트투자 신용보증기금 10억원 중소기업 대구 높음 대구 신청 가능성 높음 콘텐츠 AR 융자 보증 신용보증 문화콘텐츠 프로젝트투자 주요업무&gt;투 · 융자복합금융 지원 업무&gt;문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주...">
+              <td><span class="badge b-high">높음</span></td>
+              <td class="deadline">소진시까지<br><span class="meta"><span class="d-chip d-muted">소진시까지</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="577ad0073e70">문화콘텐츠 프로젝트투자</button><div class="org">신용보증기금 · updated</div></td>
+              <td class="money">10억원</td>
+              <td>중소기업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">기업별 한도·금리·보증요건 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="11700000000" data-search="MAIN TOPIC 매뉴콘 프로젝트 탑티어 앵커 대양전기공업 찾아 미래전략 논의 2026 매뉴콘 기업 심층 FGI(Focus Group Interview) 부산테크노파크 117억 원 제조업, 제조기업 대구 높음 대구 신청 가능성 높음 AI 제조 MAIN TOPIC 매뉴콘 프로젝트 탑티어 앵커 대양전기공업 찾아 미래전략 논의 2026 매뉴콘 기업 심층 FGI(Focus Group Interview) 부산테크노파크&gt;홍보마당&gt;최근소식&gt;최근소식 상세 내용 스킵네비게이션 본문바로가기 주메뉴바로가기 검색어를 입력하세요 검색 로그인 회원가입 전체메뉴 부산테크노파크 전체...">
+              <td><span class="badge b-high">높음</span></td>
+              <td class="deadline">접수 일정 확인 필요<br><span class="meta"><span class="d-chip d-muted">일정 확인</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="5e95183b3b82">MAIN TOPIC 매뉴콘 프로젝트 탑티어 앵커 대양전기공업 찾아 미래전략 논의 2026 매뉴콘 기업 심층 FGI(Focus Group Interview)</button><div class="org">부산테크노파크 · updated</div></td>
+              <td class="money">117억 원</td>
+              <td>제조업, 제조기업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원요건/서류 즉시 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="「2026년 블록체인 융복합 타운 맞춤형 사업화지원(2차) 현장점검 결과 안내」 대구디지털혁신진흥원 확인 필요 콘텐츠기업 대구 보통 대구 신청 가능성 높음 콘텐츠 진행중 「2026년 블록체인 융복합 타운 맞춤형 사업화지원(2차) 현장점검 결과 안내」 D-13 2462 DIP 사업 2026-06-08 ~ 2026-06-22 2026-06-08 43 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업안내 사...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-22<br><span class="meta"><span class="d-chip d-normal">D-13</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="48d6a19b2762">「2026년 블록체인 융복합 타운 맞춤형 사업화지원(2차) 현장점검 결과 안내」</button><div class="org">대구디지털혁신진흥원 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>콘텐츠기업</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="3000000000" data-search="성장단계별 지원 프로그램 신용보증기금 30억 창업기업, 중소기업, 제조업 대구 높음 대구 신청 가능성 높음 AR 보증 신용보증 제조 성장단계별 지원 프로그램 주요업무&gt;신용보증&gt;성장단계별 지원 프로그램&gt;창업단계 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주요 경영활...">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">소진시까지<br><span class="meta"><span class="d-chip d-muted">소진시까지</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="7d18d0a10695">성장단계별 지원 프로그램</button><div class="org">신용보증기금 · updated</div></td>
+              <td class="money">30억</td>
+              <td>창업기업, 중소기업, 제조업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">기업별 한도·금리·보증요건 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-2 마감일자 2026-06-11 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 ... 달구벌여성인력개발센터 조회 838 달구벌여성인력개발센터 확인 필요 창업기업, 예비창업자, 초기창업기업 대구 보통 대구 신청 가능성 높음 사업화 여성창업 사업화 D-2 마감일자 2026-06-11 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 ... 달구벌여성인력개발센터 조회 838 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 &gt; 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-11<br><span class="meta"><span class="d-chip d-urgent">D-2</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="9c1844938f1e">사업화 D-2 마감일자 2026-06-11 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 ... 달구벌여성인력개발센터 조회 838</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업, 예비창업자, 초기창업기업</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회 412 달구벌여성인력개발센터 확인 필요 창업기업, 예비창업자 대구 보통 대구 신청 가능성 높음 여성창업 시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회 412 2026년 달구벌여성창업보육센터 3차 입주기업 모집 &gt; 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인 사업공고 모집중 모집마감 알림마당 공지사항 카드뉴스...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-19<br><span class="meta"><span class="d-chip d-normal">D-10</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="7339172e0928">시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회 412</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업, 예비창업자</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-3 [창업진흥원]2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 창업진흥원 등록일자 2026-05-18 마감일자 2026-06-12 조회 416 달구벌여성인력개발센터 확인 필요 창업기업 확인 필요 보통 전국/확인 필요 AI 사업화 D-3 [창업진흥원]2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 창업진흥원 등록일자 2026-05-18 마감일자 2026-06-12 조회 416">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-12<br><span class="meta"><span class="d-chip d-urgent">D-3</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="db6961becb05">사업화 D-3 [창업진흥원]2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 창업진흥원 등록일자 2026-05-18 마감일자 2026-06-12 조회 416</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업</td>
+              <td>보통</td>
+              <td>전국/확인 필요</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-3 마감일자 2026-06-12 2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 초기창업패키지 창업진흥원 조회 30,985 창업진흥원 확인 필요 창업기업 확인 필요 보통 전국/확인 필요 AI 사업화 D-3 마감일자 2026-06-12 2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 초기창업패키지 창업진흥원 조회 30,985">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-12<br><span class="meta"><span class="d-chip d-urgent">D-3</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="30b1819ed614">사업화 D-3 마감일자 2026-06-12 2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 초기창업패키지 창업진흥원 조회 30,985</button><div class="org">창업진흥원 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업</td>
+              <td>보통</td>
+              <td>전국/확인 필요</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-15 마감일자 2026-06-24 초격차 스타트업 프로젝트 모두의 챌린지 AX 참여기업 모집공고(추경) 초격차 스타트업 프로젝트 창업진흥원 조회 7,086 창업진흥원 확인 필요 창업기업, 예비창업자, 중소기업, 소상공인, 일반기업, 대학생 대구 보통 대구 신청 가능성 높음 AR 사업화 D-15 마감일자 2026-06-24 초격차 스타트업 프로젝트 모두의 챌린지 AX 참여기업 모집공고(추경) 초격차 스타트업 프로젝트 창업진흥원 조회 7,086 K-Startup 창업지원포털&gt;사업공고&gt;모집중 본문 바로가기 중소벤처기업부 창업진흥원 사업신청관리 자주하는 질문 로그인 회원가입 중기원패스 통합로그인...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-24<br><span class="meta"><span class="d-chip d-normal">D-15</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="683b54702d49">사업화 D-15 마감일자 2026-06-24 초격차 스타트업 프로젝트 모두의 챌린지 AX 참여기업 모집공고(추경) 초격차 스타트업 프로젝트 창업진흥원 조회 7,086</button><div class="org">창업진흥원 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업, 예비창업자, 중소기업, 소상공인, 일반기업, 대학생</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="2026년 지역기반 가상융합 서비스 제작·실증 지원사업 재공고 서면평가 결과 안내 대구디지털혁신진흥원 확인 필요 콘텐츠기업 대구 보통 대구 신청 가능성 높음 콘텐츠 진행중 2026년 지역기반 가상융합 서비스 제작·실증 지원사업 재공고 서면평가 결과 안내 D-16 2458 DIP 결과 2026-06-04 ~ 2026-06-25 2026-06-04 181 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업안내...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-25<br><span class="meta"><span class="d-chip d-normal">D-16</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="e9f0658468a6">2026년 지역기반 가상융합 서비스 제작·실증 지원사업 재공고 서면평가 결과 안내</button><div class="org">대구디지털혁신진흥원 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>콘텐츠기업</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="디자인개발 arrow_forward 경쟁력 있는 상품이 되도록 디자인 개선을 지원합니다. 디자인개발 대구경북디자인진흥원 확인 필요 중소기업, 제조업, 제조기업 대구 높음 대구 신청 가능성 높음 AR 디자인 제조 디자인개발 arrow_forward 경쟁력 있는 상품이 되도록 디자인 개선을 지원합니다. 디자인개발 디자인기반 arrow_forward 디자인 기술혁신 인프라와 데이터를 구축합니다. 디자인기반 디자인연구 arrow_forward 혁신적인 디자인 솔루션을 연구하고 정보를 제공합니다. 디자인연구 공공서비스 arrow_f...">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">접수 일정 확인 필요<br><span class="meta"><span class="d-chip d-muted">일정 확인</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="59a404443485">디자인개발 arrow_forward 경쟁력 있는 상품이 되도록 디자인 개선을 지원합니다. 디자인개발</button><div class="org">대구경북디자인진흥원 · updated</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>중소기업, 제조업, 제조기업</td>
+              <td>높음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">상세 공고 검토</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="「2026년 지역산업 SW인재양성 기반조성 사업」 &#x27;SW파일럿 학습과정&#x27; 교육생 추가모집 대구디지털혁신진흥원 확인 필요 콘텐츠기업 대구 보통 대구 신청 가능성 높음 콘텐츠 진행중 「2026년 지역산업 SW인재양성 기반조성 사업」 &#x27;SW파일럿 학습과정&#x27; 교육생 추가모집 D-7 2461 DIP 사업 2026-06-08 ~ 2026-06-16 2026-06-08 59 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업...">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">2026-06-16<br><span class="meta"><span class="d-chip d-urgent">D-7</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="f6e5a3ca3761">「2026년 지역산업 SW인재양성 기반조성 사업」 &#x27;SW파일럿 학습과정&#x27; 교육생 추가모집</button><div class="org">대구디지털혁신진흥원 · updated</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>콘텐츠기업</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">상세 공고 검토</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="18340000000" data-search="홈페이지 GBTP 메인화면으로 이동합니다. 바로가기 경북테크노파크 총 183.4억원 / 선정 28개사 / 기업당 약 6.55억원 제조업 대구 보통 대구 신청 가능성 높음 제조 홈페이지 GBTP 메인화면으로 이동합니다. 바로가기 TP소식 GBTP의 최근소식을 알려드립니다. 바로가기 사업안내 사업공고를 한눈에 볼 수 있습니다. 바로가기 채용안내 지역발전을 선도할 인재를 모집합니다. 바로가기 경북테크노파크 본문으로 바로가기 주메뉴 바로가기 로그아웃 ENGLISH ENGLISH 공고·안내 사업공...">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">2026-06-22<br><span class="meta"><span class="d-chip d-normal">D-13</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="2e5a38e069ef">홈페이지 GBTP 메인화면으로 이동합니다. 바로가기</button><div class="org">경북테크노파크 · new</div></td>
+              <td class="money">총 183.4억원 / 선정 28개사 / 기업당 약 6.55억원</td>
+              <td>제조업</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">상세 공고 검토</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="367000000000" data-search="중소기업 정책자금 융자계획 공고 확인하기 중소벤처기업진흥공단 3,670억원 여성기업, 중소기업 경남 높음 전국/확인 필요 정책자금 융자 융자공고 중소기업 정책자금 융자계획 공고 확인하기 지원규모 융자(4조 643억원), 이차보전(3,670억원) 기업 성장단계별 특성과 정책목적에 따라 6개 세부 자금으로 구분하여 운영 창업기 지원방향 창업 및 시장진입 성장단계 디딤돌 지원사업 혁신창업사업화 : 창업기반지원, 개발기술사업화 성장기 지원방향 성장단계진입...">
+              <td><span class="badge b-high">높음</span></td>
+              <td class="deadline">소진시까지<br><span class="meta"><span class="d-chip d-muted">소진시까지</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="db3b4b53255b">중소기업 정책자금 융자계획 공고 확인하기</button><div class="org">중소벤처기업진흥공단 · updated</div></td>
+              <td class="money">융자 4조 643억원 / 이차보전 3,670억원 / 기업별 한도 확인</td>
+              <td>여성기업, 중소기업</td>
+              <td>높음</td>
+              <td>전국/확인 필요</td>
+              <td class="next">기업별 한도·금리·보증요건 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-2 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 달구벌여성인력개발센터 등록일자 2026-05-11 마감일자 2026-06-11 조회 838 달구벌여성인력개발센터 확인 필요 확인 필요 확인 필요 보통 전국/확인 필요 사업화 사업화 D-2 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 달구벌여성인력개발센터 등록일자 2026-05-11 마감일자 2026-06-11 조회 838">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-11<br><span class="meta"><span class="d-chip d-urgent">D-2</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="caf32b30176f">사업화 D-2 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 달구벌여성인력개발센터 등록일자 2026-05-11 마감일자 2026-06-11 조회 838</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>대상 조건 원문 확인</td>
+              <td>보통</td>
+              <td>전국/확인 필요</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 달구벌여성인력개발센터 확인 필요 확인 필요 확인 필요 보통 전국/확인 필요 여성창업 시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-19<br><span class="meta"><span class="d-chip d-normal">D-10</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="5920fe19290e">2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>대상 조건 원문 확인</td>
+              <td>보통</td>
+              <td>전국/확인 필요</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업화 D-13 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 초격차 스타트업 프로젝트 창업진흥원 조회 6,683 창업진흥원 확인 필요 창업기업 확인 필요 보통 전국/확인 필요 사업화 사업화 D-13 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 초격차 스타트업 프로젝트 창업진흥원 조회 6,683">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-06-22<br><span class="meta"><span class="d-chip d-normal">D-13</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="9453cd206e39">사업화 D-13 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 초격차 스타트업 프로젝트 창업진흥원 조회 6,683</button><div class="org">창업진흥원 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업</td>
+              <td>보통</td>
+              <td>전국/확인 필요</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="공모전 D-58 마감일자 2026-08-06 2026년『제6회 대구 여성창업스타전』 공고 달구벌여성인력개발센터 조회 351 달구벌여성인력개발센터 확인 필요 창업기업, 예비창업자 대구 보통 대구 신청 가능성 높음 여성창업 공모전 D-58 마감일자 2026-08-06 2026년『제6회 대구 여성창업스타전』 공고 달구벌여성인력개발센터 조회 351 2026년『제6회 대구 여성창업스타전』 공고 &gt; 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인 사업공고 모집중 모집마감 알림마당 공지사항 카드뉴스 창업정보 창업커뮤니티 자...">
+              <td><span class="badge b-review">검토</span></td>
+              <td class="deadline">2026-08-06<br><span class="meta"><span class="d-chip d-normal">D-58</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="3252dc4871ea">공모전 D-58 마감일자 2026-08-06 2026년『제6회 대구 여성창업스타전』 공고 달구벌여성인력개발센터 조회 351</button><div class="org">달구벌여성인력개발센터 · needs_review</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>창업기업, 예비창업자</td>
+              <td>보통</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">지원금 규모 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자 2026-05-18 마감일자 2026-06-09 조회 71 달구벌여성인력개발센터 확인 필요 확인 필요 확인 필요 낮음 대구 신청 가능성 높음  창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자 2026-05-18 마감일자 2026-06-09 조회 71">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">2026-06-09<br><span class="meta"><span class="d-chip d-urgent">D-0</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="102e538fddf8">창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자 2026-05-18 마감일자 2026-06-09 조회 71</button><div class="org">달구벌여성인력개발센터 · new</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>대상 조건 원문 확인</td>
+              <td>낮음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">원문 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 달구벌여성인력개발센터 확인 필요 확인 필요 확인 필요 낮음 대구 신청 가능성 높음  창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">2026-06-09<br><span class="meta"><span class="d-chip d-urgent">D-0</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="15855bd9a05b">오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치</button><div class="org">달구벌여성인력개발센터 · new</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>대상 조건 원문 확인</td>
+              <td>낮음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">원문 확인</td>
+            </tr>
+    
+
+            <tr class="js-filter-item" data-amount="0" data-search="사업공고 필요한 지원사업을 찾아보세요. 부산테크노파크 확인 필요 중소기업 대구 낮음 대구 신청 가능성 높음  사업공고 필요한 지원사업을 찾아보세요. 부산테크노파크&gt;공고 ̇안내&gt;사업공고 스킵네비게이션 본문바로가기 주메뉴바로가기 검색어를 입력하세요 검색 로그인 회원가입 전체메뉴 부산테크노파크 전체메뉴열기 전체메뉴 로그인 회원가입 전체메뉴닫기 공고 ̇안내 사업공고 행사·공지 입주공고·신청 채용공고 유관기관소식 보도자료 기업지원...">
+              <td><span class="badge b-normal">보통</span></td>
+              <td class="deadline">2026-06-19<br><span class="meta"><span class="d-chip d-normal">D-10</span></span></td>
+              <td class="title-cell"><button class="title-button" type="button" data-detail-id="47c94101706f">사업공고 필요한 지원사업을 찾아보세요.</button><div class="org">부산테크노파크 · new</div></td>
+              <td class="money">지원규모 확인 필요</td>
+              <td>중소기업</td>
+              <td>낮음</td>
+              <td>대구 신청 가능성 높음</td>
+              <td class="next">원문 확인</td>
+            </tr>
+    </tbody>
+        </table>
+      </div>
+    </section>
+    </main>
+
+    <section class="panel muted"><h2>수집 오류</h2><ul class="errors"><li>DASH 대구창업허브: HTTPSConnectionPool(host=&#x27;startup.daegu.go.kr&#x27;, port=443): Max retries exceeded with url: /index.do?menu_id=00002552 (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;startup.daegu.go.kr&#x27;, port=443) at 0x7f899914e7d0&gt;, &#x27;Connection to startup.daegu.go.kr timed out. (connect timeout=8)&#x27;))</li><li>기업마당 지원사업정보: HTTPSConnectionPool(host=&#x27;www.bizinfo.go.kr&#x27;, port=443): Max retries exceeded with url: /sii/siia/selectSIIA200View.do (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.bizinfo.go.kr&#x27;, port=443) at 0x7f8998a66910&gt;, &#x27;Connection to www.bizinfo.go.kr timed out. (connect timeout=8)&#x27;))</li><li>대구테크노파크: HTTPSConnectionPool(host=&#x27;www.dgtp.or.kr&#x27;, port=443): Max retries exceeded with url: /bbs/BoardControll.do?bbsId=BBSMSTR_000000000003 (Caused by SSLError(SSLCertVerificationError(1, &#x27;[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)&#x27;)))</li><li>대구콘텐츠밸리: HTTPSConnectionPool(host=&#x27;www.dcoe.or.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dcoe.or.kr&#x27;, port=443) at 0x7f8998cf96d0&gt;, &#x27;Connection to www.dcoe.or.kr timed out. (connect timeout=8)&#x27;))</li><li>대구창조경제혁신센터: robots.txt disallows fetching https://ccei.creativekorea.or.kr/daegu/custom/notice_list.do</li><li>대구광역시 고시공고: HTTPSConnectionPool(host=&#x27;www.daegu.go.kr&#x27;, port=443): Max retries exceeded with url: /index.do?menu_id=00940170 (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.daegu.go.kr&#x27;, port=443) at 0x7f8998cef550&gt;, &#x27;Connection to www.daegu.go.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 북구청: HTTPSConnectionPool(host=&#x27;www.buk.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.buk.daegu.kr&#x27;, port=443) at 0x7f8998cec250&gt;, &#x27;Connection to www.buk.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 동구청: HTTPSConnectionPool(host=&#x27;www.dong.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dong.daegu.kr&#x27;, port=443) at 0x7f8998cdcf10&gt;, &#x27;Connection to www.dong.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 달서구청: HTTPSConnectionPool(host=&#x27;www.dalseo.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dalseo.daegu.kr&#x27;, port=443) at 0x7f8998cc8d10&gt;, &#x27;Connection to www.dalseo.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 달성군청: HTTPSConnectionPool(host=&#x27;www.dalseong.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dalseong.daegu.kr&#x27;, port=443) at 0x7f8998cde8d0&gt;, &#x27;Connection to www.dalseong.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 수성구청: HTTPSConnectionPool(host=&#x27;www.suseong.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.suseong.kr&#x27;, port=443) at 0x7f8998cee050&gt;, &#x27;Connection to www.suseong.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 중구청: HTTPSConnectionPool(host=&#x27;www.jung.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.jung.daegu.kr&#x27;, port=443) at 0x7f8998cf83d0&gt;, &#x27;Connection to www.jung.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 남구청: HTTPSConnectionPool(host=&#x27;www.nam.daegu.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.nam.daegu.kr&#x27;, port=443) at 0x7f8998a6b810&gt;, &#x27;Connection to www.nam.daegu.kr timed out. (connect timeout=8)&#x27;))</li><li>대구 서구청: HTTPSConnectionPool(host=&#x27;www.dgs.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dgs.go.kr&#x27;, port=443) at 0x7f8998ceda90&gt;, &#x27;Connection to www.dgs.go.kr timed out. (connect timeout=8)&#x27;))</li><li>중소벤처기업부 사업공고 RSS: HTTPSConnectionPool(host=&#x27;mss.go.kr&#x27;, port=443): Max retries exceeded with url: /rss/smba/board/310.do (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;mss.go.kr&#x27;, port=443) at 0x7f8998d88110&gt;, &#x27;Connection to mss.go.kr timed out. (connect timeout=8)&#x27;))</li><li>대구신용보증재단: HTTPSConnectionPool(host=&#x27;www.dgsinbo.or.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, &#x27;[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)&#x27;)))</li><li>소상공인시장진흥공단: HTTPSConnectionPool(host=&#x27;www.semas.or.kr&#x27;, port=443): Max retries exceeded with url: /web/board/webBoardList.kmdc?bCd=notice (Caused by SSLError(SSLError(1, &#x27;[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1016)&#x27;)))</li><li>e나라도움/보조금통합포털: HTTPSConnectionPool(host=&#x27;www.bojo.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.bojo.go.kr&#x27;, port=443) at 0x7f899845d310&gt;, &#x27;Connection to www.bojo.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산신용보증재단: HTTPSConnectionPool(host=&#x27;www.busanshinbo.or.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.busanshinbo.or.kr&#x27;, port=443): Failed to resolve &#x27;www.busanshinbo.or.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>경남테크노파크: HTTPSConnectionPool(host=&#x27;www.gntp.or.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gntp.or.kr&#x27;, port=443) at 0x7f8999201b90&gt;, &#x27;Connection to www.gntp.or.kr timed out. (connect timeout=8)&#x27;))</li><li>부산광역시 고시공고: HTTPSConnectionPool(host=&#x27;www.busan.go.kr&#x27;, port=443): Max retries exceeded with url: /nbtnoticeBs/list.do (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.busan.go.kr&#x27;, port=443) at 0x7f89992139d0&gt;, &#x27;Connection to www.busan.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경상북도 공고: HTTPSConnectionPool(host=&#x27;www.gb.go.kr&#x27;, port=443): Max retries exceeded with url: /Main/page.do?mnu_uid=4040 (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gb.go.kr&#x27;, port=443) at 0x7f8999227f50&gt;, &#x27;Connection to www.gb.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경상남도 공고: HTTPSConnectionPool(host=&#x27;www.gyeongnam.go.kr&#x27;, port=443): Max retries exceeded with url: /board/list.gyeongnam (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gyeongnam.go.kr&#x27;, port=443) at 0x7f8999226d50&gt;, &#x27;Connection to www.gyeongnam.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 중구: HTTPSConnectionPool(host=&#x27;www.junggu_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.junggu_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.junggu_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 서구: HTTPSConnectionPool(host=&#x27;www.seogu_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.seogu_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.seogu_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 동구: HTTPSConnectionPool(host=&#x27;www.donggu_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.donggu_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.donggu_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 영도구: HTTPSConnectionPool(host=&#x27;www.yeongdo.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.yeongdo.go.kr&#x27;, port=443) at 0x7f899844dd50&gt;, &#x27;Connection to www.yeongdo.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 부산진구: HTTPSConnectionPool(host=&#x27;www.busanjin.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.busanjin.go.kr&#x27;, port=443) at 0x7f8999225190&gt;, &#x27;Connection to www.busanjin.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 동래구: HTTPSConnectionPool(host=&#x27;www.dongnae.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.dongnae.go.kr&#x27;, port=443) at 0x7f8998afe390&gt;, &#x27;Connection to www.dongnae.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 남구: HTTPSConnectionPool(host=&#x27;www.namgu_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.namgu_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.namgu_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 북구: HTTPSConnectionPool(host=&#x27;www.bukgu_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.bukgu_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.bukgu_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 해운대구: HTTPSConnectionPool(host=&#x27;www.haeundae.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.haeundae.go.kr&#x27;, port=443) at 0x7f89983d6590&gt;, &#x27;Connection to www.haeundae.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 사하구: HTTPSConnectionPool(host=&#x27;www.saha.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.saha.go.kr&#x27;, port=443) at 0x7f89991d8810&gt;, &#x27;Connection to www.saha.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 금정구: HTTPSConnectionPool(host=&#x27;www.geumjeong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.geumjeong.go.kr&#x27;, port=443) at 0x7f899966c4d0&gt;, &#x27;Connection to www.geumjeong.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 강서구: HTTPSConnectionPool(host=&#x27;www.gangseo_busan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.gangseo_busan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.gangseo_busan.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>부산 연제구: HTTPSConnectionPool(host=&#x27;www.yeonje.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.yeonje.go.kr&#x27;, port=443) at 0x7f89994900d0&gt;, &#x27;Connection to www.yeonje.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 수영구: HTTPSConnectionPool(host=&#x27;www.suyeong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.suyeong.go.kr&#x27;, port=443) at 0x7f899861d790&gt;, &#x27;Connection to www.suyeong.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 사상구: HTTPSConnectionPool(host=&#x27;www.sasang.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.sasang.go.kr&#x27;, port=443) at 0x7f8999203ed0&gt;, &#x27;Connection to www.sasang.go.kr timed out. (connect timeout=8)&#x27;))</li><li>부산 기장군: HTTPSConnectionPool(host=&#x27;www.gijang.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gijang.go.kr&#x27;, port=443) at 0x7f89991f9090&gt;, &#x27;Connection to www.gijang.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 포항시: HTTPSConnectionPool(host=&#x27;www.pohang.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.pohang.go.kr&#x27;, port=443) at 0x7f8999203510&gt;, &#x27;Connection to www.pohang.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 김천시: HTTPSConnectionPool(host=&#x27;www.gimcheon.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by SSLError(SSLEOFError(8, &#x27;[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1016)&#x27;)))</li><li>경북 영천시: HTTPSConnectionPool(host=&#x27;www.yeongcheon.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.yeongcheon.go.kr&#x27;, port=443): Failed to resolve &#x27;www.yeongcheon.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>경북 상주시: HTTPSConnectionPool(host=&#x27;www.sangju.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.sangju.go.kr&#x27;, port=443) at 0x7f899849fd90&gt;, &#x27;Connection to www.sangju.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 문경시: HTTPSConnectionPool(host=&#x27;www.mungyeong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.mungyeong.go.kr&#x27;, port=443): Failed to resolve &#x27;www.mungyeong.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>경북 경산시: HTTPSConnectionPool(host=&#x27;www.gyeongsan.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.gyeongsan.go.kr&#x27;, port=443): Failed to resolve &#x27;www.gyeongsan.go.kr&#x27; ([Errno -3] Temporary failure in name resolution)&quot;))</li><li>경북 군위군: HTTPSConnectionPool(host=&#x27;www.gunwi.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gunwi.go.kr&#x27;, port=443) at 0x7f89991fa950&gt;, &#x27;Connection to www.gunwi.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 의성군: HTTPSConnectionPool(host=&#x27;www.uiseong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.uiseong.go.kr&#x27;, port=443) at 0x7f8997d7cf50&gt;, &#x27;Connection to www.uiseong.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 청송군: HTTPSConnectionPool(host=&#x27;www.cheongsong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NewConnectionError(&quot;HTTPSConnection(host=&#x27;www.cheongsong.go.kr&#x27;, port=443): Failed to establish a new connection: [Errno 111] Connection refused&quot;))</li><li>경북 영양군: HTTPSConnectionPool(host=&#x27;www.yeongyang.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.yeongyang.go.kr&#x27;, port=443): Failed to resolve &#x27;www.yeongyang.go.kr&#x27; ([Errno -3] Temporary failure in name resolution)&quot;))</li><li>경북 영덕군: HTTPSConnectionPool(host=&#x27;www.yeongdeok.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by NameResolutionError(&quot;HTTPSConnection(host=&#x27;www.yeongdeok.go.kr&#x27;, port=443): Failed to resolve &#x27;www.yeongdeok.go.kr&#x27; ([Errno -2] Name or service not known)&quot;))</li><li>경북 고령군: 404 Client Error: Not Found for url: https://www.goryeong.go.kr/</li><li>경북 성주군: HTTPSConnectionPool(host=&#x27;www.seongju.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.seongju.go.kr&#x27;, port=443) at 0x7f8997d7e350&gt;, &#x27;Connection to www.seongju.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경북 예천군: HTTPSConnectionPool(host=&#x27;www.yecheon.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, &#x27;[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)&#x27;)))</li><li>경북 봉화군: robots.txt disallows fetching https://www.bonghwa.go.kr/</li><li>경북 울릉군: HTTPSConnectionPool(host=&#x27;www.ulleung.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.ulleung.go.kr&#x27;, port=443) at 0x7f8998454590&gt;, &#x27;Connection to www.ulleung.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 창원시: HTTPSConnectionPool(host=&#x27;www.changwon.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.changwon.go.kr&#x27;, port=443) at 0x7f8998b0a810&gt;, &#x27;Connection to www.changwon.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 진주시: HTTPSConnectionPool(host=&#x27;www.jinju.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.jinju.go.kr&#x27;, port=443) at 0x7f8998457cd0&gt;, &#x27;Connection to www.jinju.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 통영시: HTTPSConnectionPool(host=&#x27;www.tongyeong.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.tongyeong.go.kr&#x27;, port=443) at 0x7f8998b0a010&gt;, &#x27;Connection to www.tongyeong.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 사천시: HTTPSConnectionPool(host=&#x27;www.sacheon.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.sacheon.go.kr&#x27;, port=443) at 0x7f8998073b10&gt;, &#x27;Connection to www.sacheon.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 김해시: HTTPSConnectionPool(host=&#x27;www.gimhae.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.gimhae.go.kr&#x27;, port=443) at 0x7f8998b0bbd0&gt;, &#x27;Connection to www.gimhae.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 밀양시: HTTPSConnectionPool(host=&#x27;www.miryang.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.miryang.go.kr&#x27;, port=443) at 0x7f8997a1db90&gt;, &#x27;Connection to www.miryang.go.kr timed out. (connect timeout=8)&#x27;))</li><li>경남 거제시: HTTPSConnectionPool(host=&#x27;www.geoje.go.kr&#x27;, port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(&lt;HTTPSConnection(host=&#x27;www.geoje.go.kr&#x27;, port=443) at 0x7f8998b0b110&gt;, &#x27;Connection to www.geoje.go.kr timed out. (connect timeout=8)&#x27;))</li><li>time budget reached after 83/94 sources; skipped 11 remaining sources</li></ul></section>
+    <section class="subscribe-cta" id="subscribe">
+      <div>
+        <h2>자동으로 매일 9시 정보 구독하기</h2>
+        <p>원하는 카테고리를 저장하면 매일 오전 9시에 맞춤 지원사업, 정책자금, 보증/대출 정보를 메일로 보내드립니다.</p>
+        <ul class="subscribe-list">
+          <li>관심 업종/지역/지원규모 회원 수정</li>
+          <li>신규 공고와 D-7 마감 공고 우선 정리</li>
+          <li>구독자 화면은 광고 없이 제공</li>
+        </ul>
+      </div>
+      <div class="subscribe-price">
+        <strong>월 3만원</strong>
+        <span>자동결제 · 매일 9시 맞춤 메일</span>
+        <a class="subscribe-button" href="#subscribe">구독 결제하기</a>
+      </div>
+    </section>
+    
+    <footer>
+      <div class="company-footer">
+        <div>
+          <strong>상상연필</strong>
+          <div>대구 사업자를 위한 정부지원사업·정책자금 모니터링 리포트</div>
+        </div>
+        <div class="company-lines"><div class="company-line"><b>대표자</b>홍석범</div><div class="company-line"><b>소재지</b>대구광역시 수성구 동대구로 243, 1층</div><div class="company-line"><b>업태</b>정보서비스업, 도매 및 소매업, 서비스업</div><div class="company-line"><b>종목</b>영상물 제작, 전자상거래 소매업, 전시 기획, 디지털콘텐츠 개발</div><div class="company-line"><b>개업일</b>2019-05-07</div><div class="company-line"><b>사업자등록번호</b>860-41-****9</div></div>
+      </div>
+      <div class="service-note">서비스 구상: 월 3만원 자동결제 기본형은 매일 9시 맞춤 카테고리 메일을 제공하고, 회원은 관심 업종/키워드를 수정할 수 있습니다. 지원서 초안·검수·전자세금계산서 포함 프리미엄은 별도 상품으로 운영합니다.</div>
+    </footer>
+    
+  </div>
+  <div class="modal-backdrop" id="detail-modal" hidden>
+    <article class="modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+      <div class="modal-head">
+        <div>
+          <div class="badges" id="detail-badges"></div>
+          <h2 id="detail-title"></h2>
+          <div class="meta" id="detail-org"></div>
+        </div>
+        <button type="button" class="modal-close" id="detail-close" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-box"><b>지원금/규모</b><span id="detail-amount"></span></div>
+          <div class="detail-box"><b>마감</b><span id="detail-deadline"></span></div>
+          <div class="detail-box"><b>대상/업력</b><span id="detail-target"></span></div>
+          <div class="detail-box"><b>신청 가능성</b><span id="detail-eligibility"></span></div>
+        </div>
+        <p class="detail-summary" id="detail-summary"></p>
+        <div class="chip-row" id="detail-keywords"></div>
+        <div class="actions" style="margin-top: 18px;">
+          <a class="button" id="detail-open" target="_blank" rel="noopener noreferrer">원문 새창 열기</a>
+          <button class="button secondary" type="button" id="detail-copy">주소 복사</button>
+          <span class="copy-status" id="detail-copy-status" aria-live="polite"></span>
+        </div>
+        <div class="detail-url" id="detail-url"></div>
+      </div>
+    </article>
+  </div>
+  <script type="application/json" id="opportunity-details-data">[{"id": "8962c6abaf19", "title": "2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」", "org": "대구디지털혁신진흥원", "status": "updated", "badges": "<span class=\"badge b-high\">높음<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "200,000천원", "deadline": "2026-06-18", "d_day": "D-9", "target": "콘텐츠기업, 제조업, 제조기업", "eligibility": "대구 신청 가능성 높음", "summary": "진행중 2026년 제조업 AI융합 기반 조성 사업 「2026년 수요맞춤형 AI솔루션 개발·실증 지원 사업 컨소시엄 모집공고」 D-9 2459 DIP 사업 2026-06-05 ~ 2026-06-18 2026-06-05 225 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공...", "next_action": "지원요건/서류 즉시 확인", "keywords": ["AI", "콘텐츠", "제조"], "url": "https://www.dip.or.kr/home/notice/businessbbs/boardRead.ubs?fboardcd=business&fboardnum=9047&sfpage=1&sfpsize=10&sfsearch=ftitle"}, {"id": "f3463b8179b1", "title": "투 · 융자복합금융 지원 업무", "org": "신용보증기금", "status": "updated", "badges": "<span class=\"badge b-high\">높음<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "673억원", "deadline": "소진시까지", "d_day": "", "target": "창업 5년 이하, 창업기업, 중소기업", "eligibility": "대구 신청 가능성 높음", "summary": "투 · 융자복합금융 지원 업무 보증연계투자 문화콘텐츠 프로젝트투자 투자옵션부보증 M&A보증 VC펀드출자금보증 주요업무>투 · 융자복합금융 지원 업무>보증연계투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CRE...", "next_action": "기업별 한도·금리·보증요건 확인", "keywords": ["콘텐츠", "융자", "보증", "신용보증"], "url": "https://www.kodit.or.kr/kodit/cm/cntnts/cntntsView.do?mi=2541&cntntsId=11079"}, {"id": "577ad0073e70", "title": "문화콘텐츠 프로젝트투자", "org": "신용보증기금", "status": "updated", "badges": "<span class=\"badge b-high\">높음<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "10억원", "deadline": "소진시까지", "d_day": "", "target": "중소기업", "eligibility": "대구 신청 가능성 높음", "summary": "문화콘텐츠 프로젝트투자 주요업무>투 · 융자복합금융 지원 업무>문화콘텐츠 프로젝트투자 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주...", "next_action": "기업별 한도·금리·보증요건 확인", "keywords": ["콘텐츠", "AR", "융자", "보증", "신용보증"], "url": "https://www.kodit.or.kr/kodit/cm/cntnts/cntntsView.do?mi=3992&cntntsId=12242"}, {"id": "5e95183b3b82", "title": "MAIN TOPIC 매뉴콘 프로젝트 탑티어 앵커 대양전기공업 찾아 미래전략 논의 2026 매뉴콘 기업 심층 FGI(Focus Group Interview)", "org": "부산테크노파크", "status": "updated", "badges": "<span class=\"badge b-high\">높음<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "117억 원", "deadline": "접수 일정 확인 필요", "d_day": "", "target": "제조업, 제조기업", "eligibility": "대구 신청 가능성 높음", "summary": "MAIN TOPIC 매뉴콘 프로젝트 탑티어 앵커 대양전기공업 찾아 미래전략 논의 2026 매뉴콘 기업 심층 FGI(Focus Group Interview) 부산테크노파크>홍보마당>최근소식>최근소식 상세 내용 스킵네비게이션 본문바로가기 주메뉴바로가기 검색어를 입력하세요 검색 로그인 회원가입 전체메뉴 부산테크노파크 전체...", "next_action": "지원요건/서류 즉시 확인", "keywords": ["AI", "제조"], "url": "https://www.btp.or.kr/kor/CMS/Board/Board.do?mCode=MN191&mode=view&mgr_seq=36&board_seq=9581980"}, {"id": "48d6a19b2762", "title": "「2026년 블록체인 융복합 타운 맞춤형 사업화지원(2차) 현장점검 결과 안내」", "org": "대구디지털혁신진흥원", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-22", "d_day": "D-13", "target": "콘텐츠기업", "eligibility": "대구 신청 가능성 높음", "summary": "진행중 「2026년 블록체인 융복합 타운 맞춤형 사업화지원(2차) 현장점검 결과 안내」 D-13 2462 DIP 사업 2026-06-08 ~ 2026-06-22 2026-06-08 43 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업안내 사...", "next_action": "지원금 규모 확인", "keywords": ["콘텐츠"], "url": "https://www.dip.or.kr/home/notice/businessbbs/boardRead.ubs?fboardcd=business&fboardnum=9052&sfpage=1&sfpsize=10&sfsearch=ftitle"}, {"id": "7d18d0a10695", "title": "성장단계별 지원 프로그램", "org": "신용보증기금", "status": "updated", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "30억", "deadline": "소진시까지", "d_day": "", "target": "창업기업, 중소기업, 제조업", "eligibility": "대구 신청 가능성 높음", "summary": "성장단계별 지원 프로그램 주요업무>신용보증>성장단계별 지원 프로그램>창업단계 본문으로 바로가기 메인메뉴 바로가기 신보 ON-Biz ENG 화면크기 화면크기 확대 화면크기 100% 화면크기 축소 KODIT 신용보증기금 KOREA CREDIT GUARANTEE FUND 신보소개 신보소개 CEO 인사말 프로필 주요 경영활...", "next_action": "기업별 한도·금리·보증요건 확인", "keywords": ["AR", "보증", "신용보증", "제조"], "url": "https://www.kodit.or.kr/kodit/cm/cntnts/cntntsView.do?mi=2531&cntntsId=11071"}, {"id": "9c1844938f1e", "title": "사업화 D-2 마감일자 2026-06-11 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 ... 달구벌여성인력개발센터 조회 838", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-11", "d_day": "D-2", "target": "창업기업, 예비창업자, 초기창업기업", "eligibility": "대구 신청 가능성 높음", "summary": "사업화 D-2 마감일자 2026-06-11 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 ... 달구벌여성인력개발센터 조회 838 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 > 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인...", "next_action": "지원금 규모 확인", "keywords": ["사업화", "여성창업"], "url": "https://w-startup.daegu.go.kr/business/306"}, {"id": "7339172e0928", "title": "시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회 412", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-19", "d_day": "D-10", "target": "창업기업, 예비창업자", "eligibility": "대구 신청 가능성 높음", "summary": "시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회 412 2026년 달구벌여성창업보육센터 3차 입주기업 모집 > 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인 사업공고 모집중 모집마감 알림마당 공지사항 카드뉴스...", "next_action": "지원금 규모 확인", "keywords": ["여성창업"], "url": "https://w-startup.daegu.go.kr/business/307"}, {"id": "db6961becb05", "title": "사업화 D-3 [창업진흥원]2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 창업진흥원 등록일자 2026-05-18 마감일자 2026-06-12 조회 416", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-12", "d_day": "D-3", "target": "창업기업", "eligibility": "전국/확인 필요", "summary": "사업화 D-3 [창업진흥원]2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 창업진흥원 등록일자 2026-05-18 마감일자 2026-06-12 조회 416", "next_action": "지원금 규모 확인", "keywords": ["AI"], "url": "https://w-startup.daegu.go.kr/business/308?sca=%EB%AA%A8%EC%A7%91%EC%A4%91"}, {"id": "30b1819ed614", "title": "사업화 D-3 마감일자 2026-06-12 2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 초기창업패키지 창업진흥원 조회 30,985", "org": "창업진흥원", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-12", "d_day": "D-3", "target": "창업기업", "eligibility": "전국/확인 필요", "summary": "사업화 D-3 마감일자 2026-06-12 2026년도 창업패키지(AI 인재 실증형) 창업기업 모집공고 초기창업패키지 창업진흥원 조회 30,985", "next_action": "지원금 규모 확인", "keywords": ["AI"], "url": "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=177670"}, {"id": "683b54702d49", "title": "사업화 D-15 마감일자 2026-06-24 초격차 스타트업 프로젝트 모두의 챌린지 AX 참여기업 모집공고(추경) 초격차 스타트업 프로젝트 창업진흥원 조회 7,086", "org": "창업진흥원", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-24", "d_day": "D-15", "target": "창업기업, 예비창업자, 중소기업, 소상공인, 일반기업, 대학생", "eligibility": "대구 신청 가능성 높음", "summary": "사업화 D-15 마감일자 2026-06-24 초격차 스타트업 프로젝트 모두의 챌린지 AX 참여기업 모집공고(추경) 초격차 스타트업 프로젝트 창업진흥원 조회 7,086 K-Startup 창업지원포털>사업공고>모집중 본문 바로가기 중소벤처기업부 창업진흥원 사업신청관리 자주하는 질문 로그인 회원가입 중기원패스 통합로그인...", "next_action": "지원금 규모 확인", "keywords": ["AR"], "url": "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=177760"}, {"id": "e9f0658468a6", "title": "2026년 지역기반 가상융합 서비스 제작·실증 지원사업 재공고 서면평가 결과 안내", "org": "대구디지털혁신진흥원", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-25", "d_day": "D-16", "target": "콘텐츠기업", "eligibility": "대구 신청 가능성 높음", "summary": "진행중 2026년 지역기반 가상융합 서비스 제작·실증 지원사업 재공고 서면평가 결과 안내 D-16 2458 DIP 결과 2026-06-04 ~ 2026-06-25 2026-06-04 181 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업안내...", "next_action": "지원금 규모 확인", "keywords": ["콘텐츠"], "url": "https://www.dip.or.kr/home/notice/businessbbs/boardRead.ubs?fboardcd=business&fboardnum=9046&sfpage=1&sfpsize=10&sfsearch=ftitle"}, {"id": "59a404443485", "title": "디자인개발 arrow_forward 경쟁력 있는 상품이 되도록 디자인 개선을 지원합니다. 디자인개발", "org": "대구경북디자인진흥원", "status": "updated", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "지원규모 확인 필요", "deadline": "접수 일정 확인 필요", "d_day": "", "target": "중소기업, 제조업, 제조기업", "eligibility": "대구 신청 가능성 높음", "summary": "디자인개발 arrow_forward 경쟁력 있는 상품이 되도록 디자인 개선을 지원합니다. 디자인개발 디자인기반 arrow_forward 디자인 기술혁신 인프라와 데이터를 구축합니다. 디자인기반 디자인연구 arrow_forward 혁신적인 디자인 솔루션을 연구하고 정보를 제공합니다. 디자인연구 공공서비스 arrow_f...", "next_action": "상세 공고 검토", "keywords": ["AR", "디자인", "제조"], "url": "https://www.dgdp.or.kr/business-guide/design-develop"}, {"id": "f6e5a3ca3761", "title": "「2026년 지역산업 SW인재양성 기반조성 사업」 'SW파일럿 학습과정' 교육생 추가모집", "org": "대구디지털혁신진흥원", "status": "updated", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-16", "d_day": "D-7", "target": "콘텐츠기업", "eligibility": "대구 신청 가능성 높음", "summary": "진행중 「2026년 지역산업 SW인재양성 기반조성 사업」 'SW파일럿 학습과정' 교육생 추가모집 D-7 2461 DIP 사업 2026-06-08 ~ 2026-06-16 2026-06-08 59 대구디지털혁신진흥원 화면확대 인쇄 전체메뉴 알림마당 알림마당 공지사항 사업공고 채용공고 입찰공고 유관기관공고 통계/정책 사업...", "next_action": "상세 공고 검토", "keywords": ["콘텐츠"], "url": "https://www.dip.or.kr/home/notice/businessbbs/boardRead.ubs?fboardcd=business&fboardnum=9051&sfpage=1&sfpsize=10&sfsearch=ftitle"}, {"id": "2e5a38e069ef", "title": "홈페이지 GBTP 메인화면으로 이동합니다. 바로가기", "org": "경북테크노파크", "status": "new", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-new\">신규<\/span>", "amount": "총 183.4억원 / 선정 28개사 / 기업당 약 6.55억원", "deadline": "2026-06-22", "d_day": "D-13", "target": "제조업", "eligibility": "대구 신청 가능성 높음", "summary": "홈페이지 GBTP 메인화면으로 이동합니다. 바로가기 TP소식 GBTP의 최근소식을 알려드립니다. 바로가기 사업안내 사업공고를 한눈에 볼 수 있습니다. 바로가기 채용안내 지역발전을 선도할 인재를 모집합니다. 바로가기 경북테크노파크 본문으로 바로가기 주메뉴 바로가기 로그아웃 ENGLISH ENGLISH 공고·안내 사업공...", "next_action": "상세 공고 검토", "keywords": ["제조"], "url": "https://www.gbtp.or.kr/main.do"}, {"id": "db3b4b53255b", "title": "중소기업 정책자금 융자계획 공고 확인하기", "org": "중소벤처기업진흥공단", "status": "updated", "badges": "<span class=\"badge b-high\">높음<\/span><span class=\"badge b-normal\">업데이트<\/span>", "amount": "융자 4조 643억원 / 이차보전 3,670억원 / 기업별 한도 확인", "deadline": "소진시까지", "d_day": "", "target": "여성기업, 중소기업", "eligibility": "전국/확인 필요", "summary": "융자공고 중소기업 정책자금 융자계획 공고 확인하기 지원규모 융자(4조 643억원), 이차보전(3,670억원) 기업 성장단계별 특성과 정책목적에 따라 6개 세부 자금으로 구분하여 운영 창업기 지원방향 창업 및 시장진입 성장단계 디딤돌 지원사업 혁신창업사업화 : 창업기반지원, 개발기술사업화 성장기 지원방향 성장단계진입...", "next_action": "기업별 한도·금리·보증요건 확인", "keywords": ["정책자금", "융자"], "url": "https://www.kosmes.or.kr/nsh/SH/NTS/SHNTS001F0.do?seqNo=6107059"}, {"id": "caf32b30176f", "title": "사업화 D-2 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 달구벌여성인력개발센터 등록일자 2026-05-11 마감일자 2026-06-11 조회 838", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-11", "d_day": "D-2", "target": "대상 조건 원문 확인", "eligibility": "전국/확인 필요", "summary": "사업화 D-2 『살맛나는 서구 일자리 지원사업』 2026년 성장 창업사업화 지원 사업 참여자 모집 공고 달구벌여성인력개발센터 등록일자 2026-05-11 마감일자 2026-06-11 조회 838", "next_action": "지원금 규모 확인", "keywords": ["사업화"], "url": "https://w-startup.daegu.go.kr/business/306?sca=%EB%AA%A8%EC%A7%91%EC%A4%91"}, {"id": "5920fe19290e", "title": "2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-19", "d_day": "D-10", "target": "대상 조건 원문 확인", "eligibility": "전국/확인 필요", "summary": "시설·공간·보육 D-10 마감일자 2026-06-19 2026년 달구벌여성창업보육센터 3차 입주기업 모집 달구벌여성인력개발센터 조회", "next_action": "지원금 규모 확인", "keywords": ["여성창업"], "url": "https://w-startup.daegu.go.kr/business?sca=%EB%AA%A8%EC%A7%91%EC%A4%91&sort=edate"}, {"id": "9453cd206e39", "title": "사업화 D-13 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 초격차 스타트업 프로젝트 창업진흥원 조회 6,683", "org": "창업진흥원", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-22", "d_day": "D-13", "target": "창업기업", "eligibility": "전국/확인 필요", "summary": "사업화 D-13 마감일자 2026-06-22 초격차 스타트업 프로젝트(DIPS) Link-up(링크업) - 4대 도메인 AX 프로그램 창업기업 모집공고(2차) 초격차 스타트업 프로젝트 창업진흥원 조회 6,683", "next_action": "지원금 규모 확인", "keywords": ["사업화"], "url": "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn=177764"}, {"id": "3252dc4871ea", "title": "공모전 D-58 마감일자 2026-08-06 2026년『제6회 대구 여성창업스타전』 공고 달구벌여성인력개발센터 조회 351", "org": "달구벌여성인력개발센터", "status": "needs_review", "badges": "<span class=\"badge b-review\">검토<\/span><span class=\"badge b-review\">금액 확인<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-08-06", "d_day": "D-58", "target": "창업기업, 예비창업자", "eligibility": "대구 신청 가능성 높음", "summary": "공모전 D-58 마감일자 2026-08-06 2026년『제6회 대구 여성창업스타전』 공고 달구벌여성인력개발센터 조회 351 2026년『제6회 대구 여성창업스타전』 공고 > 사업공고 | 달구벌여성인력개발센터 달구벌여성창업플랫폼 회원가입 로그인 사업공고 모집중 모집마감 알림마당 공지사항 카드뉴스 창업정보 창업커뮤니티 자...", "next_action": "지원금 규모 확인", "keywords": ["여성창업"], "url": "https://w-startup.daegu.go.kr/business/310"}, {"id": "102e538fddf8", "title": "창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자 2026-05-18 마감일자 2026-06-09 조회 71", "org": "달구벌여성인력개발센터", "status": "new", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-new\">신규<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-09", "d_day": "D-0", "target": "대상 조건 원문 확인", "eligibility": "대구 신청 가능성 높음", "summary": "창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자 2026-05-18 마감일자 2026-06-09 조회 71", "next_action": "원문 확인", "keywords": [], "url": "https://w-startup.daegu.go.kr/business/312?sca=%EB%AA%A8%EC%A7%91%EC%A4%91"}, {"id": "15855bd9a05b", "title": "오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치", "org": "달구벌여성인력개발센터", "status": "new", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-new\">신규<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-09", "d_day": "D-0", "target": "대상 조건 원문 확인", "eligibility": "대구 신청 가능성 높음", "summary": "창업교육 오늘마감 [메타코드에이치][무료/선착순] 대구데이터역량강화교육 - 바이브코딩 웹 서비스 구현 메타코드에이치 등록일자", "next_action": "원문 확인", "keywords": [], "url": "https://w-startup.daegu.go.kr/business?sca=%EB%AA%A8%EC%A7%91%EC%A4%91&sort=edate"}, {"id": "47c94101706f", "title": "사업공고 필요한 지원사업을 찾아보세요.", "org": "부산테크노파크", "status": "new", "badges": "<span class=\"badge b-normal\">보통<\/span><span class=\"badge b-new\">신규<\/span>", "amount": "지원규모 확인 필요", "deadline": "2026-06-19", "d_day": "D-10", "target": "중소기업", "eligibility": "대구 신청 가능성 높음", "summary": "사업공고 필요한 지원사업을 찾아보세요. 부산테크노파크>공고 ̇안내>사업공고 스킵네비게이션 본문바로가기 주메뉴바로가기 검색어를 입력하세요 검색 로그인 회원가입 전체메뉴 부산테크노파크 전체메뉴열기 전체메뉴 로그인 회원가입 전체메뉴닫기 공고 ̇안내 사업공고 행사·공지 입주공고·신청 채용공고 유관기관소식 보도자료 기업지원...", "next_action": "원문 확인", "keywords": [], "url": "https://www.btp.or.kr/kor/CMS/Board/Board.do?mCode=MN013"}]</script>
+  <script>
+    if (new URLSearchParams(window.location.search).get('subscriber') === '1') {
+      document.body.classList.add('is-subscriber');
+    }
+    const amountInput = document.getElementById('filter-amount');
+    const textInput = document.getElementById('filter-text');
+    const countLabel = document.getElementById('filter-count');
+    const businessQuery = document.getElementById('business-query');
+    const businessButton = document.getElementById('business-search-button');
+    const businessResponse = document.getElementById('business-response');
+    const followupQuery = document.getElementById('followup-query');
+    const followupButton = document.getElementById('followup-search-button');
+    const searchHistory = document.getElementById('search-history');
+    const resultState = document.getElementById('result-state');
+    const items = Array.from(document.querySelectorAll('.js-filter-item'));
+    const detailData = JSON.parse(document.getElementById('opportunity-details-data').textContent || '[]');
+    const detailMap = new Map(detailData.map((item) => [item.id, item]));
+    const detailModal = document.getElementById('detail-modal');
+    const detailClose = document.getElementById('detail-close');
+    const detailOpen = document.getElementById('detail-open');
+    const detailCopy = document.getElementById('detail-copy');
+    const detailCopyStatus = document.getElementById('detail-copy-status');
+    function applyFilters() {
+      document.body.classList.add('has-filter');
+      const minAmount = Number(amountInput.value || 0);
+      const query = (textInput.value || '').trim().toLowerCase();
+      let visibleCount = 0;
+      for (const item of items) {
+        const amount = Number(item.dataset.amount || 0);
+        const haystack = (item.dataset.search || '').toLowerCase();
+        const amountOk = !minAmount || amount >= minAmount;
+        const queryOk = !query || (query.includes('|') ? query.split('|').some((part) => haystack.includes(part.trim())) : haystack.includes(query));
+        const show = amountOk && queryOk;
+        item.classList.toggle('is-hidden', !show);
+        if (show) {
+          item.style.animationDelay = `${Math.min(visibleCount * 34, 306)}ms`;
+          visibleCount += 1;
+        } else {
+          item.style.animationDelay = '0ms';
+        }
+      }
+      countLabel.textContent = `현재 필터 결과 ${visibleCount}건`;
+      resultState.textContent = query
+        ? `검색 조건에 맞는 공고 ${visibleCount}건을 다시 정렬했습니다.`
+        : '검색하면 아래 공고가 부드럽게 추려집니다.';
+    }
+    amountInput.addEventListener('input', applyFilters);
+    textInput.addEventListener('input', applyFilters);
+    document.querySelectorAll('.quick-filters button, .company-tools button').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.amount) amountInput.value = button.dataset.amount;
+        if (button.dataset.text) textInput.value = button.dataset.text;
+        applyFilters();
+      });
+    });
+    const businessRules = [
+      ['꽃', ['꽃', '화훼', '소상공인', '도소매', '온라인', '전자상거래']],
+      ['화훼', ['꽃', '화훼', '소상공인', '도소매']],
+      ['제조', ['제조업', '공장', '로봇', '자동화', '정책자금']],
+      ['공장', ['제조업', '공장', '로봇', '자동화', '정책자금']],
+      ['로봇', ['로봇', '제조업', '기술보증', '정책자금']],
+      ['도소매', ['도소매업', '소상공인', '전자상거래']],
+      ['온라인', ['전자상거래', '도소매업', '소상공인']],
+      ['콘텐츠', ['콘텐츠', '제작지원', '디지털콘텐츠']],
+      ['제작지원', ['제작지원', '콘텐츠', '사업화']],
+      ['영상', ['영상', '콘텐츠', '제작지원']],
+      ['미디어아트', ['미디어아트', '전시', '콘텐츠']],
+      ['미디어파사드', ['미디어파사드', '공공디자인', '콘텐츠']],
+      ['전시', ['전시', '공공디자인', '콘텐츠']],
+      ['대출', ['융자', '보증', '대출', '정책자금']],
+      ['보증', ['융자', '보증', '대출', '정책자금']],
+      ['창업', ['창업 7년 이하', '신규창업', '창업기업']],
+      ['신규', ['신규창업', '예비창업자']]
+    ];
+    function inferBusinessQuery(value) {
+      const text = value.toLowerCase();
+      const terms = [];
+      const wantsExclude = text.includes('말고') || text.includes('제외') || text.includes('빼고');
+      const financeNeedles = ['대출', '보증'];
+      for (const [needle, mapped] of businessRules) {
+        if (wantsExclude && financeNeedles.includes(needle) && text.includes(needle.toLowerCase())) continue;
+        if (text.includes(needle.toLowerCase())) terms.push(...mapped);
+      }
+      const amountMatch = value.match(/([0-9]+)\s*(억|천만|천만원|만원)/);
+      if (amountMatch) {
+        const number = Number(amountMatch[1]);
+        const unit = amountMatch[2];
+        if (unit === '억') amountInput.value = String(number * 100000000);
+        if (unit.startsWith('천만')) amountInput.value = String(number * 10000000);
+        if (unit === '만원') amountInput.value = String(number * 10000);
+      } else if (text.includes('2천') || text.includes('2000')) {
+        amountInput.value = '20000000';
+      }
+      return [...new Set(terms)].slice(0, 10);
+    }
+    function addSearchHistory(value) {
+      if (!value) return;
+      const chip = document.createElement('span');
+      chip.textContent = value.length > 34 ? value.slice(0, 33) + '…' : value;
+      searchHistory.prepend(chip);
+      while (searchHistory.children.length > 5) searchHistory.lastElementChild.remove();
+    }
+    function runBusinessSearch(sourceInput = businessQuery) {
+      const value = sourceInput.value.trim();
+      const terms = inferBusinessQuery(value);
+      if (!amountInput.value && (value.includes('지원금') || value.includes('사업비'))) amountInput.value = '20000000';
+      textInput.value = terms.length ? terms.join('|') : value;
+      applyFilters();
+      businessResponse.style.display = 'block';
+      businessResponse.textContent = terms.length
+        ? `찾는 중... ${terms.join(', ')} 조건으로 맞춤 공고를 추렸습니다.`
+        : '찾는 중... 입력한 문장 그대로 관련 공고를 검색했습니다.';
+      addSearchHistory(value);
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    businessButton.addEventListener('click', () => runBusinessSearch(businessQuery));
+    businessQuery.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') runBusinessSearch(businessQuery);
+    });
+    followupButton.addEventListener('click', () => runBusinessSearch(followupQuery));
+    followupQuery.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') runBusinessSearch(followupQuery);
+    });
+    document.querySelectorAll('.search-examples button').forEach((button) => {
+      button.addEventListener('click', () => {
+        businessQuery.value = button.dataset.example;
+        runBusinessSearch(businessQuery);
+      });
+    });
+    const mediaCanvas = document.getElementById('media-canvas');
+    const mediaCtx = mediaCanvas.getContext('2d');
+    let mediaTick = 0;
+    function drawMediaField() {
+      const rect = mediaCanvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      mediaCanvas.width = Math.max(1, Math.floor(rect.width * ratio));
+      mediaCanvas.height = Math.max(1, Math.floor(rect.height * ratio));
+      mediaCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      mediaCtx.clearRect(0, 0, rect.width, rect.height);
+      const cols = 18;
+      const rows = 9;
+      const gapX = rect.width / cols;
+      const gapY = rect.height / rows;
+      mediaCtx.lineWidth = 1;
+      for (let y = 1; y < rows; y += 1) {
+        for (let x = 1; x < cols; x += 1) {
+          const pulse = Math.sin(mediaTick * .018 + x * .7 + y * .9);
+          const px = x * gapX + pulse * 7;
+          const py = y * gapY + Math.cos(mediaTick * .014 + x) * 7;
+          mediaCtx.strokeStyle = pulse > .32 ? 'rgba(94,234,212,.42)' : 'rgba(255,255,255,.11)';
+          mediaCtx.beginPath();
+          mediaCtx.moveTo(px, py);
+          mediaCtx.lineTo(px + gapX * .34, py + gapY * .18);
+          mediaCtx.stroke();
+          if (pulse > .72) {
+            mediaCtx.fillStyle = 'rgba(248,250,252,.72)';
+            mediaCtx.fillRect(px - 1.5, py - 1.5, 3, 3);
+          }
+        }
+      }
+      mediaTick += 1;
+      requestAnimationFrame(drawMediaField);
+    }
+    drawMediaField();
+    function renderDetail(id) {
+      const item = detailMap.get(id);
+      if (!item) return;
+      document.getElementById('detail-badges').innerHTML = item.badges;
+      document.getElementById('detail-title').textContent = item.title;
+      document.getElementById('detail-org').textContent = `${item.org} · ${item.status}`;
+      document.getElementById('detail-amount').textContent = item.amount || '확인 필요';
+      document.getElementById('detail-deadline').textContent = item.d_day ? `${item.deadline} ${item.d_day}` : item.deadline;
+      document.getElementById('detail-target').textContent = item.target || '대상 확인 필요';
+      document.getElementById('detail-eligibility').textContent = item.eligibility || '확인 필요';
+      document.getElementById('detail-summary').textContent = item.summary || item.next_action || '원문 확인이 필요합니다.';
+      document.getElementById('detail-keywords').innerHTML = item.keywords.map((keyword) => `<span class="mini-chip">${keyword}</span>`).join('');
+      document.getElementById('detail-url').textContent = item.url || '';
+      detailOpen.href = item.url || '#';
+      detailCopy.dataset.url = item.url || '';
+      detailCopyStatus.textContent = '';
+      detailModal.hidden = false;
+      detailClose.focus();
+    }
+    document.querySelectorAll('[data-detail-id]').forEach((button) => {
+      button.addEventListener('click', () => renderDetail(button.dataset.detailId));
+    });
+    detailClose.addEventListener('click', () => {
+      detailModal.hidden = true;
+    });
+    detailModal.addEventListener('click', (event) => {
+      if (event.target === detailModal) detailModal.hidden = true;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') detailModal.hidden = true;
+    });
+    detailCopy.addEventListener('click', async () => {
+      const url = detailCopy.dataset.url || '';
+      if (!url) return;
+      try {
+        await navigator.clipboard.writeText(url);
+        detailCopyStatus.textContent = '복사 완료';
+      } catch (error) {
+        detailCopyStatus.textContent = '주소를 선택해서 복사해주세요';
+      }
+    });
+  </script>
+</body>
+</html>
