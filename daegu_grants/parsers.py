@@ -213,6 +213,23 @@ def extract_region(text: str) -> str:
     return ""
 
 
+# 목록의 메타데이터(마감일자·등록일·D-day·날짜·조회수)가 제목에 통째로 섞인
+# '깨진' 공고를 걸러낸다. 제목이 쓰레기라 원문 링크도 안 맞으므로 저장 전에 버린다.
+GARBLED_TITLE_PATTERNS = [
+    re.compile(r"마감일자"),
+    re.compile(r"등록일"),
+    re.compile(r"접수마감일"),
+    re.compile(r"조회\s*수"),
+    re.compile(r"D-\s*\d"),
+    re.compile(r"\d{4}-\d{2}-\d{2}"),
+]
+
+
+def is_garbled_title(title: str) -> bool:
+    t = title or ""
+    return any(p.search(t) for p in GARBLED_TITLE_PATTERNS)
+
+
 def extract_target(text: str) -> str:
     text = clean_text(text)
     candidates = []

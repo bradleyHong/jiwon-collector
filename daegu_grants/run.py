@@ -14,6 +14,7 @@ from .sources import load_config
 from .storage import apply_seen_status, deduplicate, ensure_dirs, load_seen, save_csv, save_seen, update_seen
 from .supabase_sync import upsert_programs
 from .claude_refine import refine_opportunities
+from .parsers import is_garbled_title
 
 
 def parse_args() -> argparse.Namespace:
@@ -54,6 +55,10 @@ def main() -> None:
     scraper = Scraper(settings)
     raw, errors = scraper.scrape(sources, today=today)
     opportunities = apply_seen_status(deduplicate(raw), load_seen())
+    # 목록 메타데이터(마감일자·D-day·날짜 등)가 제목에 섞인 깨진 공고는 저장 전에 버린다.
+    _before_garbled = len(opportunities)
+    opportunities = [o for o in opportunities if not is_garbled_title(getattr(o, "title", ""))]
+    dropped_garbled = _before_garbled - len(opportunities)
 
     draft_paths = generate_drafts(opportunities, today=today)
     markdown = build_report(opportunities, errors, today=today)
@@ -77,6 +82,7 @@ def main() -> None:
         pass
 
     print(f"opportunities={len(opportunities)}")
+    print(f"dropped_garbled={dropped_garbled}")
     print(f"supabase_upserted={upserted}")
     print(f"report={dated_report}")
     print(f"latest={latest_report}")
