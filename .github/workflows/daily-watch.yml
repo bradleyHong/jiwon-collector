@@ -68,11 +68,7 @@ jobs:
             --region "대구" \
             --keywords "AI,인공지능,미디어아트,미디어파사드,영상,콘텐츠,실감콘텐츠,XR,VR,AR,전시,디자인,공공디자인,공공미디어,디지털콘텐츠,정책자금,융자,대출,보증,특례보증,이자지원,경영안정자금,신용보증,기술보증,제조,도소매,화훼,꽃,로봇"
 
-      - name: Commit report and data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data reports drafts site || true
-          git diff --cached --quiet || git commit -m "Daily grant watch report"
-          git pull --rebase --autostash origin main
-          git push
+      # 데이터는 Supabase로 직접 적재되므로 git commit 불필요.
+      # reports/drafts를 매번 commit하면 동시 실행 시 merge conflict로 워크플로가 실패함 → 제거.
+      - name: Done
+        run: echo "수집 완료. 데이터는 Supabase에 적재됨."

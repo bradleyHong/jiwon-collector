@@ -4,3 +4,11 @@ __pycache__/
 ._*
 .venv/
 venv/
+
+# 수집 산출물 - Supabase에 적재되므로 git 추적 불필요 (충돌 방지)
+reports/
+drafts/
+data/
+site/
+로고/
+이미지/
