@@ -222,6 +222,14 @@ GARBLED_TITLE_PATTERNS = [
     re.compile(r"조회\s*수"),
     re.compile(r"D-\s*\d"),
     re.compile(r"\d{4}-\d{2}-\d{2}"),
+    # 게시판 네비게이션·목록 쓰레기 (실제 공고 아님)
+    re.compile(r"공지사항"),
+    re.compile(r"더\s*보기"),
+    re.compile(r"목록\s*보기"),
+    re.compile(r"전체\s*보기"),
+    re.compile(r"게시판"),
+    re.compile(r"새\s*로운\s*게시"),
+    re.compile(r"새\s*게시(글|물)"),
 ]
 
 
