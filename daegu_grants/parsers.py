@@ -233,6 +233,13 @@ GARBLED_TITLE_PATTERNS = [
     re.compile(r"공고\s*/\s*고시"),  # "공고/고시/시험" 같은 메뉴명 유출
     re.compile(r"고시\s*/\s*시험"),
     re.compile(r"^[가-힣A-Za-z]{1,6}(\s*/\s*[가-힣A-Za-z]{1,6}){1,3}$"),  # 순수 메뉴형 제목
+    # 사이트 UI 문구 유출 ("주 메뉴 여닫기" 등)
+    re.compile(r"여닫기"),
+    re.compile(r"메뉴\s*(열기|닫기|펼치기|접기)"),
+    re.compile(r"전체\s*메뉴"),
+    re.compile(r"(이전|다음)\s*글"),
+    re.compile(r"팝업\s*(열기|닫기|차단)"),
+    re.compile(r"화면\s*(확대|축소)"),
 ]
 
 
