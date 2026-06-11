@@ -230,6 +230,9 @@ GARBLED_TITLE_PATTERNS = [
     re.compile(r"게시판"),
     re.compile(r"새\s*로운\s*게시"),
     re.compile(r"새\s*게시(글|물)"),
+    re.compile(r"공고\s*/\s*고시"),  # "공고/고시/시험" 같은 메뉴명 유출
+    re.compile(r"고시\s*/\s*시험"),
+    re.compile(r"^[가-힣A-Za-z]{1,6}(\s*/\s*[가-힣A-Za-z]{1,6}){1,3}$"),  # 순수 메뉴형 제목
 ]
 
 
