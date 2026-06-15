@@ -1,19 +1,11 @@
 name: Daegu Grant Watch
 
 on:
-  schedule:
-    # ── 오전 수집 (메일 발송 12:00 전) ──
-    # 01:50 UTC = 10:50 KST: 11시 수집 대비 사전 실행 (무료 Actions 지연 흡수)
-    - cron: "50 1 * * *"
-    # 02:00 UTC = 11:00 KST: 메인 오전 수집
-    - cron: "0 2 * * *"
-    # 02:20 UTC = 11:20 KST: 누락 대비 재시도 (메일 발송 12:00 전 마지막)
-    - cron: "20 2 * * *"
-    # ── 오후 수집 (다음날 대비 + 저녁 마감 알림 18:00 전) ──
-    # 08:50 UTC = 17:50 KST: 18시 수집 사전 실행
-    - cron: "50 8 * * *"
-    # 09:00 UTC = 18:00 KST: 메인 오후 수집
-    - cron: "0 9 * * *"
+  # GitHub 자체 schedule은 제거했다. 이유 2가지:
+  #  1) 무료 Actions 분 절약 — schedule은 신선도 무관하게 매번 풀 실행해 한도를 빠르게 태웠다.
+  #  2) GitHub schedule은 4~5시간씩 지연되는 고질병이 있었다.
+  # 대신 Vercel cron이 /api/cron/run-collector를 호출하고, 그 라우트가 '데이터가 오래됐을 때만'
+  # 이 워크플로를 workflow_dispatch로 트리거한다(중복·불필요 실행 자동 차단).
   workflow_dispatch:
 
 permissions:
