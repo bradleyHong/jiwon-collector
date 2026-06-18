@@ -17,6 +17,8 @@ import json
 import os
 from typing import Iterable
 
+import requests
+
 try:
     from anthropic import Anthropic
 except ImportError:  # 라이브러리 없으면 정제 비활성
@@ -68,17 +70,76 @@ def _needs_refine(opp) -> bool:
     return False
 
 
+def _fetch_db_state(url: str, key: str, ids: list[str]) -> dict | None:
+    """후보 공고들의 DB 상태(regions/amount/ai_refined_at)를 조회.
+    실패하면 None을 돌려 호출부가 '전체 정제'(기존 동작)로 안전하게 폴백하게 한다."""
+    if not ids:
+        return {}
+    headers = {"apikey": key, "Authorization": f"Bearer {key}"}
+    out: dict[str, dict] = {}
+    CHUNK = 40
+    for i in range(0, len(ids), CHUNK):
+        in_list = ",".join(ids[i : i + CHUNK])
+        endpoint = (
+            f"{url.rstrip('/')}/rest/v1/programs"
+            f"?select=id,regions,amount_max,amount_text,ai_refined_at&id=in.({in_list})"
+        )
+        try:
+            resp = requests.get(endpoint, headers=headers, timeout=20)
+            if resp.status_code >= 300:
+                print(f"[claude_refine] DB 상태 조회 실패({resp.status_code}) — 전체 정제로 폴백")
+                return None
+            for row in resp.json():
+                out[row["id"]] = row
+        except requests.RequestException as exc:
+            print(f"[claude_refine] DB 상태 조회 오류({exc}) — 전체 정제로 폴백")
+            return None
+    return out
+
+
 def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
-    """애매한 공고를 Claude로 정제. opp 객체를 직접 수정. 통계 dict 반환."""
+    """애매한 공고를 Claude로 정제하되 '한 번 정제한 공고는 건너뛴다'.
+    ai_refined_at 이 차 있는 공고는 DB에 저장된 분류를 복원만 하고 재호출하지 않는다
+    → 같은 공고 반복 정제 비용 제거. opp 객체를 직접 수정. 통계 dict 반환."""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key or Anthropic is None:
         print("[claude_refine] ANTHROPIC_API_KEY 없음 또는 anthropic 미설치 — skip")
-        return {"refined": 0, "skipped": len(opportunities), "promotional_removed": 0}
+        return {"refined": 0, "skipped": len(opportunities), "promotional_removed": 0, "restored": 0}
+
+    candidates = [o for o in opportunities if _needs_refine(o)]
+
+    # 이미 정제된 공고는 DB 분류를 복원하고 Claude 호출에서 제외한다.
+    su_url = os.environ.get("SUPABASE_URL")
+    su_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    db_state = (
+        _fetch_db_state(su_url, su_key, [o.dedupe_key for o in candidates])
+        if (su_url and su_key)
+        else None
+    )
+
+    targets = []
+    restored = 0
+    for o in candidates:
+        rec = db_state.get(o.dedupe_key) if db_state else None
+        if rec and rec.get("ai_refined_at"):
+            # 이미 정제됨 → 저장된 값 복원(덮어쓰기 방지), Claude 호출 안 함
+            regions = [r for r in (rec.get("regions") or []) if r in MVP_REGIONS]
+            if regions:
+                o.region = ", ".join(regions)
+            if rec.get("amount_max") and not getattr(o, "amount_value", None):
+                o.amount_value = rec["amount_max"]
+                o.amount_text = rec.get("amount_text") or o.amount_text
+            o._ai_refined = True
+            restored += 1
+        else:
+            targets.append(o)
+    targets = targets[:max_calls]
+    print(
+        f"[claude_refine] 후보 {len(candidates)}건 중 "
+        f"이미정제 {restored}건 복원, 신규 {len(targets)}건 정제 시도"
+    )
 
     client = Anthropic(api_key=api_key)
-    targets = [o for o in opportunities if _needs_refine(o)][:max_calls]
-    print(f"[claude_refine] 전체 {len(opportunities)}건 중 애매한 {len(targets)}건 정제 시도")
-
     refined = 0
     promo = 0
     for opp in targets:
@@ -110,6 +171,9 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
             print(f"[claude_refine] 호출 실패: {exc}")
             continue
 
+        # 정상 분류됨 → 다음 실행에서 재정제 안 하도록 표시
+        opp._ai_refined = True
+
         # 슬로건/홍보면 메일 제외 표시
         if data.get("is_promotional") is True:
             opp.status = "expired"  # 메일·검색에서 빠지게
@@ -126,11 +190,12 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
             opp.amount_text = _fmt_krw(amt)
         refined += 1
 
-    print(f"[claude_refine] 정제 완료: {refined}건 (홍보제거 {promo}건)")
+    print(f"[claude_refine] 정제 완료: {refined}건 (홍보제거 {promo}건, 복원 {restored}건)")
     return {
         "refined": refined,
-        "skipped": len(opportunities) - len(targets),
+        "skipped": len(opportunities) - len(candidates),
         "promotional_removed": promo,
+        "restored": restored,
     }
 
 

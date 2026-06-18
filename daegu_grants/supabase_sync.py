@@ -136,8 +136,8 @@ def _build_industries(opp: Opportunity) -> list[str]:
     return base
 
 
-def to_program_row(opp: Opportunity) -> dict:
-    return _clean_for_postgres({
+def to_program_row(opp: Opportunity, include_ai_refined: bool = False) -> dict:
+    row = {
         "id": opp.dedupe_key,
         "source": opp.source_id or "unknown",
         "source_url": opp.url,
@@ -159,7 +159,28 @@ def to_program_row(opp: Opportunity) -> dict:
         "raw_text": opp.summary,
         "is_result_announcement": _is_result_announcement(opp),
         "scraped_at": datetime.now(timezone.utc).isoformat(),
-    })
+    }
+    # 컬럼이 있을 때만 ai_refined_at 전송(마이그레이션 전이면 생략 → upsert 안 깨짐).
+    # Claude로 이미 정제된 공고는 now, 미정제는 null. 다음 실행에서 재정제 방지.
+    if include_ai_refined:
+        row["ai_refined_at"] = (
+            datetime.now(timezone.utc).isoformat() if getattr(opp, "_ai_refined", False) else None
+        )
+    return _clean_for_postgres(row)
+
+
+def _has_ai_refined_column(url: str, key: str) -> bool:
+    """programs.ai_refined_at 컬럼 존재 여부 탐지(마이그레이션 적용 전엔 False).
+    있을 때만 upsert가 그 컬럼을 보내 deploy 순서와 무관하게 안전하게 동작한다."""
+    try:
+        resp = requests.get(
+            f"{url.rstrip('/')}/rest/v1/programs?select=ai_refined_at&limit=1",
+            headers={"apikey": key, "Authorization": f"Bearer {key}"},
+            timeout=15,
+        )
+        return resp.status_code < 300
+    except requests.RequestException:
+        return False
 
 
 def upsert_programs(opportunities: Iterable[Opportunity]) -> int:
@@ -170,7 +191,8 @@ def upsert_programs(opportunities: Iterable[Opportunity]) -> int:
         print("[supabase_sync] SUPABASE_URL/SERVICE_ROLE_KEY 미설정 — skip")
         return 0
 
-    rows = [to_program_row(o) for o in opportunities]
+    col_ok = _has_ai_refined_column(url, key)
+    rows = [to_program_row(o, include_ai_refined=col_ok) for o in opportunities]
     if not rows:
         return 0
 
