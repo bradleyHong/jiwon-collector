@@ -33,7 +33,8 @@ BUSINESS_TERMS = (
     "연구개발", "시제품", "인증", "특허", "수출", "장려", "공모", "R&D", "투자",
 )
 
-MODEL = "claude-haiku-4-5"  # 빠르고 저렴
+MODEL = "claude-haiku-4-5"  # Anthropic 1순위 (품질 유지)
+OPENAI_MODEL = "gpt-4.1-mini"  # Anthropic 장애/크레딧소진 시 폴백 (저렴)
 
 SYSTEM = """너는 한국 정부지원사업 공고를 분석하는 분류기다.
 주어진 공고의 제목·기관·본문을 읽고 아래 JSON만 출력한다. 설명 금지.
@@ -97,13 +98,58 @@ def _fetch_db_state(url: str, key: str, ids: list[str]) -> dict | None:
     return out
 
 
+def _anthropic_classify(client, user_text: str) -> str | None:
+    """Anthropic Haiku로 분류. 실패(크레딧소진·오류) 시 None."""
+    if client is None:
+        return None
+    try:
+        resp = client.messages.create(
+            model=MODEL, max_tokens=300, system=SYSTEM,
+            messages=[{"role": "user", "content": user_text}],
+        )
+        return resp.content[0].text
+    except Exception as exc:
+        print(f"[claude_refine] anthropic 실패: {exc}")
+        return None
+
+
+def _openai_classify(user_text: str) -> str | None:
+    """OpenAI gpt-4.1-mini로 분류(폴백). 키 없거나 실패 시 None."""
+    key = os.environ.get("OPENAI_API_KEY")
+    if not key:
+        return None
+    try:
+        resp = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={
+                "model": OPENAI_MODEL,
+                "max_completion_tokens": 300,
+                "response_format": {"type": "json_object"},
+                "messages": [
+                    {"role": "system", "content": SYSTEM},
+                    {"role": "user", "content": user_text},
+                ],
+            },
+            timeout=30,
+        )
+        if resp.status_code >= 300:
+            print(f"[claude_refine] openai 실패({resp.status_code})")
+            return None
+        return resp.json()["choices"][0]["message"]["content"]
+    except Exception as exc:
+        print(f"[claude_refine] openai 오류: {exc}")
+        return None
+
+
 def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
     """애매한 공고를 Claude로 정제하되 '한 번 정제한 공고는 건너뛴다'.
     ai_refined_at 이 차 있는 공고는 DB에 저장된 분류를 복원만 하고 재호출하지 않는다
     → 같은 공고 반복 정제 비용 제거. opp 객체를 직접 수정. 통계 dict 반환."""
     api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key or Anthropic is None:
-        print("[claude_refine] ANTHROPIC_API_KEY 없음 또는 anthropic 미설치 — skip")
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if (not api_key or Anthropic is None) and not openai_key:
+        print("[claude_refine] LLM 키 없음(ANTHROPIC/OPENAI) — skip")
         return {"refined": 0, "skipped": len(opportunities), "promotional_removed": 0, "restored": 0}
 
     candidates = [o for o in opportunities if _needs_refine(o)]
@@ -139,7 +185,8 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
         f"이미정제 {restored}건 복원, 신규 {len(targets)}건 정제 시도"
     )
 
-    client = Anthropic(api_key=api_key)
+    client = Anthropic(api_key=api_key) if (api_key and Anthropic is not None) else None
+    anthropic_ok = client is not None  # 실행 중 Anthropic이 죽으면 False로 내려 OpenAI만 쓴다
     refined = 0
     promo = 0
     for opp in targets:
@@ -153,22 +200,24 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
                 ],
             )
         )
+        # 1순위 Anthropic(품질 유지) → 실패 시 OpenAI 폴백. 둘 다 실패하면 skip.
+        raw = None
+        if anthropic_ok:
+            raw = _anthropic_classify(client, text)
+            if raw is None:
+                anthropic_ok = False  # 이번 실행에선 Anthropic 죽음 → 남은 건 OpenAI로
+        if raw is None:
+            raw = _openai_classify(text)
+        if raw is None:
+            continue
+        raw = raw.strip()
+        start = raw.find("{")
+        end = raw.rfind("}")
+        if start < 0 or end < 0:
+            continue
         try:
-            resp = client.messages.create(
-                model=MODEL,
-                max_tokens=300,
-                system=SYSTEM,
-                messages=[{"role": "user", "content": text}],
-            )
-            raw = resp.content[0].text.strip()
-            # JSON 추출
-            start = raw.find("{")
-            end = raw.rfind("}")
-            if start < 0 or end < 0:
-                continue
             data = json.loads(raw[start : end + 1])
-        except Exception as exc:
-            print(f"[claude_refine] 호출 실패: {exc}")
+        except Exception:
             continue
 
         # 정상 분류됨 → 다음 실행에서 재정제 안 하도록 표시
