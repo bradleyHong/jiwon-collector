@@ -185,8 +185,12 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
         f"이미정제 {restored}건 복원, 신규 {len(targets)}건 정제 시도"
     )
 
-    client = Anthropic(api_key=api_key) if (api_key and Anthropic is not None) else None
+    # LLM_PROVIDER=openai 면 Claude를 아예 호출하지 않는다(크레딧 보호). 미설정이면 Claude 우선 + OpenAI 폴백.
+    only_openai = os.environ.get("LLM_PROVIDER", "").strip().lower() == "openai"
+    client = None if only_openai else (Anthropic(api_key=api_key) if (api_key and Anthropic is not None) else None)
     anthropic_ok = client is not None  # 실행 중 Anthropic이 죽으면 False로 내려 OpenAI만 쓴다
+    if only_openai:
+        print("[claude_refine] LLM_PROVIDER=openai → Claude 미사용, OpenAI로만 정제")
     refined = 0
     promo = 0
     for opp in targets:
