@@ -135,7 +135,7 @@ class Scraper:
         if isinstance(items, dict):
             items = items.get("item", [])
         opportunities = []
-        for item in items[:100]:
+        for item in items[:300]:  # 기업마당 포괄 수집(전국·전분야). Eaasy가 영남5+전국으로 필터.
             title = clean_text(item.get("pblancNm") or item.get("title"))
             url = item.get("pblancUrl") or item.get("link") or source.search_url
             summary = clean_text(item.get("bsnsSumryCn") or item.get("description"))

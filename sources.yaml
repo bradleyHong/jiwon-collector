@@ -78,8 +78,10 @@ sources:
     api_key_env: BIZINFO_API_KEY
     params:
       dataType: json
-      searchCnt: "100"
-      hashtags: "대구,창업,기술,내수,경영"
+      searchCnt: "300"
+      # 기업마당 8대 분야 전부(금융·기술·인력·수출·내수·창업·경영·제도) + 영남5 지역.
+      # 좁게 잡으면 '몰랐던' 전국·타분야 지원사업을 통째로 놓침 → 넓게 긁고 Eaasy가 영남5+전국으로 필터.
+      hashtags: "대구,부산,울산,경북,경남,창업,경영,기술,인력,금융,수출,내수,제도,소상공인,중소기업"
     fallback_url: "https://www.bizinfo.go.kr/sii/siia/selectSIIA200View.do"
     notes: "공식 API 문서 확인: 지원사업정보 API, endpoint /uss/rss/bizinfoApi.do, crtfcKey 필요."
 
