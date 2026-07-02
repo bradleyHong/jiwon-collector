@@ -370,6 +370,15 @@ sources:
     rss_or_api: none_found
     notes: "부산 보증/정책자금. URL 확인 필요."
 
+  - id: busan_bipa
+    name: 부산정보산업진흥원
+    org: 부산정보산업진흥원
+    adapter: html_list
+    url: "https://www.busanit.or.kr/board/business/list"
+    search_url: "https://www.busanit.or.kr/board/business/list"
+    rss_or_api: none_found
+    notes: "부산 IT·콘텐츠·AI 지원사업 게시판. 2026-07 검증: 13건 정상 수집(AX·AI 공모 등 알짜)."
+
   # ── 광주 ──
   - id: gwangju_tp
     name: 광주테크노파크
@@ -550,6 +559,15 @@ sources:
     rss_or_api: none_found
     notes: "경북 보증/정책자금. URL 확인 필요."
 
+  - id: gyeongbuk_gepa
+    name: 경북경제진흥원
+    org: 경상북도경제진흥원
+    adapter: html_list
+    url: "https://www.gepa.kr/"
+    search_url: "https://www.gepa.kr/"
+    rss_or_api: none_found
+    notes: "경북 중소기업 핵심 지원기관. 2026-07 검증: 37건 정상 수집(ESG·판로·마케팅 등)."
+
   # ── 경남 ──
   - id: gyeongnam_tp
     name: 경남테크노파크
@@ -567,6 +585,15 @@ sources:
     search_url: "https://www.gnsinbo.or.kr/"
     rss_or_api: none_found
     notes: "경남 보증/정책자금. URL 확인 필요."
+
+  - id: gyeongnam_gbia
+    name: 김해의생명산업진흥원
+    org: 김해의생명산업진흥원
+    adapter: html_list
+    url: "https://www.gbia.or.kr/"
+    search_url: "https://www.gbia.or.kr/"
+    rss_or_api: none_found
+    notes: "경남(김해) 기업지원 알짜(인증비용·전시참가·입주·판로). 2026-07 검증: 실공고 다수 수집."
 
   # ── 제주 ──
   - id: jeju_tp
