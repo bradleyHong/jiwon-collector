@@ -33,25 +33,33 @@ BUSINESS_TERMS = (
     "연구개발", "시제품", "인증", "특허", "수출", "장려", "공모", "R&D", "투자",
 )
 
-MODEL = "claude-haiku-4-5"  # Anthropic 1순위 (품질 유지)
-OPENAI_MODEL = "gpt-4.1-mini"  # Anthropic 장애/크레딧소진 시 폴백 (저렴)
+# 모델은 env로 교체 가능(레포 variable). 미설정 시 기본값.
+MODEL = os.environ.get("ANTHROPIC_REFINE_MODEL") or "claude-haiku-4-5"  # Anthropic 1순위
+OPENAI_MODEL = os.environ.get("OPENAI_REFINE_MODEL") or "gpt-4.1-mini"  # 폴백/전용 (저렴)
 
-SYSTEM = """너는 한국 정부지원사업 공고를 분석하는 분류기다.
+SYSTEM = """너는 한국 정부지원사업 공고를 분석하는 분류기다. 고객은 영남(대구·부산·울산·경북·경남)의 사업자·(예비)창업자이며, 이들이 실제로 신청해 혜택받을 수 있는 공고만 통과시켜야 한다.
 주어진 공고의 제목·기관·본문을 읽고 아래 JSON만 출력한다. 설명 금지.
 
 {
   "regions": ["대구"|"부산"|"울산"|"경북"|"경남"|"전국" 중 해당되는 것 모두. 영남5개·전국 외 지역이거나 불명확하면 []],
-  "is_promotional": true/false  (지원사업이 아니라 지자체 홍보/슬로건/행사안내면 true),
-  "amount_max_krw": 정수 또는 null (기업당 최대 지원금. "3천만원"=30000000. 불명이면 null),
+  "is_for_business": true/false  (사업자·기업·소상공인·스타트업·예비창업자 대상이면 true, 개인·주민 복지면 false),
+  "is_promotional": true/false  (신청 가능한 지원사업이 아니라 홍보/슬로건/단순 안내면 true),
+  "amount_max_krw": 정수 또는 null (기업 1곳당 최대 지원금. "3천만원"=30000000. 불명이면 null),
   "category": "사업지원"|"대출·보증"|"매출·판로"|"제작·개발"|"창업준비"|"교육·컨설팅" 중 가장 맞는 1개,
   "confidence": "high"|"medium"|"low"
 }
 
 규칙:
-- "의령군 변화의시작 더 살기좋은 의령" 처럼 사업 내용 없는 지자체 슬로건은 is_promotional=true
-- 지역은 신청 가능 지역 기준. 중앙부처(중기부 등) 전국 사업은 ["전국"]
-- 영남 5개 시도(대구·부산·울산·경북·경남)와 전국만 의미있음. 그 외 지역(서울 등)이면 regions=[]
-- 공모전·경진대회·공모사업·챌린지·아이디어공모는 상금/지원금/혜택이 있으면 '지원사업'이다 → is_promotional=false (단순 행사안내로 착각 금지). 특히 전국 단위 대형 공모전을 놓치지 말 것."""
+1) is_for_business (가장 중요): 개인 복지는 false — 양육수당·아이돌봄·급식·학자금·주거비·전세보증금·희망통장·개인 바우처 등 가계 지원, 주민 생활·행정 안내, 시민 문화·건강 강좌, 개인 구직수당. 사업자(등록 예정 포함)·기업 혜택이면 true. 애매하면 true(놓치는 것이 더 나쁘다).
+2) is_promotional: "의령군 변화의시작 더 살기좋은 의령" 같은 슬로건, 시스템 점검·매뉴얼, 선정 결과 발표, 단순 설명회·시상식 관람 안내는 true. 공모전·경진대회·챌린지·아이디어공모는 상금/지원/혜택이 있으면 신청 가능한 지원사업 → false (전국 대형 공모전을 놓치지 말 것). 박람회·전시회도 참가기업 모집(부스비·판로 지원)이면 false.
+3) regions: 기관 소재지가 아니라 "신청 자격 지역" 기준. 중앙부처·전국 모집은 ["전국"]. "OO 소재 기업" 조건이 있으면 그 지역만. 영남5·전국 외 한정(예: 서울시 소재 기업만)이거나 판단 불가면 [].
+4) amount_max_krw: 반드시 기업 1곳이 받는 최대액. 사업 총예산·총사업비를 기업당 금액으로 착각하지 말 것(그 경우 null).
+
+예시:
+- "2026 혁신 소상공인 AI 활용지원 참여 소상공인 모집" → is_for_business=true, is_promotional=false, regions=["전국"]
+- "경북 청년농업인 영농정착 지원(경북 소재)" → true, false, ["경북"]
+- "부산시 아이돌봄 양육수당 신청 안내" → is_for_business=false
+- "달성군 사업관리시스템 사용자 매뉴얼 안내" → is_promotional=true"""
 
 
 def _needs_refine(opp) -> bool:
@@ -228,8 +236,9 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
         # 정상 분류됨 → 다음 실행에서 재정제 안 하도록 표시
         opp._ai_refined = True
 
-        # 슬로건/홍보면 메일 제외 표시
-        if data.get("is_promotional") is True:
+        # 슬로건/홍보 또는 개인복지(사업자 무관)면 메일 제외 표시.
+        # is_for_business는 명시적 false일 때만 제외(키 누락 시 통과 = 하위호환).
+        if data.get("is_promotional") is True or data.get("is_for_business") is False:
             opp.status = "expired"  # 메일·검색에서 빠지게
             promo += 1
             refined += 1
@@ -244,7 +253,7 @@ def refine_opportunities(opportunities: list, max_calls: int = 300) -> dict:
             opp.amount_text = _fmt_krw(amt)
         refined += 1
 
-    print(f"[claude_refine] 정제 완료: {refined}건 (홍보제거 {promo}건, 복원 {restored}건)")
+    print(f"[claude_refine] 정제 완료: {refined}건 (홍보·비사업 제거 {promo}건, 복원 {restored}건)")
     return {
         "refined": refined,
         "skipped": len(opportunities) - len(candidates),

@@ -43,6 +43,8 @@ jobs:
           GH_USERNAME: ${{ secrets.GH_USERNAME }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           LLM_PROVIDER: ${{ vars.LLM_PROVIDER }}
+          ANTHROPIC_REFINE_MODEL: ${{ vars.ANTHROPIC_REFINE_MODEL }}
+          OPENAI_REFINE_MODEL: ${{ vars.OPENAI_REFINE_MODEL }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           BIZINFO_API_KEY: ${{ secrets.BIZINFO_API_KEY }}
