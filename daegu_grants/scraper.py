@@ -222,19 +222,40 @@ class Scraper:
 
     def extract_candidate_blocks(self, soup: BeautifulSoup, base_url: str) -> list[dict[str, str]]:
         candidates: list[dict[str, str]] = []
+        anchor_titles: list[str] = []
         for anchor in soup.find_all("a", href=True):
             title = clean_text(anchor.get_text(" "))
-            href = self.normalize_url(anchor["href"], base_url)
+            raw_href = anchor["href"].strip()
+            onclick = clean_text(anchor.get("onclick") or "")
+            # 일부 사이트(예: startup.daegu.go.kr)는 실제 상세글 ID를 href가 아니라
+            # onclick 속성의 JS 호출에만 담아둔다(href는 "javascript:;" 같은 자리표시자).
+            # href가 자리표시자면 onclick 쪽을 대신 넘겨서 normalize_url이 파싱하게 한다.
+            link_source = (
+                onclick if raw_href.lower() in ("javascript:;", "javascript:void(0);", "javascript:void(0)", "#") and onclick
+                else raw_href
+            )
+            href = self.normalize_url(link_source, base_url)
             if not href:
                 continue
             parent = anchor.find_parent(["li", "tr", "article", "div"]) or anchor
             text = clean_text(parent.get_text(" "))
             if len(title) >= 8 and any(k in f"{title} {text}" for k in ["지원", "공고", "모집", "사업", "창업", "콘텐츠", "AI", "디자인"]):
                 candidates.append({"title": title, "url": href, "text": text})
+                anchor_titles.append(title)
 
         page_text = clean_text(soup.get_text(" "))
         for match in self.split_text_candidates(page_text):
-            candidates.append({"title": match["title"], "url": base_url, "text": match["text"]})
+            title = match["title"]
+            # 텍스트 폴백은 진짜 링크가 없어 base_url(목록 페이지)을 그대로 쓴다.
+            # 같은 공고를 앵커 스캔이 이미 '진짜 상세 링크'로 잡아뒀다면 이 목록URL짜리
+            # 중복을 버린다 — 안 그러면 같은 공고가 정상 링크 버전과 목록URL 버전 둘로
+            # 쪼개져 저장된다. 앵커 제목엔 보통 "분류 D-일 마감일자 ... " 접두어가 붙어
+            # 단순 접두어 비교로는 못 잡으므로, 텍스트 폴백 제목 앞부분이 앵커 제목 어딘가에
+            # 그대로 들어있는지(부분 문자열 포함)로 판단한다.
+            core = title[:18]
+            if len(core) >= 8 and any(core in at for at in anchor_titles):
+                continue
+            candidates.append({"title": title, "url": base_url, "text": match["text"]})
         deduped = []
         seen = set()
         for item in candidates:
@@ -246,6 +267,16 @@ class Scraper:
 
     def normalize_url(self, href: str, base_url: str) -> str:
         href = (href or "").strip()
+        # onclick에서 넘어온 텍스트(예: "fn_project_detail('PROJECT_00004885'); return false;")는
+        # "javascript:" 접두사가 없어 아래 startswith 분기들을 안 타므로 먼저 따로 처리한다.
+        if "fn_project_detail(" in href:
+            match = re.search(r"fn_project_detail\('([^']+)'\)", href)
+            if match and "startup.daegu.go.kr" in base_url:
+                return (
+                    "https://startup.daegu.go.kr/index.do?menu_id=00002552"
+                    f"&menu_link=/front/project/projectFrontDetail.do?project_id={match.group(1)}"
+                )
+            return ""
         if href.lower().startswith("javascript:read"):
             match = re.search(r"read\('[^']*','?(\d+)'?\)", href)
             if match and "dip.or.kr" in base_url:
@@ -254,9 +285,15 @@ class Scraper:
                     f"fboardcd=business&fboardnum={match.group(1)}&sfpage=1&sfpsize=10&sfsearch=ftitle"
                 )
         if href.lower().startswith("javascript:go_view"):
-            match = re.search(r"go_view\((\d+)\)", href)
+            # go_view(id)/go_view_blank(id) 둘 다 매치. 실제 사이트 JS(go_view 함수)는
+            # schM=view를 pbancSn과 함께 넣어야 상세화면으로 간다. schM 없이 pbancSn만
+            # 붙이면 목록 페이지(모집중)가 그대로 뜬다 — 예전엔 이 파라미터가 빠져 있었음.
+            match = re.search(r"go_view(?:_blank)?\((\d+)\)", href)
             if match and "k-startup.go.kr" in base_url:
-                return f"https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do?pbancSn={match.group(1)}"
+                return (
+                    "https://www.k-startup.go.kr/web/contents/bizpbanc-ongoing.do"
+                    f"?schM=view&pbancSn={match.group(1)}"
+                )
         if href.lower().startswith("javascript:fn_golinkview"):
             match = re.search(r"fn_goLinkView\('([^']+)'", href)
             if match and "daegu.go.kr" in base_url:
