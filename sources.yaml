@@ -379,6 +379,15 @@ sources:
     rss_or_api: none_found
     notes: "부산 IT·콘텐츠·AI 지원사업 게시판. 2026-07 검증: 13건 정상 수집(AX·AI 공모 등 알짜)."
 
+  - id: busan_bepa
+    name: 부산경제진흥원
+    org: 부산경제진흥원
+    adapter: html_list
+    url: "https://www.bepa.kr/kor/view.do?no=1502"
+    search_url: "https://www.bepa.kr/kor/view.do?no=1502"
+    rss_or_api: none_found
+    notes: "부산 소상공인·중소기업 핵심 지원기관. 서버가 중간 인증서를 안 보내 certs/ 보충 번들로 검증 유지 접속. 2026-07 검증: 소공인 패키지·공모 컨설팅 등 수집."
+
   # ── 광주 ──
   - id: gwangju_tp
     name: 광주테크노파크
@@ -595,6 +604,15 @@ sources:
     rss_or_api: none_found
     notes: "경남(김해) 기업지원 알짜(인증비용·전시참가·입주·판로). 2026-07 검증: 실공고 다수 수집."
 
+  - id: gyeongnam_cwip
+    name: 창원산업진흥원
+    org: 창원산업진흥원
+    adapter: html_list
+    url: "https://www.cwip.or.kr/application/application_list.php"
+    search_url: "https://www.cwip.or.kr/application/application_list.php"
+    rss_or_api: none_found
+    notes: "경남(창원) 기업지원 핵심(수출·기술이전·ESG·창업·드론 국산화). 서버가 중간 인증서를 안 보내 certs/ 보충 번들로 검증 유지 접속. 2026-07 검증: 실공고 25건+ 수집."
+
   # ── 제주 ──
   - id: jeju_tp
     name: 제주테크노파크
@@ -725,7 +743,7 @@ sources:
     name: 경상북도 공고
     org: 경상북도
     adapter: html_list
-    url: "https://www.gb.go.kr/Main/page.do?mnu_uid=4040"
+    url: "https://www.gb.go.kr/Main/page.do?mnu_uid=6789"
     search_url: "https://www.gb.go.kr/"
     rss_or_api: none_found
     notes: "경북도 공고. URL 확인 필요."

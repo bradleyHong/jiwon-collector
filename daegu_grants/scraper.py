@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import os
 import re
+import tempfile
 import time
 import urllib.robotparser
 from datetime import date
 from email.utils import parsedate_to_datetime
+from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
+import certifi
 import feedparser
 import requests
 from bs4 import BeautifulSoup
@@ -29,11 +32,36 @@ from .parsers import (
 from .sources import Source
 from .storage import Opportunity
 
+# certifi 기본 번들 + 동봉한 중간 인증서를 합친 CA 번들 경로 (프로세스당 1회 생성).
+# 일부 한국 기관 사이트(bepa.kr, cwip.or.kr 등)가 중간 인증서를 안 보내
+# 검증이 실패하는데, 검증을 끄는 대신 누락분을 우리가 보충한다.
+_CA_BUNDLE_PATH: str | None = None
+
+
+def _combined_ca_bundle() -> str:
+    global _CA_BUNDLE_PATH
+    if _CA_BUNDLE_PATH:
+        return _CA_BUNDLE_PATH
+    supplement = Path(__file__).parent / "certs" / "intermediate-ca-supplement.pem"
+    if not supplement.exists():
+        _CA_BUNDLE_PATH = certifi.where()
+        return _CA_BUNDLE_PATH
+    combined = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".pem", prefix="ca-bundle-", delete=False
+    )
+    with combined:
+        combined.write(Path(certifi.where()).read_text())
+        combined.write("\n")
+        combined.write(supplement.read_text())
+    _CA_BUNDLE_PATH = combined.name
+    return _CA_BUNDLE_PATH
+
 
 class Scraper:
     def __init__(self, settings: dict[str, Any]):
         self.settings = settings
         self.session = requests.Session()
+        self.session.verify = _combined_ca_bundle()
         self.session.headers.update(
             {
                 "User-Agent": settings.get("user_agent", "daegu-grants-monitor/1.0"),
