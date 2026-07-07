@@ -115,15 +115,26 @@ class Scraper:
                     f"skipped {remaining} remaining sources"
                 )
                 break
-            try:
-                if source.adapter == "rss":
-                    opportunities.extend(self.scrape_rss(source, today))
-                elif source.adapter == "bizinfo_api":
-                    opportunities.extend(self.scrape_bizinfo(source, today))
-                else:
-                    opportunities.extend(self.scrape_html_list(source, today))
-            except Exception as exc:
-                errors.append(f"{source.name}: {exc}")
+            # CI(해외 IP)에서 한국 사이트가 간헐적으로 차단·타임아웃돼 실행마다
+            # 수집량이 170~788건으로 널뛰던 문제 대응: 소스당 1회 재시도.
+            # (일시 차단은 재시도로 살아나고, 만성 차단은 그대로 에러로 남아 식별됨)
+            last_exc: Exception | None = None
+            for attempt in range(2):
+                try:
+                    if source.adapter == "rss":
+                        opportunities.extend(self.scrape_rss(source, today))
+                    elif source.adapter == "bizinfo_api":
+                        opportunities.extend(self.scrape_bizinfo(source, today))
+                    else:
+                        opportunities.extend(self.scrape_html_list(source, today))
+                    last_exc = None
+                    break
+                except Exception as exc:
+                    last_exc = exc
+                    if attempt == 0:
+                        time.sleep(4)
+            if last_exc is not None:
+                errors.append(f"{source.name}: {last_exc}")
         return opportunities, errors
 
     def scrape_rss(self, source: Source, today: date) -> list[Opportunity]:

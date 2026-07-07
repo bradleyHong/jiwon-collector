@@ -90,6 +90,10 @@ def main() -> None:
     print(f"latest_html={latest_html}")
     print(f"drafts={len(draft_paths)}")
     print(f"errors={len(errors)}")
+    # 실패 소스 내역을 로그에 남긴다 — 만성 차단(지오블록) 소스를 CI 로그만으로
+    # 식별할 수 있게. 개수만 찍으면 어떤 소스가 죽었는지 아무도 모른다.
+    for err in errors[:80]:
+        print(f"  scrape_error: {err}")
     if args.dry_run:
         print("dry_run=true; skipped GitHub Issue and Telegram notification")
     else:
