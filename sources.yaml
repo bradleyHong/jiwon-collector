@@ -5,7 +5,9 @@ settings:
   user_agent: "daegu-grants-monitor/1.0 (+https://github.com/OWNER/REPO)"
   minimum_amount_krw: 20000000
   detail_fetch_limit_per_source: 4
-  max_runtime_seconds: 900
+  # 107개 소스 전체가 매 실행 시도되도록 확대(900초 때는 44개에서 예산 소진,
+  # 뒤쪽 63개가 만성 스킵됐음). 워크플로 timeout과 함께 조정할 것.
+  max_runtime_seconds: 1500
 
   # MVP 운영권역: 대구·경북·경남·부산 + 전국 핵심 공고.
   # 전국 300개 이상 전체 수집은 안정화 후 확장한다.

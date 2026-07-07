@@ -19,7 +19,8 @@ concurrency:
 jobs:
   watch:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    # 수집 예산 1500초(25분) + AI 정제·업서트 여유. 공개 레포라 분당 과금 없음.
+    timeout-minutes: 45
 
     steps:
       - uses: actions/checkout@v4

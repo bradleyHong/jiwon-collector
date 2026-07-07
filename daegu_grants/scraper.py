@@ -96,7 +96,9 @@ class Scraper:
         if not self.can_fetch(url):
             raise RuntimeError(f"robots.txt disallows fetching {url}")
         time.sleep(self.delay)
-        response = self.session.get(url, timeout=self.timeout)
+        # (연결, 읽기) 타임아웃 분리: 지오블록된 사이트는 TCP 연결에서 통째로
+        # 매달리므로 연결은 5초에 빨리 포기하고, 읽기는 설정값을 그대로 쓴다.
+        response = self.session.get(url, timeout=(min(5, self.timeout), self.timeout))
         response.raise_for_status()
         if not response.encoding or response.encoding.lower() == "iso-8859-1":
             response.encoding = response.apparent_encoding
@@ -115,9 +117,9 @@ class Scraper:
                     f"skipped {remaining} remaining sources"
                 )
                 break
-            # CI(해외 IP)에서 한국 사이트가 간헐적으로 차단·타임아웃돼 실행마다
-            # 수집량이 170~788건으로 널뛰던 문제 대응: 소스당 1회 재시도.
-            # (일시 차단은 재시도로 살아나고, 만성 차단은 그대로 에러로 남아 식별됨)
+            # 실패 시 재시도는 '살아날 가능성이 있는' 오류에만 건다.
+            # 지오블록(연결 거부·연결 타임아웃)은 몇 초 뒤 다시 시도해도 그대로라
+            # 재시도가 시간예산만 태운다 → 즉시 실패 처리.
             last_exc: Exception | None = None
             for attempt in range(2):
                 try:
@@ -131,11 +133,26 @@ class Scraper:
                     break
                 except Exception as exc:
                     last_exc = exc
-                    if attempt == 0:
-                        time.sleep(4)
+                    if attempt == 0 and self._is_retryable(exc):
+                        time.sleep(3)
+                        continue
+                    break
             if last_exc is not None:
                 errors.append(f"{source.name}: {last_exc}")
         return opportunities, errors
+
+    @staticmethod
+    def _is_retryable(exc: Exception) -> bool:
+        # 연결 자체가 안 되는 오류(지오블록·방화벽 드롭)는 재시도 무의미.
+        if isinstance(exc, (requests.exceptions.ConnectTimeout, requests.exceptions.ConnectionError)):
+            return False
+        # 읽기 타임아웃·전송 끊김은 일시적일 수 있음.
+        if isinstance(exc, (requests.exceptions.ReadTimeout, requests.exceptions.ChunkedEncodingError)):
+            return True
+        # 서버 과부하·레이트리밋(429, 5xx)도 잠시 뒤 살아나는 경우가 많음.
+        if isinstance(exc, requests.exceptions.HTTPError) and exc.response is not None:
+            return exc.response.status_code in (429, 500, 502, 503, 504)
+        return False
 
     def scrape_rss(self, source: Source, today: date) -> list[Opportunity]:
         response = self.get(source.url)

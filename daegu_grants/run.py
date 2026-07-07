@@ -53,6 +53,11 @@ def main() -> None:
     today = datetime.now(tz).date()
 
     scraper = Scraper(settings)
+    # 소스 순서를 날짜 기준으로 회전: 시간예산이 모자라 뒤쪽이 스킵되더라도
+    # 매일 다른 소스가 뒤로 가서, 항상 같은 소스만 만성 누락되는 것을 막는다.
+    if sources:
+        shift = today.toordinal() % len(sources)
+        sources = sources[shift:] + sources[:shift]
     raw, errors = scraper.scrape(sources, today=today)
     opportunities = apply_seen_status(deduplicate(raw), load_seen())
     # 목록 메타데이터(마감일자·D-day·날짜 등)가 제목에 섞인 깨진 공고는 저장 전에 버린다.
