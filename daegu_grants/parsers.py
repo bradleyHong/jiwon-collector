@@ -240,12 +240,72 @@ GARBLED_TITLE_PATTERNS = [
     re.compile(r"(이전|다음)\s*글"),
     re.compile(r"팝업\s*(열기|닫기|차단)"),
     re.compile(r"화면\s*(확대|축소)"),
+    # 사이트 안내 문구가 제목으로 잡힌 것("사업공고 필요한 지원사업을 찾아보세요.")
+    re.compile(r"찾아보세요|확인하고 신청하세요|신청하세요\.?$|한눈에 볼 수 있습니다"),
+    re.compile(r"메인화면으로 이동"),
+    # 기관 채용·내부 공지(사업 지원 아님)
+    re.compile(r"직원\s*\(?(위촉직|청년인턴|연구직|계약직)"),
+    re.compile(r"(서류|필기|면접)전형\s*(결과|안내)"),
+    re.compile(r"임직원\s*친인척"),
 ]
 
 
 def is_garbled_title(title: str) -> bool:
     t = title or ""
     return any(p.search(t) for p in GARBLED_TITLE_PATTERNS)
+
+
+# 목록 행에서 제목만 뽑아낼 때 붙어오는 메타데이터 조각들.
+# 앞/뒤에서만 벗겨낸다(제목 한가운데 값은 건드리지 않는다).
+_TITLE_META_PREFIX = [
+    re.compile(r"^\s*(공모전|사업화|기술|내수|수출|창업교육|멘토링\s*컨설팅|행사\s*네트워크|판로\s*해외진출)\s+"),
+    re.compile(r"^\s*새\s*글\s+"),
+    re.compile(r"^\s*\d{1,2}일\s+\d{4}\.\d{1,2}\s+"),   # "25일 2026.06 ..."
+    re.compile(r"^\s*\d{3,4}\s+"),                      # 목록 번호("1462 ...")
+    re.compile(r"^\s*D\s*-\s*\d+\s+"),
+    re.compile(r"^\s*마감\s*\d+일\s*전\s+"),
+]
+_TITLE_META_ANY = [
+    re.compile(r"\bD\s*-\s*\d+\b"),
+    re.compile(r"마감일자\s*\d{4}[-.]\d{1,2}[-.]\d{1,2}"),
+    re.compile(r"등록일자\s*\d{4}[-.]\d{1,2}[-.]\d{1,2}"),
+    re.compile(r"등록일자\s*\d{4}"),
+    re.compile(r"조회\s*수?\s*\d+"),
+    re.compile(r"새\s*로*운?\s*게시(글|물)"),
+    re.compile(r"\b\d{4}-\d{2}-\d{2}\s*~\s*\d{4}-\d{2}-\d{2}\b"),
+]
+_TITLE_META_SUFFIX = [
+    re.compile(r"\s+마감\s*\d+\s*일\s*전\s*$"),
+    re.compile(r"\s+(마감|접수중|상시모집|모집중|마감임박)\s*$"),
+    re.compile(r"\s+조회\s*\d*\s*$"),
+    re.compile(r"\s+\d{4}[-.]\d{1,2}[-.]\d{1,2}\s*$"),
+    re.compile(r"\s+new\s*$", re.IGNORECASE),
+]
+
+
+def clean_listing_title(title: str) -> str:
+    """목록 행 텍스트에서 딸려온 메타데이터를 제목에서 벗겨낸다.
+
+    같은 공고인데 D-day만 바뀌어 매일 다른 제목이 되면, Supabase 행 id가
+    제목 해시 기반이라 같은 공고가 날마다 새 행으로 쌓인다(실제로 공모전 하나가
+    15개 변형으로 적재된 사례가 있었다). 제목을 안정화해 그 원인을 없앤다.
+    정리 후 너무 짧아지면 원문을 그대로 둔다(과잉 삭제 방지).
+    """
+    t = clean_text(title)
+    if not t:
+        return t
+    for _ in range(3):  # "공모전 D-58 ..." 처럼 접두어가 겹치는 경우
+        before = t
+        for pattern in _TITLE_META_PREFIX:
+            t = pattern.sub("", t, count=1)
+        if t == before:
+            break
+    for pattern in _TITLE_META_ANY:
+        t = pattern.sub(" ", t)
+    for pattern in _TITLE_META_SUFFIX:
+        t = pattern.sub("", t)
+    t = re.sub(r"\s{2,}", " ", t).strip(" ·-|,")
+    return t if len(t) >= 8 else clean_text(title)
 
 
 def extract_target(text: str) -> str:

@@ -20,6 +20,7 @@ from .classifier import classify
 from .parsers import (
     calculate_dday,
     clean_text,
+    clean_listing_title,
     extract_attachment_links,
     extract_deadline,
     extract_posted_date,
@@ -408,7 +409,7 @@ class Scraper:
         classified = classify(title, summary, region, target, amount_value, deadline_date, self.minimum_amount, today)
         return Opportunity(
             org=source.org or source.name,
-            title=title,
+            title=clean_listing_title(title),
             url=url,
             posted_date=posted,
             deadline=deadline,
